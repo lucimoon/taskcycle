@@ -4,13 +4,14 @@ interface StepRowProps {
   step: Step
   index: number
   total: number
+  autoFocus?: boolean
   onChange: (step: Step) => void
   onRemove: () => void
   onMoveUp: () => void
   onMoveDown: () => void
 }
 
-export function StepRow({ step, index, total, onChange, onRemove, onMoveUp, onMoveDown }: StepRowProps) {
+export function StepRow({ step, index, total, autoFocus, onChange, onRemove, onMoveUp, onMoveDown }: StepRowProps) {
   return (
     <div className="flex items-center gap-2">
       <div className="flex flex-col gap-0.5">
@@ -38,6 +39,7 @@ export function StepRow({ step, index, total, onChange, onRemove, onMoveUp, onMo
         value={step.label}
         onChange={(e) => onChange({ ...step, label: e.target.value })}
         placeholder={`Step ${index + 1}`}
+        autoFocus={autoFocus}
         className="flex-1 rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <input

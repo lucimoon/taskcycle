@@ -25,9 +25,12 @@ interface TaskFormProps {
 export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
   const [title, setTitle] = useState(initial?.title ?? '')
   const [kind, setKind] = useState<TaskKind>(initial?.kind ?? 'once')
-  const [dueAt, setDueAt] = useState(
-    initial?.kind === 'once' && initial.dueAt ? initial.dueAt.slice(0, 16) : '',
-  )
+  const initialDueDate =
+    initial?.kind === 'once' && initial.dueAt ? initial.dueAt.slice(0, 10) : ''
+  const initialDueTime =
+    initial?.kind === 'once' && initial.dueAt ? initial.dueAt.slice(11, 16) : '22:00'
+  const [dueDate, setDueDate] = useState(initialDueDate)
+  const [dueTime, setDueTime] = useState(initialDueTime)
   const [recurAmount, setRecurAmount] = useState(
     initial?.kind === 'cyclic' ? Math.round(initial.recurAfterMinutes / 60) || 1 : 1,
   )
@@ -52,7 +55,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
     }
     const draft: TaskDraft =
       kind === 'once'
-        ? { ...base, kind: 'once', dueAt: dueAt ? new Date(dueAt).toISOString() : undefined }
+        ? { ...base, kind: 'once', dueAt: dueDate ? new Date(`${dueDate}T${dueTime}`).toISOString() : undefined }
         : { ...base, kind: 'cyclic', recurAfterMinutes: toRecurMinutes(recurAmount, recurUnit) }
     onSubmit(draft)
   }
@@ -77,14 +80,25 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
 
       {kind === 'once' ? (
         <div className="space-y-1.5">
-          <label htmlFor="due-at" className="text-sm font-medium text-gray-700">Due date (optional)</label>
-          <input
-            id="due-at"
-            type="datetime-local"
-            value={dueAt}
-            onChange={(e) => setDueAt(e.target.value)}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <span className="text-sm font-medium text-gray-700">Due date (optional)</span>
+          <div className="flex gap-2">
+            <input
+              id="due-date"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              aria-label="Due date"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              id="due-time"
+              type="time"
+              value={dueTime}
+              onChange={(e) => setDueTime(e.target.value)}
+              aria-label="Due time"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
       ) : (
         <div className="space-y-1.5">

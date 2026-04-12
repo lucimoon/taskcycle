@@ -59,6 +59,24 @@ test('edit a task', async ({ page }) => {
   await expect(page.getByText('Buy groceries', { exact: true })).not.toBeVisible()
 })
 
+test('step timer appears and starts for a timed step', async ({ page }) => {
+  await page.goto('/tasks/new')
+  await page.getByPlaceholder(/what needs to be done/i).fill('Laundry')
+  await page.getByRole('button', { name: /add step/i }).click()
+  await page.getByPlaceholder('Step 1').fill('Start washer')
+  // set duration to 30 minutes
+  await page.getByRole('spinbutton', { name: /duration in minutes/i }).fill('30')
+  await page.getByRole('button', { name: /save task/i }).click()
+
+  // Expand steps on the card
+  await page.getByRole('button', { name: /expand steps/i }).click()
+  // Timer should show initial countdown 30:00
+  await expect(page.getByLabel('Timer countdown')).toHaveText('30:00')
+  // Start the timer
+  await page.getByRole('button', { name: /start timer/i }).click()
+  await expect(page.getByRole('button', { name: /pause timer/i })).toBeVisible()
+})
+
 test('delete a task', async ({ page }) => {
   // Create a task first
   await page.getByRole('button', { name: /new task/i }).click()

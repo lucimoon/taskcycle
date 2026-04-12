@@ -9,9 +9,10 @@ interface TaskStore {
   updateTask: (id: string, changes: Partial<Task>) => Promise<void>
   removeTask: (id: string) => Promise<void>
   completeTask: (id: string) => Promise<void>
+  completeStep: (taskId: string, stepId: string) => Promise<void>
 }
 
-export const useTaskStore = create<TaskStore>((set) => ({
+export const useTaskStore = create<TaskStore>((set, get) => ({
   tasks: [],
 
   loadTasks: async () => {
@@ -39,6 +40,25 @@ export const useTaskStore = create<TaskStore>((set) => ({
 
   completeTask: async (id) => {
     await taskService.completeTask(id)
+    const tasks = await taskService.listTasks()
+    set({ tasks })
+  },
+
+  completeStep: async (taskId, stepId) => {
+    const task = get().tasks.find((t) => t.id === taskId)
+    if (!task) return
+    const now = new Date().toISOString()
+    const updatedSteps = task.steps.map((s) =>
+      s.id === stepId ? { ...s, completedAt: now } : s,
+    )
+    const allDone = updatedSteps.every((s) => s.completedAt)
+    if (allDone && task.steps.length > 0) {
+      // completing the last step completes the task (handles cyclic recurrence too)
+      await taskService.updateTask(taskId, { steps: updatedSteps })
+      await taskService.completeTask(taskId)
+    } else {
+      await taskService.updateTask(taskId, { steps: updatedSteps })
+    }
     const tasks = await taskService.listTasks()
     set({ tasks })
   },

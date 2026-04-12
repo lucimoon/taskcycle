@@ -36,9 +36,11 @@ interface TaskCardProps {
   task: Task
   onEdit: (id: string) => void
   onDelete: (id: string) => void
+  onToggleExpand?: () => void
+  expanded?: boolean
 }
 
-export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
+export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: TaskCardProps) {
   const completedSteps = task.steps.filter((s) => s.completedAt).length
 
   return (
@@ -88,9 +90,15 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
           </span>
         )}
         {task.steps.length > 0 && (
-          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-gray-600">
-            {completedSteps}/{task.steps.length} steps
-          </span>
+          <button
+            type="button"
+            onClick={onToggleExpand}
+            aria-expanded={expanded}
+            aria-label={expanded ? 'Collapse steps' : 'Expand steps'}
+            className="rounded-full bg-gray-100 px-2 py-0.5 text-gray-600 hover:bg-gray-200 transition-colors"
+          >
+            {completedSteps}/{task.steps.length} steps {expanded ? '▲' : '▼'}
+          </button>
         )}
       </div>
 

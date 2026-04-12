@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Step } from '@/types/task'
 import { StepRow } from './StepRow'
 
@@ -7,8 +8,12 @@ interface StepListProps {
 }
 
 export function StepList({ steps, onChange }: StepListProps) {
+  const [lastAddedId, setLastAddedId] = useState<string | null>(null)
+
   function addStep() {
-    onChange([...steps, { id: crypto.randomUUID(), label: '' }])
+    const newStep: Step = { id: crypto.randomUUID(), label: '' }
+    onChange([...steps, newStep])
+    setLastAddedId(newStep.id)
   }
 
   function updateStep(index: number, updated: Step) {
@@ -38,6 +43,7 @@ export function StepList({ steps, onChange }: StepListProps) {
             step={step}
             index={i}
             total={steps.length}
+            autoFocus={step.id === lastAddedId}
             onChange={(s) => updateStep(i, s)}
             onRemove={() => removeStep(i)}
             onMoveUp={() => moveStep(i, i - 1)}

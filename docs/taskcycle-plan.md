@@ -6,9 +6,9 @@ Living reference for a local-first, browser-based task management app designed t
 
 ## Milestones
 
-1. [Milestone 1 — Project Scaffold](#milestone-1--project-scaffold)
-2. [Milestone 2 — Task Data Model & Persistence](#milestone-2--task-data-model--persistence)
-3. [Milestone 3 — Task CRUD UI](#milestone-3--task-crud-ui)
+1. [Milestone 1 — Project Scaffold](#milestone-1--project-scaffold) ✓
+2. [Milestone 2 — Task Data Model & Persistence](#milestone-2--task-data-model--persistence) ✓
+3. [Milestone 3 — Task CRUD UI](#milestone-3--task-crud-ui) ✓
 4. [Milestone 4 — Task List View](#milestone-4--task-list-view)
 5. [Milestone 5 — Timer & Scheduler Engine](#milestone-5--timer--scheduler-engine)
 6. [Milestone 6 — Eisenhower Matrix View](#milestone-6--eisenhower-matrix-view)
@@ -16,6 +16,8 @@ Living reference for a local-first, browser-based task management app designed t
 8. [Milestone 8 — Notifications & Reminders](#milestone-8--notifications--reminders)
 9. [Milestone 9 — Engagement Layer](#milestone-9--engagement-layer)
 10. [Milestone 10 — Settings & File Sync](#milestone-10--settings--file-sync)
+11. [Milestone 11 — Categories](#milestone-11--categories)
+12. [Milestone 12 — Category Analytics](#milestone-12--category-analytics)
 
 ---
 
@@ -135,6 +137,11 @@ All `taskService` tests pass against a real Dexie in-memory instance; creating a
 
 **`src/__tests__/components/TaskForm.test.tsx`**
 - Renders, validates required fields, submits correctly for both task kinds
+
+### Implementation Notes
+
+- Due date uses split `date` + `time` inputs (not `datetime-local`). Time defaults to `22:00` so tasks don't silently land at midnight.
+- "Add step" focuses the new step's text input immediately via `autoFocus` on mount (see `/ux-patterns` skill).
 
 ### Done When
 
@@ -394,6 +401,78 @@ Completing a task fires confetti and plays the task-complete sound. Completing a
 ### Done When
 
 Settings persist across reload. Choosing a local directory causes a `taskcycle-data.json` to be written there after each change. Opening the app with a configured directory and an existing snapshot restores data correctly.
+
+---
+
+## Milestone 11 — Categories
+
+**Goal:** Tasks can be assigned to named, colored categories. Users can filter the task list by category and see at a glance which category each task belongs to.
+
+### New Files
+
+**`src/types/category.ts`**
+- `Category { id, name, color, createdAt }`
+- `CategoryDraft = Omit<Category, 'id' | 'createdAt'>`
+
+**`src/services/db/categoryService.ts`**
+- `createCategory`, `updateCategory`, `deleteCategory`, `getCategory`, `listCategories` — same pattern as `taskService`
+
+**`src/store/categoryStore.ts`**
+- Zustand store: `categories[]`, `loadCategories`, `addCategory`, `updateCategory`, `removeCategory`
+
+**`src/components/category/CategoryPicker.tsx`**
+- Dropdown/popover to select a category (or "None"); shows color swatch + name
+
+**`src/components/category/CategoryBadge.tsx`**
+- Small colored pill showing category name; used in `TaskCard`
+
+**`src/views/CategoryManagementView.tsx`**
+- List of categories with add/edit/delete; color picker per category
+
+### Changes to Existing Files
+
+- **`src/types/task.ts`** — add `categoryId?: string` to `BaseTask`
+- **`src/services/db/schema.ts`** — add `categories: '&id, name'` to schema v2 migration
+- **`src/services/db/db.ts`** — add `categories` table to Dexie class
+- **`src/components/task/TaskForm.tsx`** — add `<CategoryPicker />` field
+- **`src/components/task/TaskCard.tsx`** — show `<CategoryBadge />` when `categoryId` is set
+- **`src/views/TaskListView.tsx`** — add category filter tabs above the task list
+- **`src/App.tsx`** — add route for `CategoryManagementView`
+
+### Done When
+
+A task can be assigned a category. The task list can be filtered to show only tasks in a given category. Category badge appears on `TaskCard`. Categories persist across reload.
+
+---
+
+## Milestone 12 — Category Analytics
+
+**Goal:** A visualization view shows task distribution and completion rates per category as either a pie chart or bar histogram, helping users identify neglected or over-focused areas.
+
+### New Files
+
+**`src/utils/analyticsUtils.ts`**
+- `getCategoryCompletionStats(tasks, categories): CategoryStat[]`
+- `CategoryStat { category, total, completed, completionRate }`
+- `getCompletionsByPeriod(tasks, period: 'week' | 'month'): PeriodStat[]`
+
+**`src/components/analytics/CategoryPieChart.tsx`**
+- Recharts `PieChart` showing proportion of tasks per category (total or completed)
+
+**`src/components/analytics/CategoryBarChart.tsx`**
+- Recharts `BarChart` showing completed tasks per category over time (weekly or monthly buckets)
+
+**`src/views/CategoryAnalyticsView.tsx`**
+- Toggle between pie and bar views; period selector (week/month); calls `analyticsUtils` for data
+
+### Changes to Existing Files
+
+- **`src/App.tsx`** — add nav link and route for `CategoryAnalyticsView`
+- **`package.json`** — add `recharts` dependency
+
+### Done When
+
+Navigating to the analytics view shows a pie chart of task distribution by category and a bar chart of completions over time. Switching between chart types and periods updates the visualization. View degrades gracefully when no categories are assigned.
 
 ---
 
