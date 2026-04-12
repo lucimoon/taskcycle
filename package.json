@@ -1,24 +1,45 @@
 {
   "name": "taskcycle",
   "version": "1.0.0",
+  "private": true,
+  "type": "module",
   "description": "An app for keeping track and completing one-off and cyclic tasks",
-  "main": "index.js",
   "scripts": {
-    "test": "npm run test"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "dexie": "^4.0.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.2",
+    "@tailwindcss/vite": "^4.0.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "fake-indexeddb": "^6.0.0",
+    "jsdom": "^25.0.1",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/lucimoon/taskcycle"
   },
-  "keywords": [
-    "task",
-    "management",
-    "productivity"
-  ],
   "author": "Luci Moon",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lucimoon/taskcycle/issues"
-  },
-  "homepage": "https://github.com/lucimoon/taskcycle#readme"
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
