@@ -16,7 +16,8 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     // Re-request permission for a saved directory handle each session
     if (settings.syncDirectoryHandle) {
       try {
-        const state = await settings.syncDirectoryHandle.requestPermission({ mode: 'readwrite' })
+        const handle = settings.syncDirectoryHandle as FileSystemDirectoryHandle & { requestPermission: (opts: { mode: string }) => Promise<string> }
+        const state = await handle.requestPermission({ mode: 'readwrite' })
         if (state !== 'granted') {
           settings.syncDirectoryHandle = undefined
         }

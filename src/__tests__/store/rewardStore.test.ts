@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { db } from '@/services/db/db'
 import { createReward } from '@/services/db/rewardService'
 import { createTask, completeTask as completeTaskInDb } from '@/services/db/taskService'
