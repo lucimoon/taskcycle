@@ -11,9 +11,9 @@ interface TaskListProps {
 export function TaskList({ tasks, onEdit, onDelete, onCompleteStep }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-400">
-        <p className="text-lg">No tasks here.</p>
-        <p className="text-sm mt-1">Add a task or try a different sort.</p>
+      <div className="text-center py-16">
+        <p className="font-display font-bold text-2xl text-ink/20">Nothing here!</p>
+        <p className="text-sm text-ink/40 mt-1 font-medium">Add a task to get started.</p>
       </div>
     )
   }

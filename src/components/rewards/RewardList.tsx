@@ -12,9 +12,10 @@ interface Props {
 export function RewardList({ rewards, tasks, onEdit, onDelete }: Props) {
   if (rewards.length === 0) {
     return (
-      <p className="text-sm text-gray-500 text-center py-8">
-        No rewards yet. Add one to celebrate completing tasks!
-      </p>
+      <div className="text-center py-16">
+        <p className="font-display font-bold text-2xl text-ink/20">No rewards yet!</p>
+        <p className="text-sm text-ink/40 mt-1 font-medium">Add one to celebrate completing tasks.</p>
+      </div>
     )
   }
 

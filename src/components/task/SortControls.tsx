@@ -1,11 +1,11 @@
 import type { SortKey } from '@/hooks/useSortedTasks'
 
 const SORT_OPTIONS: { key: SortKey; label: string; title: string }[] = [
-  { key: 'default', label: 'Added', title: 'Sort by date added' },
-  { key: 'priority', label: 'Priority', title: 'Sort by priority (highest first)' },
-  { key: 'urgency', label: 'Urgency', title: 'Sort by urgency (most urgent first)' },
-  { key: 'time', label: 'Quick wins', title: 'Sort by estimated time (shortest first)' },
-  { key: 'due', label: 'Due date', title: 'Sort by due date (soonest first)' },
+  { key: 'default',  label: 'Added',       title: 'Sort by date added' },
+  { key: 'priority', label: 'Priority',    title: 'Sort by priority (highest first)' },
+  { key: 'urgency',  label: 'Urgency',     title: 'Sort by urgency (most urgent first)' },
+  { key: 'time',     label: '⚡ Quick wins', title: 'Sort by estimated time (shortest first)' },
+  { key: 'due',      label: 'Due date',    title: 'Sort by due date (soonest first)' },
 ]
 
 interface SortControlsProps {
@@ -15,7 +15,7 @@ interface SortControlsProps {
 
 export function SortControls({ sort, onChange }: SortControlsProps) {
   return (
-    <div className="flex gap-1.5 flex-wrap" role="group" aria-label="Sort tasks">
+    <div className="flex gap-2 flex-wrap" role="group" aria-label="Sort tasks">
       {SORT_OPTIONS.map(({ key, label, title }) => (
         <button
           key={key}
@@ -24,10 +24,10 @@ export function SortControls({ sort, onChange }: SortControlsProps) {
           aria-pressed={sort === key}
           onClick={() => onChange(key)}
           className={[
-            'rounded-full px-3 py-1 text-xs font-medium transition-colors',
+            'rounded-xl border-2 border-ink px-3 py-1 text-xs font-bold transition-colors',
             sort === key
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200',
+              ? 'bg-sunny text-ink shadow-hard-sm'
+              : 'bg-white text-ink hover:bg-sunny/40',
           ].join(' ')}
         >
           {label}

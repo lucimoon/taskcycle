@@ -16,6 +16,9 @@ function toRecurMinutes(amount: number, unit: RecurUnit): number {
   return amount * RECUR_MULTIPLIERS[unit]
 }
 
+const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+const labelCls = 'text-sm font-bold text-ink'
+
 interface TaskFormProps {
   initial?: Task
   onSubmit: (draft: TaskDraft) => void
@@ -63,8 +66,8 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-1.5">
-        <label htmlFor="task-title" className="text-sm font-medium text-gray-700">
-          Title <span className="text-red-500">*</span>
+        <label htmlFor="task-title" className={labelCls}>
+          What needs doing? <span className="text-coral">*</span>
         </label>
         <input
           id="task-title"
@@ -72,7 +75,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="What needs to be done?"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full ${inputCls}`}
         />
       </div>
 
@@ -80,7 +83,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
 
       {kind === 'once' ? (
         <div className="space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">Due date (optional)</span>
+          <span className={labelCls}>Due date <span className="font-normal text-ink/50">(optional)</span></span>
           <div className="flex gap-2">
             <input
               id="due-date"
@@ -88,7 +91,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
               aria-label="Due date"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputCls}
             />
             <input
               id="due-time"
@@ -96,13 +99,13 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
               value={dueTime}
               onChange={(e) => setDueTime(e.target.value)}
               aria-label="Due time"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputCls}
             />
           </div>
         </div>
       ) : (
         <div className="space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">Repeat every</span>
+          <span className={labelCls}>Repeat every</span>
           <div className="flex items-center gap-2">
             <input
               id="recur-amount"
@@ -111,12 +114,12 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
               value={recurAmount}
               onChange={(e) => setRecurAmount(Number(e.target.value) || 1)}
               min={1}
-              className="w-20 rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-20 ${inputCls}`}
             />
             <select
               value={recurUnit}
               onChange={(e) => setRecurUnit(e.target.value as RecurUnit)}
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputCls}
             >
               <option value="minutes">minutes</option>
               <option value="hours">hours</option>
@@ -136,7 +139,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
 
       <div className="flex gap-4">
         <div className="space-y-1.5">
-          <label htmlFor="est-minutes" className="text-sm font-medium text-gray-700">Est. minutes</label>
+          <label htmlFor="est-minutes" className={labelCls}>Est. minutes</label>
           <input
             id="est-minutes"
             type="number"
@@ -144,20 +147,20 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
             onChange={(e) => setEstimatedMinutes(e.target.value === '' ? '' : Number(e.target.value))}
             min={1}
             placeholder="—"
-            className="w-24 rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-28 ${inputCls}`}
           />
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="notes" className="text-sm font-medium text-gray-700">Notes</label>
+        <label htmlFor="notes" className={labelCls}>Notes</label>
         <textarea
           id="notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
           placeholder="Any extra context…"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full ${inputCls}`}
         />
       </div>
 
@@ -165,14 +168,14 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
         <button
           type="submit"
           disabled={!title.trim()}
-          className="rounded-md bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="rounded-xl bg-coral border-2 border-ink px-5 py-2 text-sm font-bold text-white btn-lift disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Save task
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-md border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          className="rounded-xl border-2 border-ink bg-cream px-5 py-2 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
         >
           Cancel
         </button>

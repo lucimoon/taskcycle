@@ -14,11 +14,11 @@ const URGENCY_LABELS: Record<Urgency, string> = {
   4: 'Whenever',
 }
 
-const LEVEL_COLORS: Record<1 | 2 | 3 | 4, { selected: string; default: string }> = {
-  1: { selected: 'bg-red-500 text-white ring-red-500', default: 'hover:bg-red-50 text-gray-600' },
-  2: { selected: 'bg-orange-400 text-white ring-orange-400', default: 'hover:bg-orange-50 text-gray-600' },
-  3: { selected: 'bg-yellow-400 text-white ring-yellow-400', default: 'hover:bg-yellow-50 text-gray-600' },
-  4: { selected: 'bg-gray-300 text-gray-800 ring-gray-300', default: 'hover:bg-gray-50 text-gray-600' },
+const LEVEL_COLORS: Record<1 | 2 | 3 | 4, { selected: string; idle: string }> = {
+  1: { selected: 'bg-coral text-white border-ink',          idle: 'bg-white text-ink border-ink hover:bg-coral/10' },
+  2: { selected: 'bg-[#FF9A3C] text-white border-ink',     idle: 'bg-white text-ink border-ink hover:bg-[#FF9A3C]/10' },
+  3: { selected: 'bg-sunny text-ink border-ink',            idle: 'bg-white text-ink border-ink hover:bg-sunny/30' },
+  4: { selected: 'bg-ink/15 text-ink border-ink',           idle: 'bg-white text-ink border-ink hover:bg-ink/8' },
 }
 
 interface PickerRowProps<T extends number> {
@@ -31,8 +31,8 @@ interface PickerRowProps<T extends number> {
 
 function PickerRow<T extends 1 | 2 | 3 | 4>({ label, value, labels, levels, onChange }: PickerRowProps<T>) {
   return (
-    <div className="space-y-1.5">
-      <span className="text-sm font-medium text-gray-700">{label}</span>
+    <div className="space-y-2">
+      <span className="text-sm font-bold text-ink">{label}</span>
       <div className="flex gap-2">
         {levels.map((level) => {
           const colors = LEVEL_COLORS[level]
@@ -44,12 +44,12 @@ function PickerRow<T extends 1 | 2 | 3 | 4>({ label, value, labels, levels, onCh
               onClick={() => onChange(level)}
               aria-pressed={isSelected}
               className={[
-                'flex flex-col items-center rounded-lg border px-3 py-2 text-xs transition-colors min-w-[80px]',
-                isSelected ? `${colors.selected} border-transparent ring-2` : `${colors.default} border-gray-200`,
+                'flex flex-col items-center rounded-xl border-2 px-3 py-2 text-xs transition-colors min-w-[80px]',
+                isSelected ? `${colors.selected} shadow-hard-sm` : colors.idle,
               ].join(' ')}
             >
-              <span className="font-bold text-sm">{level}</span>
-              <span className="text-center leading-tight mt-0.5">{labels[level]}</span>
+              <span className="font-display font-bold text-base">{level}</span>
+              <span className="text-center leading-tight mt-0.5 font-medium">{labels[level]}</span>
             </button>
           )
         })}

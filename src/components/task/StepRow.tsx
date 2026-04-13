@@ -1,5 +1,7 @@
 import type { Step } from '@/types/task'
 
+const inputCls = 'rounded-xl border-2 border-ink px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+
 interface StepRowProps {
   step: Step
   index: number
@@ -20,7 +22,7 @@ export function StepRow({ step, index, total, autoFocus, onChange, onRemove, onM
           onClick={onMoveUp}
           disabled={index === 0}
           aria-label="Move step up"
-          className="rounded p-0.5 text-gray-400 hover:text-gray-600 disabled:opacity-25"
+          className="rounded-lg p-0.5 text-ink/30 hover:text-ink disabled:opacity-20 text-xs"
         >
           ▲
         </button>
@@ -29,7 +31,7 @@ export function StepRow({ step, index, total, autoFocus, onChange, onRemove, onM
           onClick={onMoveDown}
           disabled={index === total - 1}
           aria-label="Move step down"
-          className="rounded p-0.5 text-gray-400 hover:text-gray-600 disabled:opacity-25"
+          className="rounded-lg p-0.5 text-ink/30 hover:text-ink disabled:opacity-20 text-xs"
         >
           ▼
         </button>
@@ -40,7 +42,7 @@ export function StepRow({ step, index, total, autoFocus, onChange, onRemove, onM
         onChange={(e) => onChange({ ...step, label: e.target.value })}
         placeholder={`Step ${index + 1}`}
         autoFocus={autoFocus}
-        className="flex-1 rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={`flex-1 ${inputCls}`}
       />
       <input
         type="number"
@@ -51,13 +53,13 @@ export function StepRow({ step, index, total, autoFocus, onChange, onRemove, onM
         placeholder="min"
         min={1}
         aria-label="Duration in minutes"
-        className="w-16 rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={`w-16 ${inputCls}`}
       />
       <button
         type="button"
         onClick={onRemove}
         aria-label="Remove step"
-        className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"
+        className="rounded-lg p-1.5 text-ink/30 hover:bg-coral/10 hover:text-coral transition-colors font-bold text-sm"
       >
         ✕
       </button>

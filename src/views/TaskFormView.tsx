@@ -30,14 +30,21 @@ export function TaskFormView() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <h1 className="text-xl font-bold text-gray-900">
+    <div className="min-h-screen bg-cream">
+      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center gap-3">
+        <button
+          onClick={() => navigate('/')}
+          className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
+          aria-label="Back to tasks"
+        >
+          ← Back
+        </button>
+        <span className="font-display font-bold text-xl text-ink">
           {id ? 'Edit task' : 'New task'}
-        </h1>
+        </span>
       </header>
       <main className="max-w-2xl mx-auto px-4 py-6">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border-2 border-ink bg-white shadow-hard p-6">
           <TaskForm
             initial={existing}
             onSubmit={handleSubmit}

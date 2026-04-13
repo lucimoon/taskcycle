@@ -22,19 +22,19 @@ function NotificationPanel() {
       aria-live="polite"
       className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up"
     >
-      <div className="bg-gradient-to-r from-amber-400 to-yellow-300 px-6 py-5 shadow-xl">
+      <div className="border-t-4 border-ink bg-sunny px-6 py-5 shadow-[0_-4px_0_#1a1a1a]">
         <div className="mx-auto max-w-2xl flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-amber-900 uppercase tracking-wide">Reward earned</p>
-            <p className="mt-0.5 text-2xl font-bold text-amber-950">{reward.label}</p>
+            <p className="text-xs font-bold text-ink/50 uppercase tracking-widest mb-1">Reward earned 🎉</p>
+            <p className="font-display font-bold text-2xl text-ink">{reward.label}</p>
             {reward.description && (
-              <p className="mt-1 text-sm text-amber-800">{reward.description}</p>
+              <p className="mt-1 text-sm font-medium text-ink/70">{reward.description}</p>
             )}
           </div>
           <button
             onClick={() => dismissReward(reward.id)}
             aria-label="Dismiss reward"
-            className="shrink-0 rounded-full p-1 text-amber-800 hover:bg-amber-300 transition-colors"
+            className="shrink-0 rounded-xl border-2 border-ink bg-white w-8 h-8 flex items-center justify-center font-bold text-ink hover:bg-coral hover:text-white transition-colors shadow-hard-sm"
           >
             ✕
           </button>

@@ -14,12 +14,12 @@ export function StepTimer({ durationMinutes, onComplete }: StepTimerProps) {
     <div className="flex items-center gap-1.5">
       <span
         className={[
-          'font-mono text-xs tabular-nums px-2 py-0.5 rounded',
+          'font-mono text-xs font-bold tabular-nums px-2 py-0.5 rounded-lg border-2 border-ink',
           finished
-            ? 'bg-green-100 text-green-700'
+            ? 'bg-mint text-ink'
             : running
-              ? 'bg-blue-100 text-blue-700'
-              : 'bg-gray-100 text-gray-600',
+              ? 'bg-sunny text-ink'
+              : 'bg-white text-ink',
         ].join(' ')}
         aria-live="polite"
         aria-label="Timer countdown"
@@ -31,7 +31,7 @@ export function StepTimer({ durationMinutes, onComplete }: StepTimerProps) {
           type="button"
           onClick={running ? pause : start}
           aria-label={running ? 'Pause timer' : 'Start timer'}
-          className="rounded p-0.5 text-gray-400 hover:text-blue-600 transition-colors text-xs"
+          className="rounded-lg border-2 border-ink p-0.5 w-6 h-6 flex items-center justify-center bg-white hover:bg-sunny transition-colors text-xs font-bold"
         >
           {running ? '⏸' : '▶'}
         </button>
@@ -40,7 +40,7 @@ export function StepTimer({ durationMinutes, onComplete }: StepTimerProps) {
         type="button"
         onClick={reset}
         aria-label="Reset timer"
-        className="rounded p-0.5 text-gray-400 hover:text-gray-600 transition-colors text-xs"
+        className="rounded-lg border-2 border-ink p-0.5 w-6 h-6 flex items-center justify-center bg-white hover:bg-ink/8 transition-colors text-xs"
       >
         ↺
       </button>

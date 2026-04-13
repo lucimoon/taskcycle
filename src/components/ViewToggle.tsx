@@ -7,21 +7,21 @@ interface Props {
 export function ViewToggle({ current }: Props) {
   const navigate = useNavigate()
 
-  const base = 'px-3 py-1.5 text-sm font-medium transition-colors'
-  const active = `${base} bg-blue-600 text-white`
-  const inactive = `${base} bg-white text-gray-600 hover:text-gray-900`
-
   return (
-    <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden">
+    <div className="inline-flex rounded-xl border-2 border-ink overflow-hidden shadow-hard-sm">
       <button
-        className={current === 'list' ? active : inactive}
+        className={`px-4 py-1.5 text-sm font-bold transition-colors ${
+          current === 'list' ? 'bg-ink text-cream' : 'bg-cream text-ink hover:bg-ink/10'
+        }`}
         onClick={() => current !== 'list' && navigate('/')}
         aria-current={current === 'list' ? 'page' : undefined}
       >
         List
       </button>
       <button
-        className={`border-l border-gray-200 ${current === 'matrix' ? active : inactive}`}
+        className={`border-l-2 border-ink px-4 py-1.5 text-sm font-bold transition-colors ${
+          current === 'matrix' ? 'bg-ink text-cream' : 'bg-cream text-ink hover:bg-ink/10'
+        }`}
         onClick={() => current !== 'matrix' && navigate('/matrix')}
         aria-current={current === 'matrix' ? 'page' : undefined}
       >

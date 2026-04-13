@@ -40,22 +40,21 @@ export function RewardsView() {
       : undefined
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-cream">
+      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/')}
-            className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
-            aria-label="Back to tasks"
+            className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
           >
             ← Tasks
           </button>
-          <h1 className="text-xl font-bold text-gray-900">Rewards</h1>
+          <span className="font-display font-bold text-xl text-ink">Rewards</span>
         </div>
         {mode === 'list' && (
           <button
             onClick={() => setMode('create')}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+            className="rounded-xl bg-sunny border-2 border-ink px-4 py-2 text-sm font-bold text-ink btn-lift"
           >
             + New Reward
           </button>
@@ -71,8 +70,8 @@ export function RewardsView() {
             onDelete={handleDelete}
           />
         ) : (
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900 mb-5">
+          <div className="rounded-2xl border-2 border-ink bg-white shadow-hard p-6">
+            <h2 className="font-display font-bold text-lg text-ink mb-5">
               {mode === 'create' ? 'New reward' : 'Edit reward'}
             </h2>
             <RewardForm

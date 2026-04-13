@@ -35,7 +35,7 @@ export function StepList({ steps, onChange }: StepListProps) {
 
   return (
     <div className="space-y-2">
-      <span className="text-sm font-medium text-gray-700">Steps</span>
+      <span className="text-sm font-bold text-ink">Steps</span>
       <div className="space-y-2">
         {steps.map((step, i) => (
           <StepRow
@@ -54,7 +54,7 @@ export function StepList({ steps, onChange }: StepListProps) {
       <button
         type="button"
         onClick={addStep}
-        className="rounded-md border border-dashed border-gray-300 px-3 py-1.5 text-sm text-gray-500 hover:border-blue-400 hover:text-blue-500 transition-colors w-full"
+        className="w-full rounded-xl border-2 border-dashed border-ink px-3 py-2 text-sm font-bold text-ink/50 hover:border-solid hover:bg-sunny/30 hover:text-ink transition-colors"
       >
         + Add step
       </button>

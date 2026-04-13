@@ -2,6 +2,9 @@ import { useState } from 'react'
 import type { Reward, RewardDraft, RewardLinkType } from '@/types/reward'
 import type { Task } from '@/types/task'
 
+const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-coral/40 font-body w-full'
+const labelCls = 'block text-sm font-bold text-ink mb-1'
+
 interface Props {
   initial?: Reward
   tasks: Task[]
@@ -45,8 +48,8 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label htmlFor="reward-label" className="block text-sm font-medium text-gray-700 mb-1">
-          Reward name <span className="text-red-500">*</span>
+        <label htmlFor="reward-label" className={labelCls}>
+          Reward name <span className="text-coral">*</span>
         </label>
         <input
           id="reward-label"
@@ -55,36 +58,39 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
           value={label}
           onChange={(e) => setLabel(e.target.value)}
           placeholder="e.g. Watch an episode"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={inputCls}
         />
       </div>
 
       <div>
-        <label htmlFor="reward-desc" className="block text-sm font-medium text-gray-700 mb-1">
-          Description
-        </label>
+        <label htmlFor="reward-desc" className={labelCls}>Description</label>
         <input
           id="reward-desc"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Optional details"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={inputCls}
         />
       </div>
 
       <fieldset>
-        <legend className="block text-sm font-medium text-gray-700 mb-2">Earn this reward when…</legend>
-        <div className="flex gap-4">
-          {(['tasks', 'count', 'both'] as const).map((opt) => (
-            <label key={opt} className="flex items-center gap-1.5 text-sm cursor-pointer">
+        <legend className={labelCls}>Earn this reward when…</legend>
+        <div className="inline-flex rounded-xl border-2 border-ink overflow-hidden shadow-hard-sm mt-1">
+          {(['tasks', 'count', 'both'] as const).map((opt, i) => (
+            <label
+              key={opt}
+              className={`cursor-pointer px-3 py-1.5 text-xs font-bold transition-colors ${
+                i > 0 ? 'border-l-2 border-ink' : ''
+              } ${linkType === opt ? 'bg-lavender text-ink' : 'bg-cream text-ink hover:bg-lavender/20'}`}
+            >
               <input
                 type="radio"
                 name="linkType"
                 value={opt}
                 checked={linkType === opt}
                 onChange={() => setLinkType(opt)}
-                className="accent-blue-600"
+                className="sr-only"
               />
               {opt === 'tasks' ? 'Linked tasks' : opt === 'count' ? 'Daily count' : 'Both'}
             </label>
@@ -94,25 +100,25 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
 
       {showTasks && (
         <div>
-          <p className="text-sm font-medium text-gray-700 mb-1">Link to tasks</p>
+          <p className={labelCls}>Link to tasks</p>
           <input
             type="text"
             value={taskFilter}
             onChange={(e) => setTaskFilter(e.target.value)}
             placeholder="Filter tasks…"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`${inputCls} mb-2`}
           />
-          <div className="max-h-40 overflow-y-auto rounded-lg border border-gray-200 divide-y divide-gray-100">
+          <div className="max-h-40 overflow-y-auto rounded-xl border-2 border-ink divide-y-2 divide-ink/10">
             {filteredTasks.length === 0 ? (
-              <p className="p-3 text-sm text-gray-400">No tasks found</p>
+              <p className="p-3 text-sm font-medium text-ink/40">No tasks found</p>
             ) : (
               filteredTasks.map((t) => (
-                <label key={t.id} className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-gray-50">
+                <label key={t.id} className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-sunny/20 font-medium">
                   <input
                     type="checkbox"
                     checked={linkedTaskIds.includes(t.id)}
                     onChange={() => toggleTask(t.id)}
-                    className="accent-blue-600"
+                    className="accent-coral h-4 w-4"
                   />
                   <span className="truncate">{t.title}</span>
                 </label>
@@ -124,9 +130,7 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
 
       {showCount && (
         <div>
-          <label htmlFor="reward-threshold" className="block text-sm font-medium text-gray-700 mb-1">
-            Daily task count
-          </label>
+          <label htmlFor="reward-threshold" className={labelCls}>Daily task count</label>
           <input
             id="reward-threshold"
             type="number"
@@ -134,9 +138,9 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
             value={threshold}
             onChange={(e) => setThreshold(e.target.value === '' ? '' : Number(e.target.value))}
             placeholder="e.g. 5"
-            className="w-32 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-32 rounded-xl border-2 border-ink px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-coral/40 font-body"
           />
-          <p className="mt-1 text-xs text-gray-500">Earn after completing this many tasks in a day</p>
+          <p className="mt-1 text-xs font-medium text-ink/50">Earn after completing this many tasks in a day</p>
         </div>
       )}
 
@@ -144,14 +148,14 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
         <button
           type="submit"
           disabled={!label.trim()}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-40 transition-colors"
+          className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {initial ? 'Save changes' : 'Add reward'}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          className="rounded-xl border-2 border-ink bg-cream px-4 py-2 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
         >
           Cancel
         </button>

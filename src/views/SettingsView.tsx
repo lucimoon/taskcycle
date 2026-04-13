@@ -19,79 +19,78 @@ export function SettingsView() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3">
+    <div className="min-h-screen bg-cream">
+      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center gap-3">
         <button
           onClick={() => navigate('/')}
-          className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
-          aria-label="Back to tasks"
+          className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
         >
           ← Tasks
         </button>
-        <h1 className="text-xl font-bold text-gray-900">Settings</h1>
+        <span className="font-display font-bold text-xl text-ink">Settings</span>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
-        <section className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
-          <h2 className="text-base font-semibold text-gray-900">Notifications</h2>
+      <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+        <div className="rounded-2xl border-2 border-ink bg-white shadow-hard p-6 space-y-5">
+          <h2 className="font-display font-bold text-base text-ink">Notifications</h2>
 
-          {permission === 'unsupported' && (
-            <p className="text-sm text-gray-500">
-              Browser notifications are not supported in this environment.
+          {permission === 'unsupported' ? (
+            <p className="text-sm text-ink/60">
+              Browser notifications aren't supported in this environment.
             </p>
-          )}
-
-          {permission !== 'unsupported' && (
+          ) : (
             <>
-              {/* Notification preview mockup */}
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 space-y-1">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Preview</p>
-                <div className="rounded-lg bg-white border border-gray-200 px-4 py-3 shadow-sm flex gap-3 items-start">
-                  <div className="w-8 h-8 rounded bg-blue-100 flex items-center justify-center text-base shrink-0">⏰</div>
+              {/* Preview mockup */}
+              <div className="rounded-xl border-2 border-ink bg-cream p-3 space-y-2">
+                <p className="text-xs font-bold text-ink/50 uppercase tracking-widest">Preview</p>
+                <div className="rounded-xl border-2 border-ink bg-white px-4 py-3 shadow-hard-sm flex gap-3 items-start">
+                  <div className="w-8 h-8 rounded-lg border-2 border-ink bg-sunny flex items-center justify-center text-base shrink-0">
+                    ⏰
+                  </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Due in 15 min</p>
-                    <p className="text-sm text-gray-600">Your task title will appear here</p>
+                    <p className="text-sm font-bold text-ink">Due in 15 min</p>
+                    <p className="text-sm text-ink/60">Your task title will appear here</p>
                   </div>
                 </div>
-                <p className="text-xs text-gray-400">
-                  You'll receive alerts like this 15 minutes before one-off tasks are due, and when recurring tasks become due.
+                <p className="text-xs text-ink/50">
+                  You'll get alerts like this 15 min before one-off tasks are due, and when recurring tasks become due.
                 </p>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Enable notifications</p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-sm font-bold text-ink">Enable notifications</p>
+                  <p className="text-xs text-ink/50 mt-0.5">
                     {permission === 'granted'
-                      ? 'Notifications are enabled.'
+                      ? 'Notifications are on.'
                       : permission === 'denied'
-                        ? 'Permission was denied. Update this in your browser settings.'
-                        : 'Allow TaskCycle to send you reminders.'}
+                        ? 'Blocked in browser settings — update there to re-enable.'
+                        : 'Let TaskCycle send you reminders.'}
                   </p>
                 </div>
 
                 {permission === 'default' && (
                   <button
                     onClick={handleEnableNotifications}
-                    className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                    className="shrink-0 rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
                   >
                     Enable
                   </button>
                 )}
                 {permission === 'granted' && (
-                  <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-                    Enabled
+                  <span className="shrink-0 rounded-xl bg-mint border-2 border-ink px-3 py-1 text-xs font-bold text-ink">
+                    ✓ On
                   </span>
                 )}
                 {permission === 'denied' && (
-                  <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                  <span className="shrink-0 rounded-xl bg-coral/20 border-2 border-ink px-3 py-1 text-xs font-bold text-coral">
                     Blocked
                   </span>
                 )}
               </div>
             </>
           )}
-        </section>
+        </div>
       </main>
     </div>
   )

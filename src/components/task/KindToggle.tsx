@@ -7,23 +7,28 @@ interface KindToggleProps {
 
 export function KindToggle({ value, onChange }: KindToggleProps) {
   return (
-    <div className="flex gap-1 rounded-lg bg-gray-100 p-1 w-fit">
-      {(['once', 'cyclic'] as TaskKind[]).map((kind) => (
-        <button
-          key={kind}
-          type="button"
-          onClick={() => onChange(kind)}
-          aria-pressed={value === kind}
-          className={[
-            'rounded-md px-4 py-1.5 text-sm font-medium transition-colors',
-            value === kind
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700',
-          ].join(' ')}
-        >
-          {kind === 'once' ? 'One-off' : 'Recurring'}
-        </button>
-      ))}
+    <div className="inline-flex rounded-xl border-2 border-ink overflow-hidden shadow-hard-sm">
+      <button
+        type="button"
+        onClick={() => onChange('once')}
+        aria-pressed={value === 'once'}
+        className={`px-4 py-1.5 text-sm font-bold transition-colors ${
+          value === 'once' ? 'bg-coral text-white' : 'bg-cream text-ink hover:bg-coral/10'
+        }`}
+      >
+        One-off
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange('cyclic')}
+        aria-pressed={value === 'cyclic'}
+        aria-label="Recurring"
+        className={`border-l-2 border-ink px-4 py-1.5 text-sm font-bold transition-colors ${
+          value === 'cyclic' ? 'bg-lavender text-ink' : 'bg-cream text-ink hover:bg-lavender/20'
+        }`}
+      >
+        ↻ Recurring
+      </button>
     </div>
   )
 }

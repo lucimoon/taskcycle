@@ -1,10 +1,66 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Nunito:wght@400;500;600;700&display=swap');
+
+@theme {
+  --color-cream:    #FDFAF3;
+  --color-coral:    #FF5757;
+  --color-sunny:    #FFE566;
+  --color-mint:     #4CC97A;
+  --color-lavender: #B5A1FB;
+  --color-ink:      #1A1A1A;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Nunito', sans-serif;
+
+  --animate-slide-up: slide-up 200ms ease-out;
+  --animate-pop-in:   pop-in  150ms ease-out;
+}
 
 @keyframes slide-up {
   from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
-@theme {
-  --animate-slide-up: slide-up 200ms ease-out;
+@keyframes pop-in {
+  0%   { transform: scale(0.94); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    background-color: #FDFAF3;
+    color: #1A1A1A;
+  }
+}
+
+/* Flat drop-shadow utilities */
+@utility shadow-hard {
+  box-shadow: 3px 3px 0 #1a1a1a;
+}
+@utility shadow-hard-sm {
+  box-shadow: 2px 2px 0 #1a1a1a;
+}
+@utility shadow-hard-lg {
+  box-shadow: 5px 5px 0 #1a1a1a;
+}
+
+/* Button press animation */
+@layer components {
+  .btn-lift {
+    transition: transform 80ms ease, box-shadow 80ms ease;
+    box-shadow: 3px 3px 0 #1a1a1a;
+  }
+  .btn-lift:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 #1a1a1a;
+  }
+  .btn-lift:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 #1a1a1a;
+  }
+  .btn-lift:disabled {
+    opacity: 0.4;
+    box-shadow: none;
+  }
 }

@@ -23,7 +23,7 @@ export function TaskListItem({ task, onEdit, onDelete, onCompleteStep }: TaskLis
         expanded={expanded}
       />
       {expanded && task.steps.length > 0 && (
-        <div className="border-x border-b border-gray-200 rounded-b-xl bg-white px-4 pb-3 -mt-2 pt-2">
+        <div className="border-x-2 border-b-2 border-ink rounded-b-2xl bg-cream px-4 pb-4 -mt-2 pt-4">
           <StepChecklist task={task} onCompleteStep={onCompleteStep} />
         </div>
       )}
