@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { Task, TaskDraft } from '@/types/task'
 import * as taskService from '@/services/db/taskService'
+import { useRewardStore } from '@/store/rewardStore'
 
 interface TaskStore {
   tasks: Task[]
@@ -42,6 +43,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     await taskService.completeTask(id)
     const tasks = await taskService.listTasks()
     set({ tasks })
+    await useRewardStore.getState().checkRewards(id)
   },
 
   completeStep: async (taskId, stepId) => {

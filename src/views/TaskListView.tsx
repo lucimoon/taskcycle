@@ -4,6 +4,7 @@ import { useTaskStore } from '@/store/taskStore'
 import { useSortedTasks, type SortKey } from '@/hooks/useSortedTasks'
 import { SortControls } from '@/components/task/SortControls'
 import { TaskList } from '@/components/task/TaskList'
+import { ViewToggle } from '@/components/ViewToggle'
 
 export function TaskListView() {
   const { tasks, loadTasks, removeTask, completeStep } = useTaskStore()
@@ -24,7 +25,7 @@ export function TaskListView() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-900">TaskCycle</h1>
+        <ViewToggle current="list" />
         <button
           onClick={() => navigate('/tasks/new')}
           className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"

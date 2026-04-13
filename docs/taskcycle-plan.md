@@ -4,6 +4,46 @@ Living reference for a local-first, browser-based task management app designed t
 
 ---
 
+## Design Language
+
+Agreed visual conventions for all milestones to reference. Update this section when a decision changes rather than leaving conflicting notes in milestone entries.
+
+### Color Palette
+
+| Role | Tailwind classes | Use |
+|---|---|---|
+| Primary action | `blue-600` / `hover:blue-700` | Buttons, active sort pills, nav links |
+| Danger | `red-600` | Delete, destructive actions |
+| Priority chips | red-700 → orange-600 → yellow-600 → gray-400 (1→4) | Priority and urgency indicators on TaskCard |
+| Completion | `green-600` | "Done" badge, completed step text |
+| **Matrix Q1** | `red-700` header / `red-50` bg | "Do First" quadrant (high priority + high urgency) |
+| **Matrix Q2** | `blue-700` header / `blue-50` bg | "Schedule" quadrant (high priority + low urgency) |
+| **Matrix Q3** | `amber-700` header / `amber-50` bg | "Delegate" quadrant (low priority + high urgency) |
+| **Matrix Q4** | `gray-500` header / `gray-50` bg | "Eliminate" quadrant (low priority + low urgency) |
+| **Reward gold** | `amber-400` → `yellow-300` gradient | Reward notification panel, RewardCard background |
+| Neutral surface | `gray-100` / `gray-200` | Page backgrounds, inactive controls |
+
+### Component Conventions
+
+- **Cards:** `rounded-xl shadow-sm border border-gray-200` — consistent across TaskCard, RewardCard
+- **Chips/pills:** `rounded-full text-xs font-medium px-2 py-0.5` — used for badges, sort controls, MatrixTaskChip
+- **Primary buttons:** `rounded-lg px-4 py-2 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700`
+- **Segmented controls (view toggles):** two adjacent buttons with shared border, active state `bg-blue-600 text-white`, inactive `bg-white text-gray-600`
+
+### Motion
+
+ADHD users benefit from feedback that is unmissable but not distracting during focus. Rules:
+- **Step completion:** brief flash (100ms opacity pulse) — subtle, doesn't interrupt flow
+- **Task completion:** larger celebration (confetti, slide-up reward panel) — earned, feels rewarding
+- **View transitions:** none by default — instant navigation avoids frustration
+- **Reward notification:** slide up from bottom over 200ms, auto-dismiss after 6s with a fade out
+
+### Typography
+
+Tailwind defaults (font-sans). No custom fonts for now — keeps bundle size minimal and avoids layout shift.
+
+---
+
 ## Milestones
 
 1. [Milestone 1 — Project Scaffold](#milestone-1--project-scaffold) ✓
@@ -252,9 +292,20 @@ Starting a timed step shows a live countdown. Completing a cyclic task's last st
 
 - **`src/App.tsx`** — add route for `MatrixView`; add nav toggle between List and Matrix views
 
+### Implementation Notes
+
+- **Quadrant colors:** use the Design Language matrix color palette — header bg matches the quadrant color (e.g. `bg-red-700 text-white` for Q1), cell bg is the light tint (`bg-red-50`)
+- **Layout:** CSS Grid `grid-cols-2 grid-rows-2` filling viewport height minus nav; each quadrant uses `overflow-y-auto` so long lists scroll independently without affecting the grid shape
+- **Axis labels:** render `"URGENT →"` centered above the top row and `"IMPORTANT ↑"` rotated along the left edge; use `aria-hidden="true"` since they're decorative orientation aids, not content
+- **MatrixTaskChip:** `rounded-full` pill with truncated title (`truncate max-w-[12rem]`) + optional time badge; `onClick` navigates to `/tasks/:id/edit`; hover state lifts with `shadow-md transition-shadow`
+- **Empty quadrant state:** dashed border (`border-2 border-dashed`) in the quadrant's accent color + centered `"Nothing here"` in a muted tone — avoids blank void that can feel broken
+- **Nav toggle:** add a `"List / Matrix"` segmented control (see Design Language) to the page header in both `TaskListView` and `MatrixView` — not a separate sidebar link. The toggle replaces the "TaskCycle" heading area or sits beside it.
+- **Mobile:** `grid-cols-2` collapses to `grid-cols-1` below `sm:` breakpoint. Quadrant order becomes Q1 → Q2 → Q3 → Q4 top-to-bottom (most urgent first).
+- **`getQuadrant` mapping:** priority 1–2 = "important", 3–4 = "not important"; urgency 1–2 = "urgent", 3–4 = "not urgent". Q1 = important+urgent, Q2 = important+not urgent, Q3 = not important+urgent, Q4 = not important+not urgent.
+
 ### Done When
 
-All tasks appear in the correct quadrant. Navigating between list and matrix views works. No tasks are lost or duplicated across views.
+All tasks appear in the correct quadrant. Navigating between list and matrix views works. No tasks are lost or duplicated across views. Empty quadrant states render correctly. Mobile stacked layout verified at <640px viewport width.
 
 ---
 
@@ -291,12 +342,21 @@ All tasks appear in the correct quadrant. Navigating between list and matrix vie
 
 ### Changes to Existing Files
 
-- **`src/store/taskStore.ts`** — call `useRewardCheck` hook after `completeTask`
-- **`src/App.tsx`** — add route for `RewardsView`; render `RewardNotification` portal at root
+- **`src/types/reward.ts`** — add `linkType: 'tasks' | 'count' | 'both'` discriminant field
+- **`src/store/taskStore.ts`** — call `checkRewards` inside `completeTask` (store layer, not React layer) so reward detection fires regardless of which UI surface triggers completion
+- **`src/App.tsx`** — add route for `RewardsView`; render `RewardNotification` portal at root via `<div id="reward-portal">` appended to `<body>` to avoid CSS stacking context issues
+
+### Implementation Notes
+
+- **Reward notification design:** full-width slide-up panel anchored to the bottom of the viewport (not a small toast). Background: `bg-gradient-to-r from-amber-400 to-yellow-300`. Contains a large reward label (`text-2xl font-bold`), optional description, and a dismiss `×` button. Auto-dismisses after 6 seconds with a fade-out (see Design Language motion rules). Hard to miss — this is intentional for the ADHD dopamine loop.
+- **RewardForm linking UX:** `linkType` radio selects between "Linked tasks", "Daily count", or "Both". Linked-tasks section shows a searchable checklist (text input filters task titles in real time, checkboxes select). Daily-count section is a single number input ("Earn after completing N tasks today"). Both sections can be shown simultaneously when `linkType = 'both'`.
+- **RewardCard:** `bg-amber-100 border border-amber-200 rounded-xl` card. Shows linked task titles as small chips; daily threshold renders as `"After N tasks today"`. Edit/delete affordances match TaskCard pattern.
+- **`useRewardCheck` placement:** logic lives in `rewardStore.checkRewards(completedTaskId, dailyCount)` called from `taskStore.completeTask` after the DB write. This keeps the hook (`useRewardCheck`) thin — it only subscribes to the queue that `checkRewards` populates and renders notifications.
+- **Daily count:** query `taskService.listTasks()` filtered by `completedAt >= today midnight` to compute `dailyCount` before calling `checkRewards`.
 
 ### Done When
 
-Creating a reward linked to a task and then completing that task shows the reward notification. Daily-count threshold rewards trigger correctly when the threshold is met.
+Creating a reward linked to a task and then completing that task shows the reward notification. Notification auto-dismisses after 6 seconds and can be manually dismissed. Daily-count threshold rewards trigger correctly when the threshold is met. Reward data persists across reload.
 
 ---
 
@@ -308,23 +368,42 @@ Creating a reward linked to a task and then completing that task shows the rewar
 
 **`src/services/notifications/notificationService.ts`**
 - `requestPermission(): Promise<boolean>`
-- `scheduleNotification(title, body, fireAt: Date): void` — uses `setTimeout` relative to now
-- `cancelNotification(id): void`
+- `scheduleNotification(taskId, title, body, fireAt: Date): void` — uses `setTimeout` relative to now; stores `timeoutId` in a module-scope `Map<taskId, timeoutId>`
+- `cancelNotification(taskId): void` — clears the timeout from the map
+- `cancelAll(): void` — clears all scheduled notifications (called before rescheduling)
 
 **`src/hooks/useNotificationScheduler.ts`**
-- On mount and when tasks change, schedules/cancels notifications for due/upcoming tasks
+- Subscribes to `tasks[]` from `taskStore`; on change, calls `cancelAll()` then reschedules
+- Memoizes on task IDs + due dates to avoid spurious reschedules on unrelated store updates
+- Schedules `dueAt - 15min` for once-tasks, fires immediately for cyclic tasks where `nextDueAt <= now`
+
+**`src/views/SettingsView.tsx`**
+- Minimal stub for M8: single "Notifications" section with an enable/disable toggle
+- Toggle calls `requestPermission()` on first enable; shows current permission state (`granted` / `denied` / `default`)
+- Shows an inline mockup of what a notification looks like before the user enables (sets expectations, avoids surprise browser prompt)
+- Full settings panel added in M10
 
 **`src/__tests__/services/notificationService.test.ts`**
-- Permission request and scheduling logic (mocked Notification API)
+- Permission request and scheduling logic (mocked Notification API and `setTimeout`)
+- Verify duplicate scheduling is prevented: scheduling same task twice cancels the first timeout
 
 ### Changes to Existing Files
 
-- **`src/App.tsx`** — mount `useNotificationScheduler` at root level
-- **`src/views/SettingsView.tsx`** *(stub created in M10 but referenced here)* — notification permission toggle calls `requestPermission`
+- **`src/App.tsx`** — mount `useNotificationScheduler` at root level; add route `/settings` → `SettingsView`
+
+### Implementation Notes
+
+- **Permission request timing:** never call `requestPermission()` on page load — browsers may block the prompt and users find it jarring. Request only when the user explicitly toggles notifications on in `SettingsView`.
+- **Scheduling strategy:** module-scope `Map<taskId, ReturnType<typeof setTimeout>>` in `notificationService` is simpler than a DB-backed approach and survives React re-renders cleanly. On each `useNotificationScheduler` run, call `cancelAll()` first then re-add all future notifications from scratch.
+- **Notification copy:**
+  - Upcoming once-task: `"Due in 15 min"` / body: task title
+  - Overdue cyclic task: `"Due now"` / body: task title
+- **No re-fire guard:** since `cancelAll()` + reschedule runs on every task change, a dismissed notification will not re-fire unless the task's due date changes.
+- **`useNotificationScheduler` memo key:** `tasks.map(t => \`${t.id}:${t.dueAt ?? t.nextDueAt}\`).join(',')` — only recalculate when IDs or dates shift.
 
 ### Done When
 
-With notifications permitted, a task due within 15 minutes triggers a browser notification. A cyclic task that becomes due triggers a notification.
+With notifications permitted, a task due within 15 minutes triggers a browser notification. A cyclic task that becomes due triggers a notification. No notification fires when permission is denied. A notification does not re-fire after being dismissed (assuming task due date hasn't changed). `SettingsView` is accessible at `/settings` with a working permission toggle.
 
 ---
 

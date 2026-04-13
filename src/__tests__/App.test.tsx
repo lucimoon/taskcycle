@@ -9,6 +9,6 @@ describe('App', () => {
         <App />
       </MemoryRouter>,
     )
-    expect(screen.getByRole('heading', { name: 'TaskCycle' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'List' })).toBeInTheDocument()
   })
 })
