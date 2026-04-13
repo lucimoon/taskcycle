@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { TaskListView } from '@/views/TaskListView'
 import { TaskFormView } from '@/views/TaskFormView'
@@ -7,10 +8,18 @@ import { SettingsView } from '@/views/SettingsView'
 import { RewardNotification } from '@/components/rewards/RewardNotification'
 import { useNotificationScheduler } from '@/hooks/useNotificationScheduler'
 import { useTheme } from '@/hooks/useTheme'
+import { useSettingsStore } from '@/store/settingsStore'
+import { syncIfConfigured } from '@/services/sync/fileSyncService'
 
 function AppShell() {
   useNotificationScheduler()
   const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    useSettingsStore.getState().loadSettings().then(() => {
+      syncIfConfigured()
+    })
+  }, [])
   const toggleTheme = () => setTheme(theme === 'classic' ? 'dusk' : 'classic')
   return (
     <>
