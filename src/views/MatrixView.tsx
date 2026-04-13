@@ -3,8 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import { useTaskStore } from '@/store/taskStore'
 import { EisenhowerMatrix } from '@/components/matrix/EisenhowerMatrix'
 import { ViewToggle } from '@/components/ViewToggle'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import type { Theme } from '@/hooks/useTheme'
 
-export function MatrixView() {
+interface Props {
+  theme: Theme
+  onThemeToggle: () => void
+}
+
+export function MatrixView({ theme, onThemeToggle }: Props) {
   const { tasks, loadTasks } = useTaskStore()
   const navigate = useNavigate()
 
@@ -19,12 +26,15 @@ export function MatrixView() {
           <span className="font-display font-bold text-xl text-ink tracking-tight">TaskCycle</span>
           <ViewToggle current="matrix" />
         </div>
-        <button
-          onClick={() => navigate('/tasks/new')}
-          className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
-        >
-          + New Task
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+          <button
+            onClick={() => navigate('/tasks/new')}
+            className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
+          >
+            + New Task
+          </button>
+        </div>
       </header>
 
       <main className="flex-1 px-10 py-8 pl-14">

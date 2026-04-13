@@ -16,7 +16,7 @@ function toRecurMinutes(amount: number, unit: RecurUnit): number {
   return amount * RECUR_MULTIPLIERS[unit]
 }
 
-const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
 const labelCls = 'text-sm font-bold text-ink'
 
 interface TaskFormProps {

@@ -15,10 +15,10 @@ const URGENCY_LABELS: Record<Urgency, string> = {
 }
 
 const LEVEL_COLORS: Record<1 | 2 | 3 | 4, { selected: string; idle: string }> = {
-  1: { selected: 'bg-coral text-white border-ink',          idle: 'bg-white text-ink border-ink hover:bg-coral/10' },
-  2: { selected: 'bg-[#FF9A3C] text-white border-ink',     idle: 'bg-white text-ink border-ink hover:bg-[#FF9A3C]/10' },
-  3: { selected: 'bg-sunny text-ink border-ink',            idle: 'bg-white text-ink border-ink hover:bg-sunny/30' },
-  4: { selected: 'bg-ink/15 text-ink border-ink',           idle: 'bg-white text-ink border-ink hover:bg-ink/8' },
+  1: { selected: 'bg-coral text-white border-ink',    idle: 'bg-surface text-ink border-ink hover:bg-coral/10' },
+  2: { selected: 'bg-amber text-white border-ink',    idle: 'bg-surface text-ink border-ink hover:bg-amber/10' },
+  3: { selected: 'bg-sunny text-ink border-ink',      idle: 'bg-surface text-ink border-ink hover:bg-sunny/30' },
+  4: { selected: 'bg-ink/15 text-ink border-ink',     idle: 'bg-surface text-ink border-ink hover:bg-ink/8' },
 }
 
 interface PickerRowProps<T extends number> {

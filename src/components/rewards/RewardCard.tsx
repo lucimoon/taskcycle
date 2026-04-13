@@ -41,13 +41,13 @@ export function RewardCard({ reward, tasks, onEdit, onDelete }: Props) {
       <div className="flex flex-wrap gap-1.5 text-xs">
         {(reward.linkType === 'tasks' || reward.linkType === 'both') &&
           linkedTasks.map((t) => (
-            <span key={t.id} className="rounded-lg border-2 border-ink bg-white px-2 py-0.5 font-bold text-ink">
+            <span key={t.id} className="rounded-lg border-2 border-ink bg-surface px-2 py-0.5 font-bold text-ink">
               {t.title}
             </span>
           ))}
         {(reward.linkType === 'count' || reward.linkType === 'both') &&
           reward.dailyCompletionThreshold != null && (
-            <span className="rounded-lg border-2 border-ink bg-white px-2 py-0.5 font-bold text-ink">
+            <span className="rounded-lg border-2 border-ink bg-surface px-2 py-0.5 font-bold text-ink">
               After {reward.dailyCompletionThreshold} tasks today
             </span>
           )}

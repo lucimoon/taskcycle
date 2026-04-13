@@ -19,7 +19,7 @@ export function StepTimer({ durationMinutes, onComplete }: StepTimerProps) {
             ? 'bg-mint text-ink'
             : running
               ? 'bg-sunny text-ink'
-              : 'bg-white text-ink',
+              : 'bg-surface text-ink',
         ].join(' ')}
         aria-live="polite"
         aria-label="Timer countdown"
@@ -31,7 +31,7 @@ export function StepTimer({ durationMinutes, onComplete }: StepTimerProps) {
           type="button"
           onClick={running ? pause : start}
           aria-label={running ? 'Pause timer' : 'Start timer'}
-          className="rounded-lg border-2 border-ink p-0.5 w-6 h-6 flex items-center justify-center bg-white hover:bg-sunny transition-colors text-xs font-bold"
+          className="rounded-lg border-2 border-ink p-0.5 w-6 h-6 flex items-center justify-center bg-surface hover:bg-sunny transition-colors text-xs font-bold"
         >
           {running ? '⏸' : '▶'}
         </button>
@@ -40,7 +40,7 @@ export function StepTimer({ durationMinutes, onComplete }: StepTimerProps) {
         type="button"
         onClick={reset}
         aria-label="Reset timer"
-        className="rounded-lg border-2 border-ink p-0.5 w-6 h-6 flex items-center justify-center bg-white hover:bg-ink/8 transition-colors text-xs"
+        className="rounded-lg border-2 border-ink p-0.5 w-6 h-6 flex items-center justify-center bg-surface hover:bg-ink/8 transition-colors text-xs"
       >
         ↺
       </button>

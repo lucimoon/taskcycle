@@ -27,7 +27,7 @@ export function SortControls({ sort, onChange }: SortControlsProps) {
             'rounded-xl border-2 border-ink px-3 py-1 text-xs font-bold transition-colors',
             sort === key
               ? 'bg-sunny text-ink shadow-hard-sm'
-              : 'bg-white text-ink hover:bg-sunny/40',
+              : 'bg-surface text-ink hover:bg-sunny/40',
           ].join(' ')}
         >
           {label}

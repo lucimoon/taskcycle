@@ -44,7 +44,7 @@ export function TaskFormView() {
         </span>
       </header>
       <main className="max-w-2xl mx-auto px-4 py-6">
-        <div className="rounded-2xl border-2 border-ink bg-white shadow-hard p-6">
+        <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6">
           <TaskForm
             initial={existing}
             onSubmit={handleSubmit}

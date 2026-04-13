@@ -70,7 +70,7 @@ export function RewardsView() {
             onDelete={handleDelete}
           />
         ) : (
-          <div className="rounded-2xl border-2 border-ink bg-white shadow-hard p-6">
+          <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6">
             <h2 className="font-display font-bold text-lg text-ink mb-5">
               {mode === 'create' ? 'New reward' : 'Edit reward'}
             </h2>

@@ -5,8 +5,15 @@ import { useSortedTasks, type SortKey } from '@/hooks/useSortedTasks'
 import { SortControls } from '@/components/task/SortControls'
 import { TaskList } from '@/components/task/TaskList'
 import { ViewToggle } from '@/components/ViewToggle'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import type { Theme } from '@/hooks/useTheme'
 
-export function TaskListView() {
+interface Props {
+  theme: Theme
+  onThemeToggle: () => void
+}
+
+export function TaskListView({ theme, onThemeToggle }: Props) {
   const { tasks, loadTasks, removeTask, completeStep } = useTaskStore()
   const navigate = useNavigate()
   const [sort, setSort] = useState<SortKey>('default')
@@ -29,12 +36,15 @@ export function TaskListView() {
           <span className="font-display font-bold text-xl text-ink tracking-tight">TaskCycle</span>
           <ViewToggle current="list" />
         </div>
-        <button
-          onClick={() => navigate('/tasks/new')}
-          className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
-        >
-          + New Task
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+          <button
+            onClick={() => navigate('/tasks/new')}
+            className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
+          >
+            + New Task
+          </button>
+        </div>
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">

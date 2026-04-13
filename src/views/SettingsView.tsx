@@ -31,7 +31,7 @@ export function SettingsView() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
-        <div className="rounded-2xl border-2 border-ink bg-white shadow-hard p-6 space-y-5">
+        <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6 space-y-5">
           <h2 className="font-display font-bold text-base text-ink">Notifications</h2>
 
           {permission === 'unsupported' ? (
@@ -43,7 +43,7 @@ export function SettingsView() {
               {/* Preview mockup */}
               <div className="rounded-xl border-2 border-ink bg-cream p-3 space-y-2">
                 <p className="text-xs font-bold text-ink/50 uppercase tracking-widest">Preview</p>
-                <div className="rounded-xl border-2 border-ink bg-white px-4 py-3 shadow-hard-sm flex gap-3 items-start">
+                <div className="rounded-xl border-2 border-ink bg-surface px-4 py-3 shadow-hard-sm flex gap-3 items-start">
                   <div className="w-8 h-8 rounded-lg border-2 border-ink bg-sunny flex items-center justify-center text-base shrink-0">
                     ⏰
                   </div>

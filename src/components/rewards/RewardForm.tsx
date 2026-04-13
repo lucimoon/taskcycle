@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { Reward, RewardDraft, RewardLinkType } from '@/types/reward'
 import type { Task } from '@/types/task'
 
-const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-coral/40 font-body w-full'
+const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body w-full'
 const labelCls = 'block text-sm font-bold text-ink mb-1'
 
 interface Props {
@@ -138,7 +138,7 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
             value={threshold}
             onChange={(e) => setThreshold(e.target.value === '' ? '' : Number(e.target.value))}
             placeholder="e.g. 5"
-            className="w-32 rounded-xl border-2 border-ink px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-coral/40 font-body"
+            className="w-32 rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body"
           />
           <p className="mt-1 text-xs font-medium text-ink/50">Earn after completing this many tasks in a day</p>
         </div>

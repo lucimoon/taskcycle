@@ -3,7 +3,9 @@
 
 @theme {
   --color-cream:    #FDFAF3;
+  --color-surface:  #FFFFFF;
   --color-coral:    #FF5757;
+  --color-amber:    #FF9A3C;
   --color-sunny:    #FFE566;
   --color-mint:     #4CC97A;
   --color-lavender: #B5A1FB;
@@ -29,38 +31,50 @@
 @layer base {
   body {
     font-family: var(--font-body);
-    background-color: #FDFAF3;
-    color: #1A1A1A;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
   }
 }
 
 /* Flat drop-shadow utilities */
 @utility shadow-hard {
-  box-shadow: 3px 3px 0 #1a1a1a;
+  box-shadow: 3px 3px 0 var(--color-ink);
 }
 @utility shadow-hard-sm {
-  box-shadow: 2px 2px 0 #1a1a1a;
+  box-shadow: 2px 2px 0 var(--color-ink);
 }
 @utility shadow-hard-lg {
-  box-shadow: 5px 5px 0 #1a1a1a;
+  box-shadow: 5px 5px 0 var(--color-ink);
 }
 
 /* Button press animation */
 @layer components {
   .btn-lift {
     transition: transform 80ms ease, box-shadow 80ms ease;
-    box-shadow: 3px 3px 0 #1a1a1a;
+    box-shadow: 3px 3px 0 var(--color-ink);
   }
   .btn-lift:hover:not(:disabled) {
     transform: translate(-1px, -1px);
-    box-shadow: 5px 5px 0 #1a1a1a;
+    box-shadow: 5px 5px 0 var(--color-ink);
   }
   .btn-lift:active:not(:disabled) {
     transform: translate(2px, 2px);
-    box-shadow: 0 0 0 #1a1a1a;
+    box-shadow: 0 0 0 var(--color-ink);
   }
   .btn-lift:disabled {
     opacity: 0.4;
     box-shadow: none;
   }
+}
+
+/* Themes */
+[data-theme="dusk"] {
+  --color-cream:    #EEE9FF;
+  --color-surface:  #F8F5FF;
+  --color-ink:      #4A3580;
+  --color-coral:    #FF9EAA;
+  --color-amber:    #FFCF99;
+  --color-sunny:    #FFF0A8;
+  --color-mint:     #A8EEC8;
+  --color-lavender: #CCBFFF;
 }

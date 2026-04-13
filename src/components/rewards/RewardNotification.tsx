@@ -22,7 +22,7 @@ function NotificationPanel() {
       aria-live="polite"
       className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up"
     >
-      <div className="border-t-4 border-ink bg-sunny px-6 py-5 shadow-[0_-4px_0_#1a1a1a]">
+      <div className="border-t-4 border-ink bg-sunny px-6 py-5 shadow-[0_-4px_0_var(--color-ink)]">
         <div className="mx-auto max-w-2xl flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-bold text-ink/50 uppercase tracking-widest mb-1">Reward earned 🎉</p>
@@ -34,7 +34,7 @@ function NotificationPanel() {
           <button
             onClick={() => dismissReward(reward.id)}
             aria-label="Dismiss reward"
-            className="shrink-0 rounded-xl border-2 border-ink bg-white w-8 h-8 flex items-center justify-center font-bold text-ink hover:bg-coral hover:text-white transition-colors shadow-hard-sm"
+            className="shrink-0 rounded-xl border-2 border-ink bg-surface w-8 h-8 flex items-center justify-center font-bold text-ink hover:bg-coral hover:text-white transition-colors shadow-hard-sm"
           >
             ✕
           </button>

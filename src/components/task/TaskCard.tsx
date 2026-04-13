@@ -2,7 +2,7 @@ import type { Task, Priority, Urgency } from '@/types/task'
 
 const PRIORITY_CHIP: Record<Priority, string> = {
   1: 'bg-coral text-white border-ink',
-  2: 'bg-[#FF9A3C] text-white border-ink',
+  2: 'bg-amber text-white border-ink',
   3: 'bg-sunny text-ink border-ink',
   4: 'bg-ink/10 text-ink border-ink',
 }
@@ -16,7 +16,7 @@ const PRIORITY_LABEL: Record<Priority, string> = {
 
 const URGENCY_CHIP: Record<Urgency, string> = {
   1: 'bg-coral text-white border-ink',
-  2: 'bg-[#FF9A3C] text-white border-ink',
+  2: 'bg-amber text-white border-ink',
   3: 'bg-sunny text-ink border-ink',
   4: 'bg-ink/10 text-ink border-ink',
 }
@@ -46,7 +46,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
 
   return (
     <div className={`rounded-2xl border-2 border-ink p-4 shadow-hard space-y-3 transition-colors ${
-      isDone ? 'bg-mint/20' : 'bg-white'
+      isDone ? 'bg-mint/20' : 'bg-surface'
     }`}>
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2 flex-wrap">
@@ -92,7 +92,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
           {URGENCY_LABEL[task.urgency]}
         </span>
         {task.estimatedMinutes && (
-          <span className="rounded-lg border-2 border-ink bg-white px-2 py-0.5 font-bold text-ink">
+          <span className="rounded-lg border-2 border-ink bg-surface px-2 py-0.5 font-bold text-ink">
             ~{task.estimatedMinutes}m
           </span>
         )}
@@ -102,7 +102,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
             onClick={onToggleExpand}
             aria-expanded={expanded}
             aria-label={expanded ? 'Collapse steps' : 'Expand steps'}
-            className="rounded-lg border-2 border-ink bg-white px-2 py-0.5 font-bold text-ink hover:bg-sunny transition-colors"
+            className="rounded-lg border-2 border-ink bg-surface px-2 py-0.5 font-bold text-ink hover:bg-sunny transition-colors"
           >
             {completedSteps}/{task.steps.length} steps {expanded ? '▲' : '▼'}
           </button>
