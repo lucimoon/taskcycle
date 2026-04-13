@@ -1,0 +1,196 @@
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useCategoryStore } from '@/store/categoryStore'
+import { CategoryBadge } from '@/components/category/CategoryBadge'
+import type { CategoryDraft } from '@/types/category'
+
+const PRESET_COLORS = [
+  '#ef4444', // red
+  '#f97316', // orange
+  '#eab308', // yellow
+  '#22c55e', // green
+  '#14b8a6', // teal
+  '#3b82f6', // blue
+  '#8b5cf6', // violet
+  '#ec4899', // pink
+  '#6b7280', // gray
+  '#0f172a', // ink
+]
+
+const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+const labelCls = 'text-sm font-bold text-ink'
+
+interface CategoryFormState {
+  name: string
+  color: string
+}
+
+function CategoryForm({
+  initial,
+  onSave,
+  onCancel,
+}: {
+  initial?: CategoryFormState
+  onSave: (draft: CategoryDraft) => void
+  onCancel: () => void
+}) {
+  const [name, setName] = useState(initial?.name ?? '')
+  const [color, setColor] = useState(initial?.color ?? PRESET_COLORS[0])
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!name.trim()) return
+    onSave({ name: name.trim(), color })
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-1.5">
+        <label className={labelCls}>Name <span className="text-coral">*</span></label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="e.g. Work, Health, Personal"
+          className={`w-full ${inputCls}`}
+          autoFocus
+        />
+      </div>
+      <div className="space-y-1.5">
+        <span className={labelCls}>Color</span>
+        <div className="flex flex-wrap gap-2">
+          {PRESET_COLORS.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setColor(c)}
+              className={`w-7 h-7 rounded-full border-2 transition-transform ${
+                color === c ? 'border-ink scale-125' : 'border-transparent hover:scale-110'
+              }`}
+              style={{ backgroundColor: c }}
+              aria-label={c}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-3 pt-1">
+        <button
+          type="submit"
+          disabled={!name.trim()}
+          className="rounded-xl bg-coral border-2 border-ink px-5 py-2 text-sm font-bold text-white btn-lift disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-xl border-2 border-ink bg-cream px-5 py-2 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  )
+}
+
+type Mode = 'list' | 'create' | { edit: string }
+
+export function CategoryManagementView() {
+  const { categories, loadCategories, addCategory, updateCategory, removeCategory } = useCategoryStore()
+  const navigate = useNavigate()
+  const [mode, setMode] = useState<Mode>('list')
+
+  useEffect(() => {
+    loadCategories()
+  }, [loadCategories])
+
+  async function handleSave(draft: CategoryDraft) {
+    if (mode === 'create') {
+      await addCategory(draft)
+    } else if (typeof mode === 'object' && 'edit' in mode) {
+      await updateCategory(mode.edit, draft)
+    }
+    setMode('list')
+  }
+
+  function handleDelete(id: string) {
+    if (window.confirm('Delete this category? Tasks in this category will become uncategorized.')) {
+      removeCategory(id)
+    }
+  }
+
+  const editingCategory =
+    typeof mode === 'object' && 'edit' in mode
+      ? categories.find((c) => c.id === mode.edit)
+      : undefined
+
+  return (
+    <div className="min-h-screen bg-cream">
+      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate('/')}
+            className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
+          >
+            ← Tasks
+          </button>
+          <span className="font-display font-bold text-xl text-ink">Categories</span>
+        </div>
+        {mode === 'list' && (
+          <button
+            onClick={() => setMode('create')}
+            className="rounded-xl bg-sunny border-2 border-ink px-4 py-2 text-sm font-bold text-ink btn-lift"
+          >
+            + New Category
+          </button>
+        )}
+      </header>
+
+      <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+        {(mode === 'create' || typeof mode === 'object') && (
+          <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6">
+            <h2 className="font-display font-bold text-lg text-ink mb-5">
+              {mode === 'create' ? 'New category' : 'Edit category'}
+            </h2>
+            <CategoryForm
+              initial={editingCategory ? { name: editingCategory.name, color: editingCategory.color } : undefined}
+              onSave={handleSave}
+              onCancel={() => setMode('list')}
+            />
+          </div>
+        )}
+
+        {categories.length === 0 && mode === 'list' && (
+          <div className="rounded-2xl border-2 border-dashed border-ink/30 p-10 text-center">
+            <p className="text-ink/50 font-body">No categories yet — add one to organize your tasks.</p>
+          </div>
+        )}
+
+        {categories.map((cat) => (
+          <div
+            key={cat.id}
+            className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-4 flex items-center justify-between gap-3"
+          >
+            <CategoryBadge category={cat} />
+            <div className="flex gap-1 ml-auto">
+              <button
+                onClick={() => setMode({ edit: cat.id })}
+                aria-label="Edit category"
+                className="rounded-lg p-1.5 text-ink/40 hover:bg-ink/8 hover:text-ink transition-colors text-sm"
+              >
+                ✏️
+              </button>
+              <button
+                onClick={() => handleDelete(cat.id)}
+                aria-label="Delete category"
+                className="rounded-lg p-1.5 text-ink/40 hover:bg-coral/10 hover:text-coral transition-colors text-sm"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        ))}
+      </main>
+    </div>
+  )
+}

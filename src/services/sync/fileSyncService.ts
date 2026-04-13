@@ -1,8 +1,10 @@
 import type { Task } from '@/types/task'
 import type { Reward } from '@/types/reward'
+import type { Category } from '@/types/category'
 import { useSettingsStore } from '@/store/settingsStore'
 import * as taskService from '@/services/db/taskService'
 import * as rewardService from '@/services/db/rewardService'
+import * as categoryService from '@/services/db/categoryService'
 
 const FILE_NAME = 'taskcycle-data.json'
 
@@ -19,23 +21,28 @@ export async function exportSnapshot(
   handle: FileSystemDirectoryHandle,
   tasks: Task[],
   rewards: Reward[],
+  categories: Category[],
 ): Promise<void> {
   const file = await handle.getFileHandle(FILE_NAME, { create: true })
   const writable = await file.createWritable()
-  await writable.write(JSON.stringify({ tasks, rewards, exportedAt: new Date().toISOString() }, null, 2))
+  await writable.write(JSON.stringify({ tasks, rewards, categories, exportedAt: new Date().toISOString() }, null, 2))
   await writable.close()
 }
 
 export async function importSnapshot(
   handle: FileSystemDirectoryHandle,
-): Promise<{ tasks: Task[]; rewards: Reward[] } | null> {
+): Promise<{ tasks: Task[]; rewards: Reward[]; categories: Category[] } | null> {
   try {
     const file = await handle.getFileHandle(FILE_NAME)
     const f = await file.getFile()
     const text = await f.text()
     const data = JSON.parse(text)
     if (!Array.isArray(data.tasks) || !Array.isArray(data.rewards)) return null
-    return { tasks: data.tasks as Task[], rewards: data.rewards as Reward[] }
+    return {
+      tasks: data.tasks as Task[],
+      rewards: data.rewards as Reward[],
+      categories: Array.isArray(data.categories) ? (data.categories as Category[]) : [],
+    }
   } catch {
     return null
   }
@@ -45,11 +52,12 @@ export async function syncIfConfigured(): Promise<void> {
   const { syncDirectoryHandle } = useSettingsStore.getState().settings
   if (!syncDirectoryHandle) return
   try {
-    const [tasks, rewards] = await Promise.all([
+    const [tasks, rewards, categories] = await Promise.all([
       taskService.listTasks(),
       rewardService.listRewards(),
+      categoryService.listCategories(),
     ])
-    await exportSnapshot(syncDirectoryHandle, tasks, rewards)
+    await exportSnapshot(syncDirectoryHandle, tasks, rewards, categories)
   } catch {
     // Silently fail — sync is best-effort
   }

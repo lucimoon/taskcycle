@@ -5,10 +5,13 @@ import { TaskFormView } from '@/views/TaskFormView'
 import { MatrixView } from '@/views/MatrixView'
 import { RewardsView } from '@/views/RewardsView'
 import { SettingsView } from '@/views/SettingsView'
+import { CategoryManagementView } from '@/views/CategoryManagementView'
+import { CategoryAnalyticsView } from '@/views/CategoryAnalyticsView'
 import { RewardNotification } from '@/components/rewards/RewardNotification'
 import { useNotificationScheduler } from '@/hooks/useNotificationScheduler'
 import { useTheme } from '@/hooks/useTheme'
 import { useSettingsStore } from '@/store/settingsStore'
+import { useCategoryStore } from '@/store/categoryStore'
 import { syncIfConfigured } from '@/services/sync/fileSyncService'
 
 function AppShell() {
@@ -19,6 +22,7 @@ function AppShell() {
     useSettingsStore.getState().loadSettings().then(() => {
       syncIfConfigured()
     })
+    useCategoryStore.getState().loadCategories()
   }, [])
   const toggleTheme = () => setTheme(theme === 'classic' ? 'dusk' : 'classic')
   return (
@@ -30,6 +34,8 @@ function AppShell() {
         <Route path="/tasks/:id/edit" element={<TaskFormView />} />
         <Route path="/rewards" element={<RewardsView />} />
         <Route path="/settings" element={<SettingsView />} />
+        <Route path="/categories" element={<CategoryManagementView />} />
+        <Route path="/analytics" element={<CategoryAnalyticsView />} />
       </Routes>
       <RewardNotification />
     </>

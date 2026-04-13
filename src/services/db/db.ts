@@ -1,6 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { Task } from '@/types/task'
 import type { Reward } from '@/types/reward'
+import type { Category } from '@/types/category'
 import { SCHEMA } from './schema'
 
 interface SettingsRow {
@@ -12,10 +13,12 @@ class TaskCycleDB extends Dexie {
   tasks!: EntityTable<Task, 'id'>
   rewards!: EntityTable<Reward, 'id'>
   settings!: EntityTable<SettingsRow, 'key'>
+  categories!: EntityTable<Category, 'id'>
 
   constructor() {
     super('taskcycle')
     this.version(1).stores(SCHEMA.v1)
+    this.version(2).stores(SCHEMA.v2)
   }
 }
 

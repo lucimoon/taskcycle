@@ -3,6 +3,7 @@ import type { Task, TaskDraft, TaskKind, Priority, Urgency, Step } from '@/types
 import { KindToggle } from './KindToggle'
 import { StepList } from './StepList'
 import { PriorityUrgencyPicker } from './PriorityUrgencyPicker'
+import { CategoryPicker } from '@/components/category/CategoryPicker'
 
 type RecurUnit = 'minutes' | 'hours' | 'days'
 
@@ -45,6 +46,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
   const [urgency, setUrgency] = useState<Urgency>(initial?.urgency ?? 2)
   const [estimatedMinutes, setEstimatedMinutes] = useState(initial?.estimatedMinutes ?? '')
   const [notes, setNotes] = useState(initial?.notes ?? '')
+  const [categoryId, setCategoryId] = useState<string | undefined>(initial?.categoryId)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -55,6 +57,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
       urgency,
       estimatedMinutes: estimatedMinutes !== '' ? Number(estimatedMinutes) : undefined,
       notes: notes.trim() || undefined,
+      categoryId,
     }
     const draft: TaskDraft =
       kind === 'once'
@@ -80,6 +83,11 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
       </div>
 
       <KindToggle value={kind} onChange={setKind} />
+
+      <div className="space-y-1.5">
+        <span className="text-sm font-bold text-ink">Category <span className="font-normal text-ink/50">(optional)</span></span>
+        <CategoryPicker value={categoryId} onChange={setCategoryId} />
+      </div>
 
       {kind === 'once' ? (
         <div className="space-y-1.5">

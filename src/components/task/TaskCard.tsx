@@ -1,4 +1,6 @@
 import type { Task, Priority, Urgency } from '@/types/task'
+import { useCategoryStore } from '@/store/categoryStore'
+import { CategoryBadge } from '@/components/category/CategoryBadge'
 
 const PRIORITY_CHIP: Record<Priority, string> = {
   1: 'bg-coral text-white border-ink',
@@ -43,6 +45,8 @@ interface TaskCardProps {
 export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: TaskCardProps) {
   const completedSteps = task.steps.filter((s) => s.completedAt).length
   const isDone = Boolean(task.completedAt)
+  const { categories } = useCategoryStore()
+  const category = task.categoryId ? categories.find((c) => c.id === task.categoryId) : undefined
 
   return (
     <div className={`rounded-2xl border-2 border-ink p-4 shadow-hard space-y-3 transition-colors ${
@@ -85,6 +89,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
       </div>
 
       <div className="flex flex-wrap gap-1.5 text-xs">
+        {category && <CategoryBadge category={category} />}
         <span className={`rounded-lg border-2 px-2 py-0.5 font-bold ${PRIORITY_CHIP[task.priority]}`}>
           {PRIORITY_LABEL[task.priority]}
         </span>
