@@ -1,6 +1,6 @@
 import type { Step } from '@/types/task'
 
-const inputCls = 'rounded-xl border-2 border-ink px-3 py-1.5 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+const inputCls = 'glass-input'
 
 interface StepRowProps {
   step: Step
@@ -43,6 +43,7 @@ export function StepRow({ step, index, total, autoFocus, onChange, onRemove, onM
         placeholder={`Step ${index + 1}`}
         autoFocus={autoFocus}
         className={`flex-1 ${inputCls}`}
+        style={{ width: 'auto' }}
       />
       <input
         type="number"
@@ -53,13 +54,14 @@ export function StepRow({ step, index, total, autoFocus, onChange, onRemove, onM
         placeholder="min"
         min={1}
         aria-label="Duration in minutes"
-        className={`w-16 ${inputCls}`}
+        className={`${inputCls} w-16`}
+        style={{ width: '4rem' }}
       />
       <button
         type="button"
         onClick={onRemove}
         aria-label="Remove step"
-        className="rounded-lg p-1.5 text-ink/30 hover:bg-coral/10 hover:text-coral transition-colors font-bold text-sm"
+        className="rounded-full p-1.5 text-ink/30 hover:bg-coral/20 hover:text-coral transition-colors font-bold text-sm btn-action"
       >
         ✕
       </button>

@@ -27,13 +27,13 @@ function ToggleRow({
         aria-checked={checked}
         onClick={() => onChange(!checked)}
         className={[
-          'relative shrink-0 w-11 h-6 rounded-full border-2 border-ink transition-colors',
-          checked ? 'bg-mint' : 'bg-ink/10',
+          'relative shrink-0 w-11 h-6 rounded-full transition-colors',
+          checked ? 'bg-mint' : 'bg-ink/20',
         ].join(' ')}
       >
         <span
           className={[
-            'absolute top-0.5 w-4 h-4 rounded-full bg-ink transition-transform',
+            'absolute top-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform',
             checked ? 'translate-x-[22px]' : 'translate-x-0.5',
           ].join(' ')}
         />
@@ -44,7 +44,7 @@ function ToggleRow({
 
 function SectionCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6 space-y-5">
+    <div className="card-glass rounded-2xl p-6 space-y-5">
       {children}
     </div>
   )
@@ -84,11 +84,11 @@ export function SettingsView() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center gap-3">
+    <div className="mesh-bg min-h-screen">
+      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-3">
         <button
           onClick={() => navigate('/')}
-          className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
+          className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
         >
           ← Tasks
         </button>
@@ -125,10 +125,10 @@ export function SettingsView() {
             </p>
           ) : (
             <>
-              <div className="rounded-xl border-2 border-ink bg-cream p-3 space-y-2">
+              <div className="card-glass rounded-xl p-3 space-y-2">
                 <p className="text-xs font-bold text-ink/50 uppercase tracking-widest">Preview</p>
-                <div className="rounded-xl border-2 border-ink bg-surface px-4 py-3 shadow-hard-sm flex gap-3 items-start">
-                  <div className="w-8 h-8 rounded-lg border-2 border-ink bg-sunny flex items-center justify-center text-base shrink-0">
+                <div className="card-glass rounded-xl px-4 py-3 flex gap-3 items-start">
+                  <div className="w-8 h-8 rounded-xl bg-sunny/60 backdrop-blur-sm flex items-center justify-center text-base shrink-0">
                     ⏰
                   </div>
                   <div>
@@ -155,18 +155,18 @@ export function SettingsView() {
                 {permission === 'default' && (
                   <button
                     onClick={handleEnableNotifications}
-                    className="shrink-0 rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
+                    className="shrink-0 rounded-full bg-coral px-4 py-2 text-sm font-semibold text-white btn-action shadow-md"
                   >
                     Enable
                   </button>
                 )}
                 {permission === 'granted' && (
-                  <span className="shrink-0 rounded-xl bg-mint border-2 border-ink px-3 py-1 text-xs font-bold text-ink">
+                  <span className="shrink-0 rounded-full bg-mint/40 px-3 py-1 text-xs font-semibold text-ink">
                     ✓ On
                   </span>
                 )}
                 {permission === 'denied' && (
-                  <span className="shrink-0 rounded-xl bg-coral/20 border-2 border-ink px-3 py-1 text-xs font-bold text-coral">
+                  <span className="shrink-0 rounded-full bg-coral/20 px-3 py-1 text-xs font-semibold text-coral">
                     Blocked
                   </span>
                 )}
@@ -183,14 +183,14 @@ export function SettingsView() {
           </p>
 
           {!syncSupported ? (
-            <div className="rounded-xl border-2 border-ink/20 bg-ink/5 px-4 py-3">
+            <div className="card-glass rounded-xl px-4 py-3">
               <p className="text-sm text-ink/50 font-medium">
                 File sync requires the File System Access API, which is available in Chrome and Edge. It isn't supported in this browser.
               </p>
             </div>
           ) : settings.syncDirectoryHandle ? (
             <div className="space-y-3">
-              <div className="rounded-xl border-2 border-ink bg-mint/15 px-4 py-3 flex items-center justify-between gap-3">
+              <div className="card-glass rounded-xl bg-mint/15 px-4 py-3 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-bold text-ink/50 uppercase tracking-widest mb-0.5">Syncing to</p>
                   <p className="text-sm font-bold text-ink">{settings.syncDirectoryHandle.name}</p>
@@ -201,13 +201,13 @@ export function SettingsView() {
                 <button
                   onClick={handleSyncNow}
                   disabled={syncing}
-                  className="rounded-xl border-2 border-ink bg-sunny px-4 py-2 text-sm font-bold text-ink btn-lift"
+                  className="rounded-full bg-sunny px-4 py-2 text-sm font-semibold text-ink btn-action shadow-md disabled:opacity-40"
                 >
                   {syncing ? 'Syncing…' : 'Sync now'}
                 </button>
                 <button
                   onClick={() => updateSettings({ syncDirectoryHandle: undefined })}
-                  className="rounded-xl border-2 border-ink bg-surface px-4 py-2 text-sm font-bold text-ink hover:bg-coral/10 hover:text-coral transition-colors"
+                  className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-2 text-sm font-semibold text-ink hover:bg-coral/10 hover:text-coral transition-colors btn-action"
                 >
                   Remove
                 </button>
@@ -216,7 +216,7 @@ export function SettingsView() {
           ) : (
             <button
               onClick={handlePickFolder}
-              className="rounded-xl border-2 border-ink bg-lavender px-4 py-2 text-sm font-bold text-ink btn-lift"
+              className="rounded-full bg-lavender text-white px-4 py-2 text-sm font-semibold btn-action shadow-md"
             >
               Pick folder
             </button>

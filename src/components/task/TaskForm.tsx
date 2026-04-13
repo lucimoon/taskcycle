@@ -17,7 +17,7 @@ function toRecurMinutes(amount: number, unit: RecurUnit): number {
   return amount * RECUR_MULTIPLIERS[unit]
 }
 
-const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+const inputCls = 'glass-input'
 const labelCls = 'text-sm font-bold text-ink'
 
 interface TaskFormProps {
@@ -78,7 +78,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="What needs to be done?"
-          className={`w-full ${inputCls}`}
+          className={inputCls}
         />
       </div>
 
@@ -122,7 +122,8 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
               value={recurAmount}
               onChange={(e) => setRecurAmount(Number(e.target.value) || 1)}
               min={1}
-              className={`w-20 ${inputCls}`}
+              className={inputCls}
+            style={{ width: '5rem' }}
             />
             <select
               value={recurUnit}
@@ -155,7 +156,8 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
             onChange={(e) => setEstimatedMinutes(e.target.value === '' ? '' : Number(e.target.value))}
             min={1}
             placeholder="—"
-            className={`w-28 ${inputCls}`}
+            className={inputCls}
+            style={{ width: '7rem' }}
           />
         </div>
       </div>
@@ -168,7 +170,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
           placeholder="Any extra context…"
-          className={`w-full ${inputCls}`}
+          className={inputCls}
         />
       </div>
 
@@ -176,14 +178,14 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
         <button
           type="submit"
           disabled={!title.trim()}
-          className="rounded-xl bg-coral border-2 border-ink px-5 py-2 text-sm font-bold text-white btn-lift disabled:opacity-40 disabled:cursor-not-allowed"
+          className="rounded-full bg-coral px-5 py-2.5 text-sm font-semibold text-white btn-action shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Save task
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-xl border-2 border-ink bg-cream px-5 py-2 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
+          className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-5 py-2.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
         >
           Cancel
         </button>

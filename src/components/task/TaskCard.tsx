@@ -3,10 +3,10 @@ import { useCategoryStore } from '@/store/categoryStore'
 import { CategoryBadge } from '@/components/category/CategoryBadge'
 
 const PRIORITY_CHIP: Record<Priority, string> = {
-  1: 'bg-coral text-white border-ink',
-  2: 'bg-amber text-white border-ink',
-  3: 'bg-sunny text-ink border-ink',
-  4: 'bg-ink/10 text-ink border-ink',
+  1: 'bg-coral text-white',
+  2: 'bg-amber text-white',
+  3: 'bg-sunny text-ink',
+  4: 'bg-ink/10 text-ink',
 }
 
 const PRIORITY_LABEL: Record<Priority, string> = {
@@ -17,10 +17,10 @@ const PRIORITY_LABEL: Record<Priority, string> = {
 }
 
 const URGENCY_CHIP: Record<Urgency, string> = {
-  1: 'bg-coral text-white border-ink',
-  2: 'bg-amber text-white border-ink',
-  3: 'bg-sunny text-ink border-ink',
-  4: 'bg-ink/10 text-ink border-ink',
+  1: 'bg-coral text-white',
+  2: 'bg-amber text-white',
+  3: 'bg-sunny text-ink',
+  4: 'bg-ink/10 text-ink',
 }
 
 const URGENCY_LABEL: Record<Urgency, string> = {
@@ -49,23 +49,23 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
   const category = task.categoryId ? categories.find((c) => c.id === task.categoryId) : undefined
 
   return (
-    <div className={`rounded-2xl border-2 border-ink p-4 shadow-hard space-y-3 transition-colors ${
-      isDone ? 'bg-mint/20' : 'bg-surface'
+    <div className={`card-glass rounded-2xl p-4 space-y-3 transition-all hover:-translate-y-0.5 ${
+      isDone ? 'bg-mint/20' : ''
     }`}>
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2 flex-wrap">
           <span className={`font-bold text-base ${isDone ? 'line-through text-ink/40' : 'text-ink'}`}>
             {task.title}
           </span>
-          <span className={`rounded-lg border-2 px-2 py-0.5 text-xs font-bold ${
+          <span className={`rounded-full px-3 py-0.5 text-xs font-semibold ${
             task.kind === 'cyclic'
-              ? 'bg-lavender text-ink border-ink'
-              : 'bg-ink/8 text-ink border-ink'
+              ? 'bg-lavender/30 text-lavender'
+              : 'bg-ink/8 text-ink'
           }`}>
             {task.kind === 'cyclic' ? '↻ Recurring' : 'Once'}
           </span>
           {isDone && (
-            <span className="rounded-lg border-2 border-ink bg-mint px-2 py-0.5 text-xs font-bold text-ink">
+            <span className="rounded-full bg-mint/40 text-ink px-3 py-0.5 text-xs font-semibold">
               ✓ Done
             </span>
           )}
@@ -74,14 +74,14 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
           <button
             onClick={() => onEdit(task.id)}
             aria-label="Edit task"
-            className="rounded-lg p-1.5 text-ink/40 hover:bg-ink/8 hover:text-ink transition-colors text-sm"
+            className="rounded-full p-1.5 text-ink/40 hover:bg-ink/8 hover:text-ink transition-colors text-sm btn-action"
           >
             ✏️
           </button>
           <button
             onClick={() => onDelete(task.id)}
             aria-label="Delete task"
-            className="rounded-lg p-1.5 text-ink/40 hover:bg-coral/10 hover:text-coral transition-colors text-sm"
+            className="rounded-full p-1.5 text-ink/40 hover:bg-coral/10 hover:text-coral transition-colors text-sm btn-action"
           >
             🗑️
           </button>
@@ -90,14 +90,14 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
 
       <div className="flex flex-wrap gap-1.5 text-xs">
         {category && <CategoryBadge category={category} />}
-        <span className={`rounded-lg border-2 px-2 py-0.5 font-bold ${PRIORITY_CHIP[task.priority]}`}>
+        <span className={`rounded-full px-3 py-0.5 font-semibold ${PRIORITY_CHIP[task.priority]}`}>
           {PRIORITY_LABEL[task.priority]}
         </span>
-        <span className={`rounded-lg border-2 px-2 py-0.5 font-bold ${URGENCY_CHIP[task.urgency]}`}>
+        <span className={`rounded-full px-3 py-0.5 font-semibold ${URGENCY_CHIP[task.urgency]}`}>
           {URGENCY_LABEL[task.urgency]}
         </span>
         {task.estimatedMinutes && (
-          <span className="rounded-lg border-2 border-ink bg-surface px-2 py-0.5 font-bold text-ink">
+          <span className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-0.5 font-semibold text-ink">
             ~{task.estimatedMinutes}m
           </span>
         )}
@@ -107,7 +107,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleExpand, expanded }: T
             onClick={onToggleExpand}
             aria-expanded={expanded}
             aria-label={expanded ? 'Collapse steps' : 'Expand steps'}
-            className="rounded-lg border-2 border-ink bg-surface px-2 py-0.5 font-bold text-ink hover:bg-sunny transition-colors"
+            className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-0.5 font-semibold text-ink hover:bg-sunny/40 transition-colors"
           >
             {completedSteps}/{task.steps.length} steps {expanded ? '▲' : '▼'}
           </button>

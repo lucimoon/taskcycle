@@ -20,8 +20,8 @@ export function MatrixView({ theme, onThemeToggle }: Props) {
   }, [loadTasks])
 
   return (
-    <div className="flex flex-col min-h-screen bg-cream">
-      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center justify-between">
+    <div className="mesh-bg flex flex-col min-h-screen">
+      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <span className="font-display font-bold text-xl text-ink tracking-tight">TaskCycle</span>
           <ViewToggle current="matrix" />
@@ -30,7 +30,7 @@ export function MatrixView({ theme, onThemeToggle }: Props) {
           <ThemeToggle theme={theme} onToggle={onThemeToggle} />
           <button
             onClick={() => navigate('/tasks/new')}
-            className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
+            className="rounded-full bg-coral text-white px-5 py-2.5 text-sm font-semibold btn-action shadow-md"
           >
             + New Task
           </button>

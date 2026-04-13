@@ -54,7 +54,7 @@ export function StepList({ steps, onChange }: StepListProps) {
       <button
         type="button"
         onClick={addStep}
-        className="w-full rounded-xl border-2 border-dashed border-ink px-3 py-2 text-sm font-bold text-ink/50 hover:border-solid hover:bg-sunny/30 hover:text-ink transition-colors"
+        className="w-full rounded-xl border border-dashed border-ink/30 px-3 py-2 text-sm font-semibold text-ink/50 hover:border-solid hover:bg-white/40 hover:text-ink transition-colors"
       >
         + Add step
       </button>

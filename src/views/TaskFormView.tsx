@@ -30,11 +30,11 @@ export function TaskFormView() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center gap-3">
+    <div className="mesh-bg min-h-screen">
+      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-3">
         <button
           onClick={() => navigate('/')}
-          className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
+          className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
           aria-label="Back to tasks"
         >
           ← Back
@@ -44,7 +44,7 @@ export function TaskFormView() {
         </span>
       </header>
       <main className="max-w-2xl mx-auto px-4 py-6">
-        <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6">
+        <div className="card-glass rounded-2xl p-6">
           <TaskForm
             initial={existing}
             onSubmit={handleSubmit}

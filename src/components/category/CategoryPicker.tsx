@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useCategoryStore } from '@/store/categoryStore'
 
-const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+const inputCls = 'glass-input'
 
 interface CategoryPickerProps {
   value: string | undefined
@@ -21,7 +21,7 @@ export function CategoryPicker({ value, onChange }: CategoryPickerProps) {
     <div className="flex items-center gap-2">
       {value && (
         <span
-          className="w-4 h-4 rounded-full border-2 border-ink shrink-0"
+          className="w-4 h-4 rounded-full shrink-0"
           style={{ backgroundColor: categories.find((c) => c.id === value)?.color }}
         />
       )}

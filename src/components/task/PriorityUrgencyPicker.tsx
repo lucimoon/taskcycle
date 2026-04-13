@@ -15,10 +15,10 @@ const URGENCY_LABELS: Record<Urgency, string> = {
 }
 
 const LEVEL_COLORS: Record<1 | 2 | 3 | 4, { selected: string; idle: string }> = {
-  1: { selected: 'bg-coral text-white border-ink',    idle: 'bg-surface text-ink border-ink hover:bg-coral/10' },
-  2: { selected: 'bg-amber text-white border-ink',    idle: 'bg-surface text-ink border-ink hover:bg-amber/10' },
-  3: { selected: 'bg-sunny text-ink border-ink',      idle: 'bg-surface text-ink border-ink hover:bg-sunny/30' },
-  4: { selected: 'bg-ink/15 text-ink border-ink',     idle: 'bg-surface text-ink border-ink hover:bg-ink/8' },
+  1: { selected: 'bg-coral text-white shadow-md scale-[1.04]',    idle: 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-coral/10' },
+  2: { selected: 'bg-amber text-white shadow-md scale-[1.04]',    idle: 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-amber/10' },
+  3: { selected: 'bg-sunny text-ink shadow-md scale-[1.04]',      idle: 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-sunny/30' },
+  4: { selected: 'bg-ink/15 text-ink shadow-md scale-[1.04]',     idle: 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-ink/8' },
 }
 
 interface PickerRowProps<T extends number> {
@@ -44,8 +44,8 @@ function PickerRow<T extends 1 | 2 | 3 | 4>({ label, value, labels, levels, onCh
               onClick={() => onChange(level)}
               aria-pressed={isSelected}
               className={[
-                'flex flex-col items-center rounded-xl border-2 px-3 py-2 text-xs transition-colors min-w-[80px]',
-                isSelected ? `${colors.selected} shadow-hard-sm` : colors.idle,
+                'flex flex-col items-center rounded-2xl px-3 py-2 text-xs transition-all min-w-[80px]',
+                isSelected ? colors.selected : colors.idle,
               ].join(' ')}
             >
               <span className="font-display font-bold text-base">{level}</span>

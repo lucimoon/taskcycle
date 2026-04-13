@@ -7,7 +7,7 @@ interface CategoryBadgeProps {
 export function CategoryBadge({ category }: CategoryBadgeProps) {
   return (
     <span
-      className="rounded-lg border-2 border-ink px-2 py-0.5 text-xs font-bold text-white"
+      className="rounded-full px-3 py-0.5 text-xs font-semibold text-white"
       style={{ backgroundColor: category.color }}
     >
       {category.name}

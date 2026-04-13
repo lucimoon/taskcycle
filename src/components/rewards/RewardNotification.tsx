@@ -20,12 +20,12 @@ function NotificationPanel() {
     <div
       role="status"
       aria-live="polite"
-      className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up"
+      className="fixed bottom-6 left-1/2 z-50 animate-notification-bounce"
     >
-      <div className="border-t-4 border-ink bg-sunny px-6 py-5 shadow-[0_-4px_0_var(--color-ink)]">
-        <div className="mx-auto max-w-2xl flex items-start justify-between gap-4">
+      <div className="card-glass rounded-2xl shadow-xl px-6 py-5 min-w-[320px] max-w-md">
+        <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-bold text-ink/50 uppercase tracking-widest mb-1">Reward earned 🎉</p>
+            <p className="text-xs font-semibold text-ink/50 uppercase tracking-widest mb-1">Reward earned 🎉</p>
             <p className="font-display font-bold text-2xl text-ink">{reward.label}</p>
             {reward.description && (
               <p className="mt-1 text-sm font-medium text-ink/70">{reward.description}</p>
@@ -34,7 +34,7 @@ function NotificationPanel() {
           <button
             onClick={() => dismissReward(reward.id)}
             aria-label="Dismiss reward"
-            className="shrink-0 rounded-xl border-2 border-ink bg-surface w-8 h-8 flex items-center justify-center font-bold text-ink hover:bg-coral hover:text-white transition-colors shadow-hard-sm"
+            className="shrink-0 rounded-full bg-white/60 backdrop-blur-sm border border-white/80 w-8 h-8 flex items-center justify-center font-bold text-ink hover:bg-coral/20 hover:text-coral transition-colors btn-action"
           >
             ✕
           </button>

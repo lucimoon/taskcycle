@@ -17,7 +17,7 @@ const PRESET_COLORS = [
   '#0f172a', // ink
 ]
 
-const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body'
+const inputCls = 'glass-input'
 const labelCls = 'text-sm font-bold text-ink'
 
 interface CategoryFormState {
@@ -52,7 +52,7 @@ function CategoryForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Work, Health, Personal"
-          className={`w-full ${inputCls}`}
+          className={inputCls}
           autoFocus
         />
       </div>
@@ -64,8 +64,8 @@ function CategoryForm({
               key={c}
               type="button"
               onClick={() => setColor(c)}
-              className={`w-7 h-7 rounded-full border-2 transition-transform ${
-                color === c ? 'border-ink scale-125' : 'border-transparent hover:scale-110'
+              className={`w-7 h-7 rounded-full transition-transform ${
+                color === c ? 'scale-125 ring-2 ring-ink/40' : 'hover:scale-110'
               }`}
               style={{ backgroundColor: c }}
               aria-label={c}
@@ -77,14 +77,14 @@ function CategoryForm({
         <button
           type="submit"
           disabled={!name.trim()}
-          className="rounded-xl bg-coral border-2 border-ink px-5 py-2 text-sm font-bold text-white btn-lift disabled:opacity-40 disabled:cursor-not-allowed"
+          className="rounded-full bg-coral px-5 py-2.5 text-sm font-semibold text-white btn-action shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Save
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-xl border-2 border-ink bg-cream px-5 py-2 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
+          className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-5 py-2.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
         >
           Cancel
         </button>
@@ -125,12 +125,12 @@ export function CategoryManagementView() {
       : undefined
 
   return (
-    <div className="min-h-screen bg-cream">
-      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center justify-between">
+    <div className="mesh-bg min-h-screen">
+      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/')}
-            className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
+            className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
           >
             ← Tasks
           </button>
@@ -139,7 +139,7 @@ export function CategoryManagementView() {
         {mode === 'list' && (
           <button
             onClick={() => setMode('create')}
-            className="rounded-xl bg-sunny border-2 border-ink px-4 py-2 text-sm font-bold text-ink btn-lift"
+            className="rounded-full bg-sunny text-ink px-5 py-2.5 text-sm font-semibold btn-action shadow-md"
           >
             + New Category
           </button>
@@ -148,7 +148,7 @@ export function CategoryManagementView() {
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
         {(mode === 'create' || typeof mode === 'object') && (
-          <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6">
+          <div className="card-glass rounded-2xl p-6">
             <h2 className="font-display font-bold text-lg text-ink mb-5">
               {mode === 'create' ? 'New category' : 'Edit category'}
             </h2>
@@ -161,29 +161,29 @@ export function CategoryManagementView() {
         )}
 
         {categories.length === 0 && mode === 'list' && (
-          <div className="rounded-2xl border-2 border-dashed border-ink/30 p-10 text-center">
-            <p className="text-ink/50 font-body">No categories yet — add one to organize your tasks.</p>
+          <div className="rounded-2xl border border-dashed border-ink/20 p-10 text-center">
+            <p className="text-ink/50">No categories yet — add one to organize your tasks.</p>
           </div>
         )}
 
         {categories.map((cat) => (
           <div
             key={cat.id}
-            className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-4 flex items-center justify-between gap-3"
+            className="card-glass rounded-2xl p-4 flex items-center justify-between gap-3"
           >
             <CategoryBadge category={cat} />
             <div className="flex gap-1 ml-auto">
               <button
                 onClick={() => setMode({ edit: cat.id })}
                 aria-label="Edit category"
-                className="rounded-lg p-1.5 text-ink/40 hover:bg-ink/8 hover:text-ink transition-colors text-sm"
+                className="rounded-full p-1.5 text-ink/40 hover:bg-ink/8 hover:text-ink transition-colors text-sm btn-action"
               >
                 ✏️
               </button>
               <button
                 onClick={() => handleDelete(cat.id)}
                 aria-label="Delete category"
-                className="rounded-lg p-1.5 text-ink/40 hover:bg-coral/10 hover:text-coral transition-colors text-sm"
+                className="rounded-full p-1.5 text-ink/40 hover:bg-coral/10 hover:text-coral transition-colors text-sm btn-action"
               >
                 🗑️
               </button>

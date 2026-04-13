@@ -1,11 +1,11 @@
 import type { SortKey } from '@/hooks/useSortedTasks'
 
 const SORT_OPTIONS: { key: SortKey; label: string; title: string }[] = [
-  { key: 'default',  label: 'Added',       title: 'Sort by date added' },
-  { key: 'priority', label: 'Priority',    title: 'Sort by priority (highest first)' },
-  { key: 'urgency',  label: 'Urgency',     title: 'Sort by urgency (most urgent first)' },
+  { key: 'default',  label: 'Added',         title: 'Sort by date added' },
+  { key: 'priority', label: 'Priority',      title: 'Sort by priority (highest first)' },
+  { key: 'urgency',  label: 'Urgency',       title: 'Sort by urgency (most urgent first)' },
   { key: 'time',     label: '⚡ Quick wins', title: 'Sort by estimated time (shortest first)' },
-  { key: 'due',      label: 'Due date',    title: 'Sort by due date (soonest first)' },
+  { key: 'due',      label: 'Due date',      title: 'Sort by due date (soonest first)' },
 ]
 
 interface SortControlsProps {
@@ -24,10 +24,10 @@ export function SortControls({ sort, onChange }: SortControlsProps) {
           aria-pressed={sort === key}
           onClick={() => onChange(key)}
           className={[
-            'rounded-xl border-2 border-ink px-3 py-1 text-xs font-bold transition-colors',
+            'rounded-full px-4 py-1.5 text-xs font-semibold transition-all',
             sort === key
-              ? 'bg-sunny text-ink shadow-hard-sm'
-              : 'bg-surface text-ink hover:bg-sunny/40',
+              ? 'bg-coral text-white shadow-md'
+              : 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-white/80',
           ].join(' ')}
         >
           {label}

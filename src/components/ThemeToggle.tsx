@@ -13,7 +13,7 @@ export function ThemeToggle({ theme, onToggle }: Props) {
       onClick={onToggle}
       aria-label={isDusk ? 'Switch to Classic theme' : 'Switch to Dusk theme'}
       title={isDusk ? 'Switch to Classic' : 'Switch to Dusk'}
-      className="rounded-xl border-2 border-ink px-3 py-1.5 text-xs font-bold bg-surface text-ink hover:bg-lavender/20 transition-colors shadow-hard-sm"
+      className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-1.5 text-xs font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
     >
       {isDusk ? '☀️ Classic' : '🌙 Dusk'}
     </button>

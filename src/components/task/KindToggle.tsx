@@ -7,13 +7,13 @@ interface KindToggleProps {
 
 export function KindToggle({ value, onChange }: KindToggleProps) {
   return (
-    <div className="inline-flex rounded-xl border-2 border-ink overflow-hidden shadow-hard-sm">
+    <div className="bg-white/50 backdrop-blur-sm rounded-full p-1 flex gap-1 border border-white/80 inline-flex w-fit">
       <button
         type="button"
         onClick={() => onChange('once')}
         aria-pressed={value === 'once'}
-        className={`px-4 py-1.5 text-sm font-bold transition-colors ${
-          value === 'once' ? 'bg-coral text-white' : 'bg-cream text-ink hover:bg-coral/10'
+        className={`rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
+          value === 'once' ? 'bg-coral text-white shadow-sm' : 'text-ink hover:bg-white/40'
         }`}
       >
         One-off
@@ -23,8 +23,8 @@ export function KindToggle({ value, onChange }: KindToggleProps) {
         onClick={() => onChange('cyclic')}
         aria-pressed={value === 'cyclic'}
         aria-label="Recurring"
-        className={`border-l-2 border-ink px-4 py-1.5 text-sm font-bold transition-colors ${
-          value === 'cyclic' ? 'bg-lavender text-ink' : 'bg-cream text-ink hover:bg-lavender/20'
+        className={`rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
+          value === 'cyclic' ? 'bg-lavender text-white shadow-sm' : 'text-ink hover:bg-white/40'
         }`}
       >
         ↻ Recurring

@@ -40,12 +40,12 @@ export function RewardsView() {
       : undefined
 
   return (
-    <div className="min-h-screen bg-cream">
-      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center justify-between">
+    <div className="mesh-bg min-h-screen">
+      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/')}
-            className="text-sm font-bold text-ink/60 hover:text-ink transition-colors"
+            className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
           >
             ← Tasks
           </button>
@@ -54,7 +54,7 @@ export function RewardsView() {
         {mode === 'list' && (
           <button
             onClick={() => setMode('create')}
-            className="rounded-xl bg-sunny border-2 border-ink px-4 py-2 text-sm font-bold text-ink btn-lift"
+            className="rounded-full bg-sunny text-ink px-5 py-2.5 text-sm font-semibold btn-action shadow-md"
           >
             + New Reward
           </button>
@@ -70,7 +70,7 @@ export function RewardsView() {
             onDelete={handleDelete}
           />
         ) : (
-          <div className="rounded-2xl border-2 border-ink bg-surface shadow-hard p-6">
+          <div className="card-glass rounded-2xl p-6">
             <h2 className="font-display font-bold text-lg text-ink mb-5">
               {mode === 'create' ? 'New reward' : 'Edit reward'}
             </h2>

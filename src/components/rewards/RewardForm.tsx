@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { Reward, RewardDraft, RewardLinkType } from '@/types/reward'
 import type { Task } from '@/types/task'
 
-const inputCls = 'rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body w-full'
+const inputCls = 'glass-input'
 const labelCls = 'block text-sm font-bold text-ink mb-1'
 
 interface Props {
@@ -76,13 +76,13 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
 
       <fieldset>
         <legend className={labelCls}>Earn this reward when…</legend>
-        <div className="inline-flex rounded-xl border-2 border-ink overflow-hidden shadow-hard-sm mt-1">
-          {(['tasks', 'count', 'both'] as const).map((opt, i) => (
+        <div className="bg-white/50 backdrop-blur-sm rounded-full p-1 flex gap-1 border border-white/80 mt-1 w-fit">
+          {(['tasks', 'count', 'both'] as const).map((opt) => (
             <label
               key={opt}
-              className={`cursor-pointer px-3 py-1.5 text-xs font-bold transition-colors ${
-                i > 0 ? 'border-l-2 border-ink' : ''
-              } ${linkType === opt ? 'bg-lavender text-ink' : 'bg-cream text-ink hover:bg-lavender/20'}`}
+              className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+                linkType === opt ? 'bg-lavender text-white shadow-sm' : 'text-ink hover:bg-white/40'
+              }`}
             >
               <input
                 type="radio"
@@ -108,7 +108,7 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
             placeholder="Filter tasks…"
             className={`${inputCls} mb-2`}
           />
-          <div className="max-h-40 overflow-y-auto rounded-xl border-2 border-ink divide-y-2 divide-ink/10">
+          <div className="max-h-40 overflow-y-auto rounded-xl border border-white/60 bg-white/40 backdrop-blur-sm divide-y divide-ink/10">
             {filteredTasks.length === 0 ? (
               <p className="p-3 text-sm font-medium text-ink/40">No tasks found</p>
             ) : (
@@ -138,7 +138,8 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
             value={threshold}
             onChange={(e) => setThreshold(e.target.value === '' ? '' : Number(e.target.value))}
             placeholder="e.g. 5"
-            className="w-32 rounded-xl border-2 border-ink px-3 py-2 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-coral/40 font-body"
+            className={inputCls}
+            style={{ width: '8rem' }}
           />
           <p className="mt-1 text-xs font-medium text-ink/50">Earn after completing this many tasks in a day</p>
         </div>
@@ -148,14 +149,14 @@ export function RewardForm({ initial, tasks, onSave, onCancel }: Props) {
         <button
           type="submit"
           disabled={!label.trim()}
-          className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift disabled:opacity-40 disabled:cursor-not-allowed"
+          className="rounded-full bg-coral px-5 py-2.5 text-sm font-semibold text-white btn-action shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {initial ? 'Save changes' : 'Add reward'}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-xl border-2 border-ink bg-cream px-4 py-2 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
+          className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-5 py-2.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
         >
           Cancel
         </button>

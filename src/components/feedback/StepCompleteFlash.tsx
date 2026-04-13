@@ -5,7 +5,7 @@ interface Props {
 
 export function StepCompleteFlash({ active, children }: Props) {
   return (
-    <div className={active ? 'animate-step-flash rounded-lg' : ''}>
+    <div className={active ? 'animate-step-pop rounded-lg' : ''}>
       {children}
     </div>
   )

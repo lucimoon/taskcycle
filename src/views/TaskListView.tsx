@@ -40,8 +40,8 @@ export function TaskListView({ theme, onThemeToggle }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      <header className="bg-cream border-b-2 border-ink px-6 py-4 flex items-center justify-between">
+    <div className="mesh-bg min-h-screen">
+      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <span className="font-display font-bold text-xl text-ink tracking-tight">TaskCycle</span>
           <ViewToggle current="list" />
@@ -49,20 +49,20 @@ export function TaskListView({ theme, onThemeToggle }: Props) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate('/categories')}
-            className="rounded-xl border-2 border-ink bg-surface px-3 py-1.5 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
+            className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-1.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
           >
             Categories
           </button>
           <button
             onClick={() => navigate('/analytics')}
-            className="rounded-xl border-2 border-ink bg-surface px-3 py-1.5 text-sm font-bold text-ink hover:bg-ink/8 transition-colors"
+            className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-1.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
           >
             Analytics
           </button>
           <ThemeToggle theme={theme} onToggle={onThemeToggle} />
           <button
             onClick={() => navigate('/tasks/new')}
-            className="rounded-xl bg-coral border-2 border-ink px-4 py-2 text-sm font-bold text-white btn-lift"
+            className="rounded-full bg-coral text-white px-5 py-2.5 text-sm font-semibold btn-action shadow-md"
           >
             + New Task
           </button>
@@ -74,8 +74,10 @@ export function TaskListView({ theme, onThemeToggle }: Props) {
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setCategoryFilter(null)}
-              className={`rounded-xl border-2 border-ink px-3 py-1 text-xs font-bold transition-colors btn-lift ${
-                categoryFilter === null ? 'bg-ink text-cream' : 'bg-surface text-ink hover:bg-ink/8'
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all btn-action ${
+                categoryFilter === null
+                  ? 'bg-ink text-white shadow-md'
+                  : 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-white/80'
               }`}
             >
               All
@@ -84,8 +86,10 @@ export function TaskListView({ theme, onThemeToggle }: Props) {
               <button
                 key={cat.id}
                 onClick={() => setCategoryFilter(categoryFilter === cat.id ? null : cat.id)}
-                className={`rounded-xl border-2 border-ink px-3 py-1 text-xs font-bold transition-colors btn-lift ${
-                  categoryFilter === cat.id ? 'text-white' : 'bg-surface text-ink hover:bg-ink/8'
+                className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all btn-action ${
+                  categoryFilter === cat.id
+                    ? 'text-white shadow-md'
+                    : 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-white/80'
                 }`}
                 style={categoryFilter === cat.id ? { backgroundColor: cat.color } : undefined}
               >
