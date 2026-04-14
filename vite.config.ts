@@ -1,19 +1,19 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
 
 export default defineConfig({
-  base: '/taskcycle/',
+  base: "/taskcycle",
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: { "@": path.resolve(__dirname, "./src") },
   },
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test-setup.ts'],
+    environment: "jsdom",
+    setupFiles: ["./src/test-setup.ts"],
     globals: true,
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ["src/**/*.test.{ts,tsx}"],
   },
-})
+});
