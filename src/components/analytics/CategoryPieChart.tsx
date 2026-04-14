@@ -30,7 +30,7 @@ export function CategoryPieChart({ stats }: CategoryPieChartProps) {
           cx="50%"
           cy="50%"
           outerRadius={100}
-          label={({ name, percent }) => `${name} ${Math.round(percent * 100)}%`}
+          label={({ name, percent }) => `${name} ${Math.round((percent ?? 0) * 100)}%`}
           labelLine={false}
         >
           {data.map((entry, i) => (
@@ -38,7 +38,7 @@ export function CategoryPieChart({ stats }: CategoryPieChartProps) {
           ))}
         </Pie>
         <Tooltip
-          formatter={(value: number) => [`${value} task${value !== 1 ? 's' : ''}`, 'Total']}
+          formatter={(value) => { const n = typeof value === 'number' ? value : 0; return [`${n} task${n !== 1 ? 's' : ''}`, 'Total'] }}
         />
         <Legend />
       </PieChart>

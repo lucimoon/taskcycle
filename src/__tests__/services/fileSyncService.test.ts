@@ -14,7 +14,7 @@ const TASKS: Task[] = [
 const REWARDS: Reward[] = [
   {
     id: 'r1', label: 'Coffee break', linkedTaskIds: ['t1'],
-    linkType: 'tasks',
+    linkType: 'tasks', createdAt: '2024-01-01T00:00:00Z',
   },
 ]
 
@@ -54,7 +54,7 @@ describe('exportSnapshot / importSnapshot', () => {
   })
 
   it('export writes valid JSON with tasks, rewards, exportedAt', async () => {
-    await exportSnapshot(mockDirHandle, TASKS, REWARDS)
+    await exportSnapshot(mockDirHandle, TASKS, REWARDS, [])
     const parsed = JSON.parse(writtenContent)
     expect(parsed.tasks).toEqual(TASKS)
     expect(parsed.rewards).toEqual(REWARDS)
@@ -62,7 +62,7 @@ describe('exportSnapshot / importSnapshot', () => {
   })
 
   it('import round-trips tasks and rewards', async () => {
-    await exportSnapshot(mockDirHandle, TASKS, REWARDS)
+    await exportSnapshot(mockDirHandle, TASKS, REWARDS, [])
     const result = await importSnapshot(mockDirHandle)
     expect(result?.tasks).toEqual(TASKS)
     expect(result?.rewards).toEqual(REWARDS)
