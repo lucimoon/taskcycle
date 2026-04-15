@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useRewardStore } from '@/store/rewardStore'
 import { useTaskStore } from '@/store/taskStore'
 import { RewardList } from '@/components/rewards/RewardList'
@@ -11,7 +10,6 @@ type Mode = 'list' | 'create' | { edit: string }
 export function RewardsView() {
   const { rewards, loadRewards, addReward, updateReward, removeReward } = useRewardStore()
   const { tasks, loadTasks } = useTaskStore()
-  const navigate = useNavigate()
   const [mode, setMode] = useState<Mode>('list')
 
   useEffect(() => {
@@ -41,27 +39,19 @@ export function RewardsView() {
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate('/')}
-            className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
-          >
-            ← Tasks
-          </button>
-          <span className="font-display font-bold text-xl text-ink">Rewards</span>
-        </div>
+      <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+        <h1 className="font-display font-bold text-xl text-ink">Rewards</h1>
         {mode === 'list' && (
           <button
             onClick={() => setMode('create')}
-            className="rounded-full bg-sunny text-ink px-5 py-2.5 text-sm font-semibold btn-action shadow-md"
+            className="rounded-full bg-sunny text-ink px-5 py-2 text-sm font-semibold btn-action shadow-md"
           >
             + New Reward
           </button>
         )}
-      </header>
+      </div>
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-2xl mx-auto px-4 py-2">
         {mode === 'list' ? (
           <RewardList
             rewards={rewards}

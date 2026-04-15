@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useSettingsStore } from '@/store/settingsStore'
 import { requestPermission, getPermissionState } from '@/services/notifications/notificationService'
 import { isSupported, requestDirectory, syncIfConfigured } from '@/services/sync/fileSyncService'
@@ -51,7 +50,6 @@ function SectionCard({ children }: { children: React.ReactNode }) {
 }
 
 export function SettingsView() {
-  const navigate = useNavigate()
   const { settings, updateSettings } = useSettingsStore()
   const [permission, setPermission] = useState(getPermissionState)
   const [syncing, setSyncing] = useState(false)
@@ -85,16 +83,6 @@ export function SettingsView() {
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate('/')}
-          className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
-        >
-          ← Tasks
-        </button>
-        <span className="font-display font-bold text-xl text-ink">Settings</span>
-      </header>
-
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
 
         {/* Engagement */}

@@ -34,16 +34,6 @@ export function WheelSetupView() {
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-4">
-        <button
-          onClick={() => navigate('/wheels')}
-          className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-1.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
-        >
-          ← Back
-        </button>
-        <span className="font-display font-bold text-xl text-ink tracking-tight">New Wheel</span>
-      </header>
-
       <main className="max-w-lg mx-auto px-4 py-8">
         <form onSubmit={handleSubmit} className="card-glass rounded-2xl p-6 space-y-6">
           {/* Name */}

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useCategoryStore } from '@/store/categoryStore'
 import { CategoryBadge } from '@/components/category/CategoryBadge'
 import type { CategoryDraft } from '@/types/category'
@@ -97,7 +96,6 @@ type Mode = 'list' | 'create' | { edit: string }
 
 export function CategoryManagementView() {
   const { categories, loadCategories, addCategory, updateCategory, removeCategory } = useCategoryStore()
-  const navigate = useNavigate()
   const [mode, setMode] = useState<Mode>('list')
 
   useEffect(() => {
@@ -126,27 +124,19 @@ export function CategoryManagementView() {
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate('/')}
-            className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
-          >
-            ← Tasks
-          </button>
-          <span className="font-display font-bold text-xl text-ink">Categories</span>
-        </div>
+      <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+        <h1 className="font-display font-bold text-xl text-ink">Categories</h1>
         {mode === 'list' && (
           <button
             onClick={() => setMode('create')}
-            className="rounded-full bg-sunny text-ink px-5 py-2.5 text-sm font-semibold btn-action shadow-md"
+            className="rounded-full bg-sunny text-ink px-5 py-2 text-sm font-semibold btn-action shadow-md"
           >
             + New Category
           </button>
         )}
-      </header>
+      </div>
 
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <main className="max-w-2xl mx-auto px-4 py-2 space-y-4">
         {(mode === 'create' || typeof mode === 'object') && (
           <div className="card-glass rounded-2xl p-6">
             <h2 className="font-display font-bold text-lg text-ink mb-5">

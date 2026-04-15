@@ -31,18 +31,6 @@ export function TaskFormView() {
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate('/')}
-          className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
-          aria-label="Back to tasks"
-        >
-          ← Back
-        </button>
-        <span className="font-display font-bold text-xl text-ink">
-          {id ? 'Edit task' : 'New task'}
-        </span>
-      </header>
       <main className="max-w-2xl mx-auto px-4 py-6">
         <div className="card-glass rounded-2xl p-6">
           <TaskForm

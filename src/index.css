@@ -61,6 +61,54 @@
   }
 }
 
+/* ── Dusk theme ─────────────────────────────────────────────────── */
+[data-theme="dusk"] {
+  --color-bg:        #16132A;
+  --color-ink:       #EDE9F8;
+  --color-ink-muted: rgba(237, 233, 248, 0.5);
+}
+
+[data-theme="dusk"] .mesh-bg {
+  background:
+    radial-gradient(at 15% 25%, #2E1B5C 0%, transparent 45%),
+    radial-gradient(at 85% 10%, #152A4A 0%, transparent 45%),
+    radial-gradient(at 65% 85%, #231650 0%, transparent 50%),
+    radial-gradient(at 5%  80%, #143830 0%, transparent 45%),
+    #16132A;
+}
+
+[data-theme="dusk"] .card-glass {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass surfaces (headers, pill buttons) */
+[data-theme="dusk"] .bg-white\/60,
+[data-theme="dusk"] .bg-white\/50 {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+}
+[data-theme="dusk"] .bg-white\/40 {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+[data-theme="dusk"] .border-white\/80,
+[data-theme="dusk"] .border-white\/60 {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dusk"] .glass-input {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--color-ink);
+}
+[data-theme="dusk"] .glass-input:focus {
+  border-color: rgba(255, 107, 107, 0.5);
+}
+[data-theme="dusk"] .glass-input option {
+  background: #1E1B35;
+  color: #EDE9F8;
+}
+
 @layer components {
   /* Gradient mesh background */
   .mesh-bg {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useWheelStore } from "@/store/wheelStore";
 import { useTaskStore } from "@/store/taskStore";
 import { useCategoryStore } from "@/store/categoryStore";
@@ -14,7 +14,6 @@ type SpinState = "idle" | "spinning" | "result";
 
 export function WheelView() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const { wheels, loadWheels, spinWheel, completeWheelTask, restartWheel } =
     useWheelStore();
@@ -100,24 +99,16 @@ export function WheelView() {
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-4">
-        <button
-          onClick={() => navigate("/wheels")}
-          className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-1.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
-        >
-          ← Wheels
-        </button>
-        <div className="flex-1 min-w-0">
-          <span className="font-display font-bold text-xl text-ink tracking-tight truncate block">
-            {wheel.name}
-          </span>
-        </div>
+      <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-3">
+        <span className="font-display font-bold text-xl text-ink tracking-tight truncate flex-1">
+          {wheel.name}
+        </span>
         {wheel.mode === "sequential" && (
           <span className="text-xs font-semibold text-ink/40 shrink-0">
             {completedCount}/{eligible.length + completedCount} done
           </span>
         )}
-      </header>
+      </div>
 
       <main className="max-w-lg mx-auto px-4 py-8 flex flex-col items-center gap-8">
         {eligible.length === 0 && wheel.status === "active" ? (

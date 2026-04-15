@@ -34,6 +34,7 @@ const WheelView = lazy(() =>
   import("@/views/WheelView").then((m) => ({ default: m.WheelView })),
 );
 import { RewardNotification } from "@/components/rewards/RewardNotification";
+import { AppHeader } from "@/components/AppHeader";
 import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
 import { useTheme } from "@/hooks/useTheme";
 import { useSettingsStore } from "@/store/settingsStore";
@@ -53,23 +54,17 @@ function AppShell() {
       });
     useCategoryStore.getState().loadCategories();
   }, []);
+
   const toggleTheme = () => setTheme(theme === "classic" ? "dusk" : "classic");
+
   return (
     <>
+      <AppHeader theme={theme} onThemeToggle={toggleTheme} />
       <Suspense fallback={null}>
         <Routes>
-          <Route
-            path="/"
-            element={<TaskListView theme={theme} onThemeToggle={toggleTheme} />}
-          />
-          <Route
-            path="/taskcycle"
-            element={<TaskListView theme={theme} onThemeToggle={toggleTheme} />}
-          />
-          <Route
-            path="/matrix"
-            element={<MatrixView theme={theme} onThemeToggle={toggleTheme} />}
-          />
+          <Route path="/" element={<TaskListView />} />
+          <Route path="/taskcycle" element={<TaskListView />} />
+          <Route path="/matrix" element={<MatrixView />} />
           <Route path="/tasks/new" element={<TaskFormView />} />
           <Route path="/tasks/:id/edit" element={<TaskFormView />} />
           <Route path="/rewards" element={<RewardsView />} />

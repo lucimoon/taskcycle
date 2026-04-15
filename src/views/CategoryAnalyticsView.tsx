@@ -26,16 +26,6 @@ export function CategoryAnalyticsView() {
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate('/')}
-          className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
-        >
-          ← Tasks
-        </button>
-        <span className="font-display font-bold text-xl text-ink">Analytics</span>
-      </header>
-
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {categories.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-ink/20 p-10 text-center space-y-3">
