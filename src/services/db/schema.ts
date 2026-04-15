@@ -10,4 +10,11 @@ export const SCHEMA = {
     settings: '&key',
     categories: '&id, name',
   },
+  v3: {
+    tasks: '&id, kind, priority, urgency, nextDueAt, dueAt, completedAt, createdAt, categoryId',
+    rewards: '&id',
+    settings: '&key',
+    categories: '&id, name',
+    wheels: '&id, status, createdAt',
+  },
 }

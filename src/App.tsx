@@ -24,6 +24,15 @@ const CategoryAnalyticsView = lazy(() =>
     default: m.CategoryAnalyticsView,
   })),
 );
+const WheelListView = lazy(() =>
+  import("@/views/WheelListView").then((m) => ({ default: m.WheelListView })),
+);
+const WheelSetupView = lazy(() =>
+  import("@/views/WheelSetupView").then((m) => ({ default: m.WheelSetupView })),
+);
+const WheelView = lazy(() =>
+  import("@/views/WheelView").then((m) => ({ default: m.WheelView })),
+);
 import { RewardNotification } from "@/components/rewards/RewardNotification";
 import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
 import { useTheme } from "@/hooks/useTheme";
@@ -67,6 +76,9 @@ function AppShell() {
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/categories" element={<CategoryManagementView />} />
           <Route path="/analytics" element={<CategoryAnalyticsView />} />
+          <Route path="/wheels" element={<WheelListView />} />
+          <Route path="/wheels/new" element={<WheelSetupView />} />
+          <Route path="/wheels/:id" element={<WheelView />} />
         </Routes>
       </Suspense>
       <RewardNotification />

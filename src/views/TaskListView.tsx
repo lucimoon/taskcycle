@@ -48,6 +48,12 @@ export function TaskListView({ theme, onThemeToggle }: Props) {
         </div>
         <div className="flex items-center gap-2">
           <button
+            onClick={() => navigate('/wheels')}
+            className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-1.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
+          >
+            Wheels
+          </button>
+          <button
             onClick={() => navigate('/categories')}
             className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-4 py-1.5 text-sm font-semibold text-ink hover:bg-white/80 transition-colors btn-action"
           >
