@@ -113,14 +113,14 @@ export function TaskCard({
           <button
             onClick={() => onEdit(task.id)}
             aria-label="Edit task"
-            className="rounded-full p-1.5 text-ink/40 hover:bg-ink/8 hover:text-ink transition-colors text-sm btn-action"
+            className="rounded-full p-1.5 min-h-[44px] min-w-[44px] text-ink/40 hover:bg-ink/8 hover:text-ink transition-colors text-sm btn-action"
           >
             ✏️
           </button>
           <button
             onClick={() => onDelete(task.id)}
             aria-label="Delete task"
-            className="rounded-full p-1.5 text-ink/40 hover:bg-coral/10 hover:text-coral transition-colors text-sm btn-action"
+            className="rounded-full p-1.5 min-h-[44px] min-w-[44px] text-ink/40 hover:bg-coral/10 hover:text-coral transition-colors text-sm btn-action"
           >
             🗑️
           </button>

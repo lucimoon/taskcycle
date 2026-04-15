@@ -7,7 +7,7 @@ Builds on the completed v1 foundation (M1–M12). All v1 systems — task/reward
 ## Milestones
 
 1. [Milestone 1 — Persistent Navigation](#milestone-1--persistent-navigation)
-2. [Milestone 2 — Task Completion Polish](#milestone-2--task-completion-polish)
+2. ✅ [Milestone 2 — Task Completion Polish](#milestone-2--task-completion-polish)
 3. [Milestone 3 — Task Focus Mode](#milestone-3--task-focus-mode)
 4. [Milestone 4 — Multi-Category Support](#milestone-4--multi-category-support)
 5. [Milestone 5 — Sorting Improvements](#milestone-5--sorting-improvements)
@@ -15,7 +15,7 @@ Builds on the completed v1 foundation (M1–M12). All v1 systems — task/reward
 7. [Milestone 7 — Recurring Task Instances](#milestone-7--recurring-task-instances)
 8. [Milestone 8 — Analytics: Recurring Tasks](#milestone-8--analytics-recurring-tasks)
 9. [Milestone 9 — Settings UI](#milestone-9--settings-ui)
-10. [Milestone 10 — Mobile Responsive](#milestone-10--mobile-responsive)
+10. ✅ [Milestone 10 — Mobile Responsive](#milestone-10--mobile-responsive)
 11. [Milestone 11 — Calendar Integration](#milestone-11--calendar-integration)
 
 ---

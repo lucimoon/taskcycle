@@ -37,7 +37,7 @@ export function MatrixView({ theme, onThemeToggle }: Props) {
         </div>
       </header>
 
-      <main className="flex-1 px-10 py-8 pl-14">
+      <main className="flex-1 px-4 py-4 sm:px-10 sm:py-8 sm:pl-14">
         <EisenhowerMatrix tasks={tasks} />
       </main>
     </div>

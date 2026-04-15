@@ -91,7 +91,7 @@ export function CategoryAnalyticsView() {
               )}
             </div>
 
-            <div className="card-glass rounded-2xl p-4">
+            <div className="card-glass rounded-2xl p-4 min-h-48">
               {chartType === 'distribution' ? (
                 <CategoryPieChart stats={stats} />
               ) : (
