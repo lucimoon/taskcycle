@@ -13,6 +13,8 @@ interface TaskStore {
   removeTask: (id: string) => Promise<void>
   completeTask: (id: string) => Promise<void>
   completeStep: (taskId: string, stepId: string) => Promise<void>
+  uncompleteTask: (id: string) => Promise<void>
+  uncompleteStep: (taskId: string, stepId: string) => Promise<void>
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -71,6 +73,25 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       await taskService.updateTask(taskId, { steps: updatedSteps })
       triggerStepComplete()
     }
+    const tasks = await taskService.listTasks()
+    set({ tasks })
+    syncIfConfigured()
+  },
+
+  uncompleteTask: async (id) => {
+    await taskService.uncompleteTask(id)
+    const tasks = await taskService.listTasks()
+    set({ tasks })
+    syncIfConfigured()
+  },
+
+  uncompleteStep: async (taskId, stepId) => {
+    const task = get().tasks.find((t) => t.id === taskId)
+    if (!task) return
+    const updatedSteps = task.steps.map((s) =>
+      s.id === stepId ? { ...s, completedAt: undefined } : s,
+    )
+    await taskService.updateTask(taskId, { steps: updatedSteps })
     const tasks = await taskService.listTasks()
     set({ tasks })
     syncIfConfigured()

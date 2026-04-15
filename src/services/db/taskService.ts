@@ -50,3 +50,14 @@ export async function completeTask(id: string): Promise<Task> {
     steps: resetSteps,
   })
 }
+
+export async function uncompleteTask(id: string): Promise<Task> {
+  const task = await getTask(id)
+  if (!task) throw new Error(`Task ${id} not found`)
+
+  if (task.kind === 'once') {
+    return updateTask(id, { completedAt: undefined })
+  }
+
+  return updateTask(id, { lastCompletedAt: undefined, nextDueAt: undefined })
+}
