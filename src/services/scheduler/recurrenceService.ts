@@ -3,10 +3,10 @@ import type { Task, CyclicTask } from '@/types/task'
 export function getDueTasks(tasks: Task[]): Task[] {
   const now = new Date().toISOString()
   return tasks.filter((task) => {
-    if (task.kind !== 'cyclic') return false
-    // never completed → always available
+    if (task.kind === 'once') return !task.completedAt
+    // cyclic: never completed → always available
     if (!task.nextDueAt) return true
-    // completed and interval has elapsed
+    // cyclic: completed and interval has elapsed
     return task.nextDueAt <= now
   })
 }
