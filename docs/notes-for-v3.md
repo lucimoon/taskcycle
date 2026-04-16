@@ -47,3 +47,26 @@ Scheduling
 - Recurring tasks
   - should set to Midnight on the day of
   - should be able to be set for a specific day of the week or month
+- Add completion range. Complete tasks within a day, week, month or whenever
+  - This should replace the urgency options on the form.
+  - Tasks without a due data are due 'whenever' (4)
+  - Tasks with a due date default to being due on the day of, but user can select within a week and within a month options.
+  - Helper text should be available to explain how this maps to urgency
+
+Goals (new feature)
+
+- To replace priority, tasks can optionally be assigned to goals
+- Goals can be enabled in the settings menu
+- Goals behave similar to categories, so build for reuse
+- Priorities are set on goals instead of tasks to reduce overload
+- A tasks priority is accessed through it's goals
+- A task can contribute to more than one goal
+-
+
+Note Creation
+
+- Optional steps should be collaped into a single group by default
+
+Task List View
+
+- Sort category filters alphabetically;
