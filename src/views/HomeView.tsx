@@ -41,7 +41,7 @@ export function HomeView() {
               <li key={task.id}>
                 <TaskCard
                   task={task}
-                  onEdit={(id) => navigate(`/tasks/${id}/edit`)}
+                  onEdit={(id) => navigate(`/taskcycle/tasks/${id}/edit`)}
                   onDelete={handleDelete}
                 />
               </li>
