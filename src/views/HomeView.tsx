@@ -1,19 +1,19 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTaskStore } from '@/store/taskStore'
-import { TaskCard } from '@/components/task/TaskCard'
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTaskStore } from "@/store/taskStore";
+import { TaskCard } from "@/components/task/TaskCard";
 
 export function HomeView() {
-  const { tasks, loadTasks, removeTask } = useTaskStore()
-  const navigate = useNavigate()
+  const { tasks, loadTasks, removeTask } = useTaskStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    loadTasks()
-  }, [loadTasks])
+    loadTasks();
+  }, [loadTasks]);
 
   function handleDelete(id: string) {
-    if (window.confirm('Delete this task?')) {
-      removeTask(id)
+    if (window.confirm("Delete this task?")) {
+      removeTask(id);
     }
   }
 
@@ -22,7 +22,7 @@ export function HomeView() {
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
         <h1 className="text-xl font-bold text-gray-900">TaskCycle</h1>
         <button
-          onClick={() => navigate('/tasks/new')}
+          onClick={() => navigate("/taskcycle/tasks/new")}
           className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
         >
           + New Task
@@ -50,5 +50,5 @@ export function HomeView() {
         )}
       </main>
     </div>
-  )
+  );
 }

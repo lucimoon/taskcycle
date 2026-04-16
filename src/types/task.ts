@@ -17,7 +17,7 @@ interface BaseTask {
   urgency: Urgency
   estimatedMinutes?: number
   notes?: string
-  categoryId?: string
+  categoryIds?: string[]
   createdAt: string
   completedAt?: string
 }

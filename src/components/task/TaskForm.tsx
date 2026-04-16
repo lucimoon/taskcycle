@@ -46,7 +46,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
   const [urgency, setUrgency] = useState<Urgency>(initial?.urgency ?? 2)
   const [estimatedMinutes, setEstimatedMinutes] = useState(initial?.estimatedMinutes ?? '')
   const [notes, setNotes] = useState(initial?.notes ?? '')
-  const [categoryId, setCategoryId] = useState<string | undefined>(initial?.categoryId)
+  const [categoryIds, setCategoryIds] = useState<string[]>(initial?.categoryIds ?? [])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -57,7 +57,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
       urgency,
       estimatedMinutes: estimatedMinutes !== '' ? Number(estimatedMinutes) : undefined,
       notes: notes.trim() || undefined,
-      categoryId,
+      categoryIds,
     }
     const draft: TaskDraft =
       kind === 'once'
@@ -86,7 +86,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
 
       <div className="space-y-1.5">
         <span className="text-sm font-bold text-ink">Category <span className="font-normal text-ink/50">(optional)</span></span>
-        <CategoryPicker value={categoryId} onChange={setCategoryId} />
+        <CategoryPicker value={categoryIds} onChange={setCategoryIds} />
       </div>
 
       {kind === 'once' ? (

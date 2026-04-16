@@ -28,7 +28,10 @@ export async function updateCategory(id: string, changes: Partial<Category>): Pr
 
 export async function deleteCategory(id: string): Promise<void> {
   await db.categories.delete(id)
-  // Clear categoryId from any tasks that reference this category
-  const affected = await db.tasks.where('categoryId').equals(id).toArray()
-  await Promise.all(affected.map((t) => db.tasks.update(t.id, { categoryId: undefined })))
+  // Remove id from categoryIds of any tasks that reference this category
+  await db.tasks
+    .filter((t) => ((t as any).categoryIds ?? []).includes(id))
+    .modify((t: any) => {
+      t.categoryIds = (t.categoryIds ?? []).filter((c: string) => c !== id)
+    })
 }

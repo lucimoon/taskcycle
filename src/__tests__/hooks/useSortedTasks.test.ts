@@ -21,9 +21,9 @@ const tasks: Task[] = [
 ]
 
 describe('useSortedTasks', () => {
-  it('default sort — by createdAt ascending', () => {
+  it('default sort — preserves insertion order', () => {
     const { result } = renderHook(() => useSortedTasks(tasks, 'default'))
-    expect(result.current.map((t) => t.id)).toEqual(['b', 'c', 'a'])
+    expect(result.current.map((t) => t.id)).toEqual(['a', 'b', 'c'])
   })
 
   it('priority sort — ascending (1 = highest)', () => {

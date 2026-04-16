@@ -7,9 +7,10 @@ import { useSettingsStore } from '@/store/settingsStore'
 interface StepChecklistProps {
   task: Task
   onCompleteStep: (stepId: string) => void
+  onUncompleteStep?: (stepId: string) => void
 }
 
-export function StepChecklist({ task, onCompleteStep }: StepChecklistProps) {
+export function StepChecklist({ task, onCompleteStep, onUncompleteStep }: StepChecklistProps) {
   const [flashingStepId, setFlashingStepId] = useState<string | null>(null)
   const animationsEnabled = useSettingsStore((s) => s.settings.animationsEnabled)
 
@@ -35,8 +36,8 @@ export function StepChecklist({ task, onCompleteStep }: StepChecklistProps) {
                   type="checkbox"
                   id={`step-${step.id}`}
                   checked={done}
-                  onChange={() => !done && handleCompleteStep(step.id)}
-                  disabled={done}
+                  onChange={() => done ? onUncompleteStep?.(step.id) : handleCompleteStep(step.id)}
+                  disabled={done && !onUncompleteStep}
                   className="h-4 w-4 rounded border border-ink/30 accent-mint cursor-pointer disabled:cursor-default"
                 />
                 <label

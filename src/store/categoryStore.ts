@@ -6,7 +6,7 @@ import { useTaskStore } from './taskStore'
 interface CategoryStore {
   categories: Category[]
   loadCategories: () => Promise<void>
-  addCategory: (draft: CategoryDraft) => Promise<void>
+  addCategory: (draft: CategoryDraft) => Promise<Category>
   updateCategory: (id: string, changes: Partial<Category>) => Promise<void>
   removeCategory: (id: string) => Promise<void>
 }
@@ -20,9 +20,10 @@ export const useCategoryStore = create<CategoryStore>((set) => ({
   },
 
   addCategory: async (draft) => {
-    await categoryService.createCategory(draft)
+    const category = await categoryService.createCategory(draft)
     const categories = await categoryService.listCategories()
     set({ categories })
+    return category
   },
 
   updateCategory: async (id, changes) => {

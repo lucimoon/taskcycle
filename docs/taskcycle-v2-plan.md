@@ -6,16 +6,16 @@ Builds on the completed v1 foundation (M1–M12). All v1 systems — task/reward
 
 ## Milestones
 
-1. [Milestone 1 — Persistent Navigation](#milestone-1--persistent-navigation)
-2. [Milestone 2 — Task Completion Polish](#milestone-2--task-completion-polish)
+1. ✅ [Milestone 1 — Persistent Navigation](#milestone-1--persistent-navigation)
+2. ✅ [Milestone 2 — Task Completion Polish](#milestone-2--task-completion-polish)
 3. [Milestone 3 — Task Focus Mode](#milestone-3--task-focus-mode)
-4. [Milestone 4 — Multi-Category Support](#milestone-4--multi-category-support)
-5. [Milestone 5 — Sorting Improvements](#milestone-5--sorting-improvements)
+4. ✅ [Milestone 4 — Multi-Category Support](#milestone-4--multi-category-support)
+5. ✅ [Milestone 5 — Sorting Improvements](#milestone-5--sorting-improvements)
 6. [Milestone 6 — Matrix Drag-to-Reprioritise](#milestone-6--matrix-drag-to-reprioritise)
-7. [Milestone 7 — Recurring Task Instances](#milestone-7--recurring-task-instances)
+7. ✅ [Milestone 7 — Recurring Task Instances](#milestone-7--recurring-task-instances)
 8. [Milestone 8 — Analytics: Recurring Tasks](#milestone-8--analytics-recurring-tasks)
 9. [Milestone 9 — Settings UI](#milestone-9--settings-ui)
-10. [Milestone 10 — Mobile Responsive](#milestone-10--mobile-responsive)
+10. ✅ [Milestone 10 — Mobile Responsive](#milestone-10--mobile-responsive)
 11. [Milestone 11 — Calendar Integration](#milestone-11--calendar-integration)
 
 ---
@@ -35,6 +35,7 @@ Extract the header into a shared `AppHeader` component and render it once at the
 ### New Files
 
 **`src/components/AppHeader.tsx`**
+
 - Logo/brand mark + nav links: Tasks (list), Matrix, Rewards, Categories, Analytics, Settings
 - Active link highlighted using `useLocation()`
 - `ThemeToggle` lives here
@@ -70,18 +71,22 @@ Navigating to any view shows the shared header. Active nav link is visually indi
 ### Changes to Existing Files
 
 **`src/store/taskStore.ts`**
+
 - Add `uncompleteStep(taskId, stepId)` — clears `step.completedAt`
 - Add `uncompleteTask(taskId)` — clears `task.completedAt` (once-tasks); for cyclic tasks, clears `lastCompletedAt` and `nextDueAt`
 
 **`src/services/db/taskService.ts`**
+
 - Add `uncompleteTask(id)` mirroring `completeTask` in reverse
 
 **`src/components/task/TaskCard.tsx`**
+
 - Show a "Mark done" button on tasks with no steps (calls `completeTask`)
 - Show an "Undo" / uncheck affordance on completed once-tasks
 - For completed cyclic tasks: show a "✓ Done — recurs [date/time]" badge instead of just "Done"; use `nextDueAt` for the date copy
 
 **`src/components/task/StepChecklist.tsx`**
+
 - Clicking a completed (checked) step calls `uncompleteStep` instead of completing it again
 
 ### Implementation Notes
@@ -103,11 +108,13 @@ A stepless task can be marked done from `TaskCard`. Completed steps can be unche
 ### New Files
 
 **`src/store/focusStore.ts`**
+
 - `focusedTaskId: string | null`
 - `setFocus(taskId)`, `clearFocus()`
 - Persisted to `settingsStore` / Dexie `settings` table so focus survives refresh
 
 **`src/components/task/FocusCard.tsx`**
+
 - Expanded, prominent version of a task card shown at the top of the task list when a task is focused
 - Shows all steps in a linear checklist; active step (first uncompleted) is highlighted
 - Start/pause button drives `useStepTimer` for timed steps; for untimed steps, a manual "Done" button completes the step
@@ -115,6 +122,7 @@ A stepless task can be marked done from `TaskCard`. Completed steps can be unche
 - "End focus" button calls `clearFocus()`
 
 **`src/hooks/useFocusAutoAdvance.ts`**
+
 - After `completeStep` fires, finds the next uncompleted step and scrolls/focuses it
 - No-ops if the task has no remaining steps (triggers `completeTask` flow instead)
 
@@ -151,37 +159,48 @@ Replace `categoryId?: string` with `categoryIds?: string[]` on `BaseTask`. Dexie
 ### Changes to Existing Files
 
 **`src/types/task.ts`**
+
 - Replace `categoryId?: string` with `categoryIds?: string[]`
 
 **`src/services/db/schema.ts`** + **`src/services/db/db.ts`**
+
 - Add schema v3: `tasks` index updated to include `*categoryIds` (multi-entry); remove `categoryId` index
 
 **`src/services/db/taskService.ts`**
+
 - Update all reads/writes to use `categoryIds`
 
 **`src/services/db/categoryService.ts`**
+
 - `deleteCategory`: update cascade to filter `categoryIds` array rather than clearing a single field
 
 **`src/store/taskStore.ts`**
+
 - Update `completeTask`, `completeStep`, etc. to pass `categoryIds` through
 
 **`src/components/task/TaskForm.tsx`**
+
 - Replace single `CategoryPicker` with a multi-select category picker
 - Add an inline "Create new category" affordance below the picker — small text input + color swatch row that creates and immediately selects the new category without navigation
 
 **`src/components/task/TaskCard.tsx`**
+
 - Render a `CategoryBadge` for each entry in `categoryIds` (flex-wrap row)
 
 **`src/components/category/CategoryPicker.tsx`**
+
 - Rewrite as a multi-select: checkboxes per category rather than a `<select>`; selected categories shown as removable chips above the list
 
 **`src/services/db/categoryService.ts`**
+
 - `deleteCategory` cascade: `db.tasks.filter(t => t.categoryIds?.includes(id)).modify(t => { t.categoryIds = t.categoryIds?.filter(c => c !== id) })`
 
 **`src/views/TaskListView.tsx`**
+
 - Category filter: a task matches the active filter if `task.categoryIds?.includes(filterId)`
 
 **`src/services/sync/fileSyncService.ts`**
+
 - No change needed (tasks are serialised as-is)
 
 ### Implementation Notes
@@ -212,21 +231,24 @@ Update the `'priority'` sort case:
 ```ts
 // Pseudocode for the comparator
 function priorityComparator(a: Task, b: Task): number {
-  if (a.priority !== b.priority) return a.priority - b.priority
-  const aDue = effectiveDueDate(a)
-  const bDue = effectiveDueDate(b)
+  if (a.priority !== b.priority) return a.priority - b.priority;
+  const aDue = effectiveDueDate(a);
+  const bDue = effectiveDueDate(b);
   // Overdue cyclic tasks outrank future once-tasks at same priority
-  const aOverdue = a.kind === 'cyclic' && a.nextDueAt && new Date(a.nextDueAt) <= new Date()
-  const bOverdue = b.kind === 'cyclic' && b.nextDueAt && new Date(b.nextDueAt) <= new Date()
-  if (aOverdue !== bOverdue) return aOverdue ? -1 : 1
-  if (!aDue && !bDue) return 0
-  if (!aDue) return 1
-  if (!bDue) return -1
-  return aDue.getTime() - bDue.getTime()
+  const aOverdue =
+    a.kind === "cyclic" && a.nextDueAt && new Date(a.nextDueAt) <= new Date();
+  const bOverdue =
+    b.kind === "cyclic" && b.nextDueAt && new Date(b.nextDueAt) <= new Date();
+  if (aOverdue !== bOverdue) return aOverdue ? -1 : 1;
+  if (!aDue && !bDue) return 0;
+  if (!aDue) return 1;
+  if (!bDue) return -1;
+  return aDue.getTime() - bDue.getTime();
 }
 ```
 
 **`src/__tests__/hooks/useSortedTasks.test.ts`**
+
 - Add test cases: same-priority tasks ordered by due date; overdue cyclic above future once at same priority
 
 ### Done When
@@ -246,24 +268,29 @@ Add `@dnd-kit/core` and `@dnd-kit/sortable` — lighter than react-beautiful-dnd
 ### New Files
 
 **`src/hooks/useMatrixDrop.ts`**
+
 - Wraps `useDrop` (dnd-kit); on drop, calls `taskStore.updateTask(id, { priority, urgency })` with the values corresponding to the target quadrant
 - Returns `{ isOver, drop }` ref pair for `MatrixCell`
 
 ### Changes to Existing Files
 
 **`src/components/matrix/EisenhowerMatrix.tsx`**
+
 - Wrap in `<DndContext onDragEnd={handleDragEnd}>`
 - `handleDragEnd`: extract `taskId` from `active.id`, extract target quadrant from `over.id`, resolve new `{ priority, urgency }` via `getQuadrant` inverse, call `taskStore.updateTask`
 
 **`src/components/matrix/MatrixCell.tsx`**
+
 - Wrap contents in `<DroppableZone id={quadrantKey}>` (dnd-kit `useDroppable`)
 - Visual drop target highlight when `isOver`
 
 **`src/components/matrix/MatrixTaskChip.tsx`**
+
 - Wrap in `<DraggableChip id={task.id}>` (dnd-kit `useDraggable`)
 - Apply drag ghost styles during drag
 
 **`src/utils/matrixUtils.ts`**
+
 - Add `quadrantToPriorityUrgency(quadrant: QuadrantKey): { priority: Priority; urgency: Urgency }` — inverse of `getQuadrant`
 
 ### Implementation Notes
@@ -283,15 +310,17 @@ Dragging a chip from one quadrant and dropping it on another updates the task's 
 
 ### Problem
 
-Currently `completeTask` on a cyclic task overwrites `lastCompletedAt` in-place. There is no history of past completions. Analytics can only see whether a cyclic task has *ever* been completed, not how often or when.
+Currently `completeTask` on a cyclic task overwrites `lastCompletedAt` in-place. There is no history of past completions. Analytics can only see whether a cyclic task has _ever_ been completed, not how often or when.
 
 ### New Files
 
 **`src/types/taskInstance.ts`**
+
 - `TaskInstance { id, taskId, completedAt, categoryIds }`
 - `categoryIds` is snapshotted from the task at completion time so analytics remain accurate even if categories later change
 
 **`src/services/db/instanceService.ts`**
+
 - `recordInstance(task: CyclicTask): Promise<TaskInstance>`
 - `listInstancesForTask(taskId): Promise<TaskInstance[]>`
 - `listAllInstances(): Promise<TaskInstance[]>`
@@ -299,12 +328,15 @@ Currently `completeTask` on a cyclic task overwrites `lastCompletedAt` in-place.
 ### Changes to Existing Files
 
 **`src/services/db/schema.ts`** + **`src/services/db/db.ts`**
+
 - Add schema v4: `taskInstances: '&id, taskId, completedAt'`
 
 **`src/services/db/taskService.ts`**
+
 - In `completeTask`, after updating the cyclic task: call `instanceService.recordInstance(task)` before scheduling `nextDueAt`
 
 **`src/services/sync/fileSyncService.ts`**
+
 - Include `taskInstances` in export/import snapshot
 
 ### Done When
@@ -322,10 +354,12 @@ Completing a recurring task creates a `TaskInstance` row in IndexedDB. Completin
 ### Changes to Existing Files
 
 **`src/utils/analyticsUtils.ts`**
+
 - Update `getCategoryCompletionStats` to accept `instances: TaskInstance[]` alongside `tasks`; count each instance as a completion event attributed to its snapshotted `categoryIds`
 - Update `getCompletionsByPeriod` similarly — bucket by `instance.completedAt`
 
 **`src/views/CategoryAnalyticsView.tsx`**
+
 - Load `instanceService.listAllInstances()` on mount
 - Pass instances to both analytics util functions
 
@@ -350,22 +384,27 @@ The current `SettingsView` has a minimal stub focused on notifications and file 
 Reorganise into labelled sections:
 
 **Appearance**
+
 - Theme toggle: Classic / Dusk (segmented control)
 
 **Focus & Engagement**
+
 - Animations: on/off toggle
 - Sound effects: on/off toggle
 
 **Notifications**
+
 - Enable/disable toggle (existing)
 - Permission state badge (existing)
 
 **Data & Sync**
+
 - File sync: directory picker + current path + manual export/import buttons (existing)
 - Export data as JSON (manual trigger)
 - Import data from JSON
 
 **About**
+
 - App version (read from `package.json` via `import.meta.env` or a build-time constant)
 
 ### Implementation Notes
@@ -387,21 +426,26 @@ Opening `/settings` shows all sections. Toggling animations/sounds takes effect 
 ### Changes to Existing Files
 
 **`src/components/AppHeader.tsx`** (from M1)
+
 - On `md:` and above: show nav links inline as today
 - Below `md:`: show a hamburger button (☰) that toggles a slide-down or overlay drawer containing the nav links and CTA
 - Use local `useState` for drawer open/close; close on nav (route change via `useLocation` effect)
 
 **`src/components/matrix/EisenhowerMatrix.tsx`**
+
 - Below `sm:` breakpoint: stack quadrants vertically in Q1 → Q2 → Q3 → Q4 order (most actionable first)
 - Each quadrant scrolls independently at full width
 
 **`src/views/TaskListView.tsx`**
+
 - Category filter tabs: scroll horizontally on small screens (`overflow-x-auto flex-nowrap`) rather than wrapping
 
 **`src/components/task/TaskCard.tsx`**
+
 - Ensure action buttons (edit, delete) have adequate tap target size (`min-h-[44px] min-w-[44px]`) per mobile HIG
 
 **`src/views/CategoryAnalyticsView.tsx`**
+
 - Charts: `ResponsiveContainer` already handles width; ensure chart container has adequate height on small screens (min `h-48`)
 
 ### Done When
@@ -417,17 +461,20 @@ App is usable at 375px viewport width. Nav is accessible via hamburger. Matrix s
 ### New Files
 
 **`src/utils/calendarUtils.ts`**
+
 - `buildGoogleCalendarUrl(task: Task): string` — constructs a `https://calendar.google.com/calendar/render?action=TEMPLATE&...` URL with title, description (notes), start time (now), end time (now + estimatedMinutes), and details
 - `buildIcsContent(task: Task): string` — generates a minimal RFC 5545 `.ics` string (VCALENDAR > VEVENT with DTSTART, DTEND, SUMMARY, DESCRIPTION)
 - `downloadIcs(task: Task): void` — creates a Blob URL and triggers a download
 
 **`src/__tests__/utils/calendarUtils.test.ts`**
+
 - `buildGoogleCalendarUrl` produces a valid URL with correct query params
 - `buildIcsContent` produces a string with required iCal fields
 
 ### Changes to Existing Files
 
 **`src/components/task/TaskCard.tsx`**
+
 - Add a calendar icon button (📅) to the action row, visible only when `task.estimatedMinutes` is set
 - Opens a small popover/dropdown with two options: "Open in Google Calendar" (link) and "Download .ics"
 
@@ -446,16 +493,16 @@ Clicking the calendar button on a task with `estimatedMinutes` set shows two opt
 
 ## Existing Systems Reference
 
-| System | Path | Notes for v2 |
-|---|---|---|
-| Task service | `src/services/db/taskService.ts` | Extend for `uncompleteTask` (M2), `categoryIds` (M4) |
-| Task store | `src/store/taskStore.ts` | Add `uncompleteStep`, `uncompleteTask` (M2); focus integration (M3) |
-| Category service | `src/services/db/categoryService.ts` | Update cascade for `categoryIds[]` (M4) |
-| Category store | `src/store/categoryStore.ts` | Inline create support (M4) |
-| Settings store | `src/store/settingsStore.ts` | Add `focusedTaskId` key (M3) |
-| Settings service | `src/services/settings/settingsService.ts` | Read/write focus key (M3) |
-| File sync service | `src/services/sync/fileSyncService.ts` | Include instances in snapshot (M7) |
-| useSortedTasks | `src/hooks/useSortedTasks.ts` | Update priority comparator (M5) |
-| matrixUtils | `src/utils/matrixUtils.ts` | Add inverse mapping (M6) |
-| analyticsUtils | `src/utils/analyticsUtils.ts` | Add instance support (M8) |
-| Dexie DB | `src/services/db/db.ts` | v3 (categoryIds, M4), v4 (taskInstances, M7) |
+| System            | Path                                       | Notes for v2                                                        |
+| ----------------- | ------------------------------------------ | ------------------------------------------------------------------- |
+| Task service      | `src/services/db/taskService.ts`           | Extend for `uncompleteTask` (M2), `categoryIds` (M4)                |
+| Task store        | `src/store/taskStore.ts`                   | Add `uncompleteStep`, `uncompleteTask` (M2); focus integration (M3) |
+| Category service  | `src/services/db/categoryService.ts`       | Update cascade for `categoryIds[]` (M4)                             |
+| Category store    | `src/store/categoryStore.ts`               | Inline create support (M4)                                          |
+| Settings store    | `src/store/settingsStore.ts`               | Add `focusedTaskId` key (M3)                                        |
+| Settings service  | `src/services/settings/settingsService.ts` | Read/write focus key (M3)                                           |
+| File sync service | `src/services/sync/fileSyncService.ts`     | Include instances in snapshot (M7)                                  |
+| useSortedTasks    | `src/hooks/useSortedTasks.ts`              | Update priority comparator (M5)                                     |
+| matrixUtils       | `src/utils/matrixUtils.ts`                 | Add inverse mapping (M6)                                            |
+| analyticsUtils    | `src/utils/analyticsUtils.ts`              | Add instance support (M8)                                           |
+| Dexie DB          | `src/services/db/db.ts`                    | v3 (categoryIds, M4), v4 (taskInstances, M7)                        |

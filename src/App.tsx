@@ -24,7 +24,17 @@ const CategoryAnalyticsView = lazy(() =>
     default: m.CategoryAnalyticsView,
   })),
 );
+const WheelListView = lazy(() =>
+  import("@/views/WheelListView").then((m) => ({ default: m.WheelListView })),
+);
+const WheelSetupView = lazy(() =>
+  import("@/views/WheelSetupView").then((m) => ({ default: m.WheelSetupView })),
+);
+const WheelView = lazy(() =>
+  import("@/views/WheelView").then((m) => ({ default: m.WheelView })),
+);
 import { RewardNotification } from "@/components/rewards/RewardNotification";
+import { AppHeader } from "@/components/AppHeader";
 import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
 import { useTheme } from "@/hooks/useTheme";
 import { useSettingsStore } from "@/store/settingsStore";
@@ -44,29 +54,32 @@ function AppShell() {
       });
     useCategoryStore.getState().loadCategories();
   }, []);
+
   const toggleTheme = () => setTheme(theme === "classic" ? "dusk" : "classic");
+
   return (
     <>
+      <AppHeader theme={theme} onThemeToggle={toggleTheme} />
       <Suspense fallback={null}>
         <Routes>
+          <Route path="/" element={<TaskListView />} />
+          <Route path="/taskcycle" element={<TaskListView />} />
+          <Route path="/taskcycle/matrix" element={<MatrixView />} />
+          <Route path="/taskcycle/tasks/new" element={<TaskFormView />} />
+          <Route path="/taskcycle/tasks/:id/edit" element={<TaskFormView />} />
+          <Route path="/taskcycle/rewards" element={<RewardsView />} />
+          <Route path="/taskcycle/settings" element={<SettingsView />} />
           <Route
-            path="/"
-            element={<TaskListView theme={theme} onThemeToggle={toggleTheme} />}
+            path="/taskcycle/categories"
+            element={<CategoryManagementView />}
           />
           <Route
-            path="/taskcycle"
-            element={<TaskListView theme={theme} onThemeToggle={toggleTheme} />}
+            path="/taskcycle/analytics"
+            element={<CategoryAnalyticsView />}
           />
-          <Route
-            path="/matrix"
-            element={<MatrixView theme={theme} onThemeToggle={toggleTheme} />}
-          />
-          <Route path="/tasks/new" element={<TaskFormView />} />
-          <Route path="/tasks/:id/edit" element={<TaskFormView />} />
-          <Route path="/rewards" element={<RewardsView />} />
-          <Route path="/settings" element={<SettingsView />} />
-          <Route path="/categories" element={<CategoryManagementView />} />
-          <Route path="/analytics" element={<CategoryAnalyticsView />} />
+          <Route path="/taskcycle/wheels" element={<WheelListView />} />
+          <Route path="/taskcycle/wheels/new" element={<WheelSetupView />} />
+          <Route path="/taskcycle/wheels/:id" element={<WheelView />} />
         </Routes>
       </Suspense>
       <RewardNotification />

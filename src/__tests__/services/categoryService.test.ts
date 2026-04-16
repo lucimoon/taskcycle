@@ -52,7 +52,7 @@ describe('deleteCategory', () => {
     expect(cats).toHaveLength(0)
   })
 
-  it('clears categoryId from tasks that referenced it', async () => {
+  it('removes categoryId from tasks that referenced it', async () => {
     const cat = await createCategory(draft)
     const taskDraft: TaskDraft = {
       kind: 'once',
@@ -60,15 +60,15 @@ describe('deleteCategory', () => {
       steps: [],
       priority: 1,
       urgency: 1,
-      categoryId: cat.id,
+      categoryIds: [cat.id],
     }
     const task = await createTask(taskDraft)
-    expect(task.categoryId).toBe(cat.id)
+    expect(task.categoryIds).toContain(cat.id)
 
     await deleteCategory(cat.id)
 
     const updated = await db.tasks.get(task.id)
-    expect(updated?.categoryId).toBeUndefined()
+    expect(updated?.categoryIds).not.toContain(cat.id)
   })
 
   it('does not affect tasks in other categories', async () => {
@@ -80,12 +80,12 @@ describe('deleteCategory', () => {
       steps: [],
       priority: 2,
       urgency: 2,
-      categoryId: cat2.id,
+      categoryIds: [cat2.id],
     }
     const task = await createTask(taskDraft)
     await deleteCategory(cat1.id)
 
     const unchanged = await db.tasks.get(task.id)
-    expect(unchanged?.categoryId).toBe(cat2.id)
+    expect(unchanged?.categoryIds).toContain(cat2.id)
   })
 })

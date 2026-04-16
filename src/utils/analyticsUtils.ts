@@ -29,8 +29,8 @@ export function getCategoryCompletionStats(
     .map((cat) => {
       const bucket =
         cat.id === "__none__"
-          ? tasks.filter((t) => !t.categoryId)
-          : tasks.filter((t) => t.categoryId === cat.id);
+          ? tasks.filter((t) => !t.categoryIds?.length)
+          : tasks.filter((t) => t.categoryIds?.includes(cat.id));
       const total = bucket.length;
       const completed = bucket.filter((t) => t.completedAt).length;
       return {
@@ -72,8 +72,10 @@ export function getCompletionsByPeriod(
       for (const t of completed) {
         const completedAt = new Date(t.completedAt!);
         if (completedAt >= d && completedAt < next) {
-          const key = t.categoryId ?? "__none__";
-          completions[key] = (completions[key] ?? 0) + 1;
+          const keys = t.categoryIds?.length ? t.categoryIds : ['__none__']
+          for (const key of keys) {
+            completions[key] = (completions[key] ?? 0) + 1
+          }
         }
       }
       return { label, completions };
@@ -108,8 +110,10 @@ export function getCompletionsByPeriod(
     for (const task of completed) {
       const completedAt = new Date(task.completedAt!);
       if (completedAt >= bucketStart && completedAt <= bucketEnd) {
-        const key = task.categoryId ?? "__none__";
-        completions[key] = (completions[key] ?? 0) + 1;
+        const keys = task.categoryIds?.length ? task.categoryIds : ['__none__']
+        for (const key of keys) {
+          completions[key] = (completions[key] ?? 0) + 1
+        }
       }
     }
 

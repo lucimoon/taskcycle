@@ -1,57 +1,45 @@
-import { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useTaskStore } from '@/store/taskStore'
-import { TaskForm } from '@/components/task/TaskForm'
-import type { TaskDraft } from '@/types/task'
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useTaskStore } from "@/store/taskStore";
+import { TaskForm } from "@/components/task/TaskForm";
+import type { TaskDraft } from "@/types/task";
 
 export function TaskFormView() {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const { tasks, loadTasks, addTask, updateTask } = useTaskStore()
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { tasks, loadTasks, addTask, updateTask } = useTaskStore();
 
   useEffect(() => {
-    loadTasks()
-  }, [loadTasks])
+    loadTasks();
+  }, [loadTasks]);
 
-  const existing = id ? tasks.find((t) => t.id === id) : undefined
+  const existing = id ? tasks.find((t) => t.id === id) : undefined;
 
   async function handleSubmit(draft: TaskDraft) {
     if (id && existing) {
-      await updateTask(id, draft as Parameters<typeof updateTask>[1])
+      await updateTask(id, draft as Parameters<typeof updateTask>[1]);
     } else {
-      await addTask(draft)
+      await addTask(draft);
     }
-    navigate('/')
+    navigate("/taskcycle");
   }
 
   if (id && tasks.length > 0 && !existing) {
-    navigate('/')
-    return null
+    navigate("/taskcycle");
+    return null;
   }
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate('/')}
-          className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
-          aria-label="Back to tasks"
-        >
-          ← Back
-        </button>
-        <span className="font-display font-bold text-xl text-ink">
-          {id ? 'Edit task' : 'New task'}
-        </span>
-      </header>
       <main className="max-w-2xl mx-auto px-4 py-6">
         <div className="card-glass rounded-2xl p-6">
           <TaskForm
             initial={existing}
             onSubmit={handleSubmit}
-            onCancel={() => navigate('/')}
+            onCancel={() => navigate("/taskcycle")}
           />
         </div>
       </main>
     </div>
-  )
+  );
 }

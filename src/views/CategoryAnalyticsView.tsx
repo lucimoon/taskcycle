@@ -1,47 +1,40 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTaskStore } from '@/store/taskStore'
-import { useCategoryStore } from '@/store/categoryStore'
-import { getCategoryCompletionStats, getCompletionsByPeriod } from '@/utils/analyticsUtils'
-import { CategoryPieChart } from '@/components/analytics/CategoryPieChart'
-import { CategoryBarChart } from '@/components/analytics/CategoryBarChart'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTaskStore } from "@/store/taskStore";
+import { useCategoryStore } from "@/store/categoryStore";
+import {
+  getCategoryCompletionStats,
+  getCompletionsByPeriod,
+} from "@/utils/analyticsUtils";
+import { CategoryPieChart } from "@/components/analytics/CategoryPieChart";
+import { CategoryBarChart } from "@/components/analytics/CategoryBarChart";
 
-type ChartType = 'distribution' | 'overtime'
-type Period = 'week' | 'month'
+type ChartType = "distribution" | "overtime";
+type Period = "week" | "month";
 
 export function CategoryAnalyticsView() {
-  const { tasks, loadTasks } = useTaskStore()
-  const { categories, loadCategories } = useCategoryStore()
-  const navigate = useNavigate()
-  const [chartType, setChartType] = useState<ChartType>('distribution')
-  const [period, setPeriod] = useState<Period>('week')
+  const { tasks, loadTasks } = useTaskStore();
+  const { categories, loadCategories } = useCategoryStore();
+  const navigate = useNavigate();
+  const [chartType, setChartType] = useState<ChartType>("distribution");
+  const [period, setPeriod] = useState<Period>("week");
 
   useEffect(() => {
-    loadTasks()
-    loadCategories()
-  }, [loadTasks, loadCategories])
+    loadTasks();
+    loadCategories();
+  }, [loadTasks, loadCategories]);
 
-  const stats = getCategoryCompletionStats(tasks, categories)
-  const periodStats = getCompletionsByPeriod(tasks, categories, period)
+  const stats = getCategoryCompletionStats(tasks, categories);
+  const periodStats = getCompletionsByPeriod(tasks, categories, period);
 
   return (
     <div className="mesh-bg min-h-screen">
-      <header className="bg-white/50 backdrop-blur-lg border-b border-white/60 shadow-sm px-6 py-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate('/')}
-          className="text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
-        >
-          ← Tasks
-        </button>
-        <span className="font-display font-bold text-xl text-ink">Analytics</span>
-      </header>
-
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {categories.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-ink/20 p-10 text-center space-y-3">
             <p className="text-ink/50">No categories yet.</p>
             <button
-              onClick={() => navigate('/categories')}
+              onClick={() => navigate("/taskcycle/categories")}
               className="rounded-full bg-coral text-white px-5 py-2.5 text-sm font-semibold btn-action shadow-md"
             >
               Set up categories
@@ -52,37 +45,45 @@ export function CategoryAnalyticsView() {
             <div className="flex items-center gap-3 flex-wrap">
               <div className="bg-white/50 backdrop-blur-sm rounded-full p-1 flex gap-1 border border-white/80">
                 <button
-                  onClick={() => setChartType('distribution')}
+                  onClick={() => setChartType("distribution")}
                   className={`rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
-                    chartType === 'distribution' ? 'bg-ink text-white' : 'text-ink hover:bg-white/40'
+                    chartType === "distribution"
+                      ? "bg-ink text-white"
+                      : "text-ink hover:bg-white/40"
                   }`}
                 >
                   Distribution
                 </button>
                 <button
-                  onClick={() => setChartType('overtime')}
+                  onClick={() => setChartType("overtime")}
                   className={`rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
-                    chartType === 'overtime' ? 'bg-ink text-white' : 'text-ink hover:bg-white/40'
+                    chartType === "overtime"
+                      ? "bg-ink text-white"
+                      : "text-ink hover:bg-white/40"
                   }`}
                 >
                   Over time
                 </button>
               </div>
 
-              {chartType === 'overtime' && (
+              {chartType === "overtime" && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-full p-1 flex gap-1 border border-white/80">
                   <button
-                    onClick={() => setPeriod('week')}
+                    onClick={() => setPeriod("week")}
                     className={`rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
-                      period === 'week' ? 'bg-ink text-white' : 'text-ink hover:bg-white/40'
+                      period === "week"
+                        ? "bg-ink text-white"
+                        : "text-ink hover:bg-white/40"
                     }`}
                   >
                     Week
                   </button>
                   <button
-                    onClick={() => setPeriod('month')}
+                    onClick={() => setPeriod("month")}
                     className={`rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
-                      period === 'month' ? 'bg-ink text-white' : 'text-ink hover:bg-white/40'
+                      period === "month"
+                        ? "bg-ink text-white"
+                        : "text-ink hover:bg-white/40"
                     }`}
                   >
                     Month
@@ -91,8 +92,8 @@ export function CategoryAnalyticsView() {
               )}
             </div>
 
-            <div className="card-glass rounded-2xl p-4">
-              {chartType === 'distribution' ? (
+            <div className="card-glass rounded-2xl p-4 min-h-48">
+              {chartType === "distribution" ? (
                 <CategoryPieChart stats={stats} />
               ) : (
                 <CategoryBarChart stats={periodStats} categories={categories} />
@@ -109,7 +110,9 @@ export function CategoryAnalyticsView() {
                     className="w-3 h-3 rounded-full shrink-0"
                     style={{ backgroundColor: s.category.color }}
                   />
-                  <span className="font-bold text-sm text-ink flex-1">{s.category.name}</span>
+                  <span className="font-bold text-sm text-ink flex-1">
+                    {s.category.name}
+                  </span>
                   <span className="text-xs text-ink/60">
                     {s.completed}/{s.total} done
                   </span>
@@ -123,5 +126,5 @@ export function CategoryAnalyticsView() {
         )}
       </main>
     </div>
-  )
+  );
 }
