@@ -93,21 +93,28 @@ export function SettingsView() {
             Features
           </h2>
           <ToggleRow
-            label="Analytics shortcut"
+            label="Analytics enabled"
             description="Display link to analytics view in app header"
             checked={settings.analyticsMenuEnabled}
             onChange={(v) => updateSettings({ analyticsMenuEnabled: v })}
           />
           <div className="border-t border-ink/10" />
           <ToggleRow
-            label="Categories shortcut"
+            label="Categories enabled"
             description="Display link to categories view in app header"
             checked={settings.categoriesMenuEnabled}
             onChange={(v) => updateSettings({ categoriesMenuEnabled: v })}
           />
           <div className="border-t border-ink/10" />
           <ToggleRow
-            label="Rewards shortcut"
+            label="Matrix enabled"
+            description="Display link to rewards view in app header"
+            checked={settings.matrixMenuEnabled}
+            onChange={(v) => updateSettings({ matrixMenuEnabled: v })}
+          />
+          <div className="border-t border-ink/10" />
+          <ToggleRow
+            label="Rewards enabled"
             description="Display link to rewards view in app header"
             checked={settings.rewardsMenuEnabled}
             onChange={(v) => updateSettings({ rewardsMenuEnabled: v })}

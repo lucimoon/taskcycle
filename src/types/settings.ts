@@ -3,6 +3,7 @@ export interface Settings {
   animationsEnabled: boolean;
   analyticsMenuEnabled: boolean;
   rewardsMenuEnabled: boolean;
+  matrixMenuEnabled: boolean;
   categoriesMenuEnabled: boolean;
   notificationsEnabled: boolean;
   syncDirectoryHandle?: FileSystemDirectoryHandle;
@@ -13,6 +14,7 @@ export const DEFAULT_SETTINGS: Settings = {
   animationsEnabled: true,
   notificationsEnabled: false,
   analyticsMenuEnabled: false,
-  rewardsMenuEnabled: true,
+  rewardsMenuEnabled: false,
   categoriesMenuEnabled: false,
+  matrixMenuEnabled: false,
 };

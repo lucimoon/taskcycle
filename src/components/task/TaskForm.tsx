@@ -1,69 +1,99 @@
-import { useState } from 'react'
-import type { Task, TaskDraft, TaskKind, Priority, Urgency, Step } from '@/types/task'
-import { KindToggle } from './KindToggle'
-import { StepList } from './StepList'
-import { PriorityUrgencyPicker } from './PriorityUrgencyPicker'
-import { CategoryPicker } from '@/components/category/CategoryPicker'
+import { useState } from "react";
+import type {
+  Task,
+  TaskDraft,
+  TaskKind,
+  Priority,
+  Urgency,
+  Step,
+} from "@/types/task";
+import { KindToggle } from "./KindToggle";
+import { StepList } from "./StepList";
+import { PriorityUrgencyPicker } from "./PriorityUrgencyPicker";
+import { CategoryPicker } from "@/components/category/CategoryPicker";
+import { useSettingsStore } from "../../store/settingsStore";
 
-type RecurUnit = 'minutes' | 'hours' | 'days'
+type RecurUnit = "minutes" | "hours" | "days";
 
 const RECUR_MULTIPLIERS: Record<RecurUnit, number> = {
   minutes: 1,
   hours: 60,
   days: 1440,
-}
+};
 
 function toRecurMinutes(amount: number, unit: RecurUnit): number {
-  return amount * RECUR_MULTIPLIERS[unit]
+  return amount * RECUR_MULTIPLIERS[unit];
 }
 
-const inputCls = 'glass-input'
-const labelCls = 'text-sm font-bold text-ink'
+const inputCls = "glass-input";
+const labelCls = "text-sm font-bold text-ink";
 
 interface TaskFormProps {
-  initial?: Task
-  onSubmit: (draft: TaskDraft) => void
-  onCancel: () => void
+  initial?: Task;
+  onSubmit: (draft: TaskDraft) => void;
+  onCancel: () => void;
 }
 
 export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
-  const [title, setTitle] = useState(initial?.title ?? '')
-  const [kind, setKind] = useState<TaskKind>(initial?.kind ?? 'once')
+  const [title, setTitle] = useState(initial?.title ?? "");
+  const [kind, setKind] = useState<TaskKind>(initial?.kind ?? "once");
   const initialDueDate =
-    initial?.kind === 'once' && initial.dueAt ? initial.dueAt.slice(0, 10) : ''
+    initial?.kind === "once" && initial.dueAt ? initial.dueAt.slice(0, 10) : "";
   const initialDueTime =
-    initial?.kind === 'once' && initial.dueAt ? initial.dueAt.slice(11, 16) : '22:00'
-  const [dueDate, setDueDate] = useState(initialDueDate)
-  const [dueTime, setDueTime] = useState(initialDueTime)
+    initial?.kind === "once" && initial.dueAt
+      ? initial.dueAt.slice(11, 16)
+      : "22:00";
+  const [dueDate, setDueDate] = useState(initialDueDate);
+  const [dueTime, setDueTime] = useState(initialDueTime);
   const [recurAmount, setRecurAmount] = useState(
-    initial?.kind === 'cyclic' ? Math.round(initial.recurAfterMinutes / 60) || 1 : 1,
-  )
+    initial?.kind === "cyclic"
+      ? Math.round(initial.recurAfterMinutes / 60) || 1
+      : 1,
+  );
   const [recurUnit, setRecurUnit] = useState<RecurUnit>(
-    initial?.kind === 'cyclic' && initial.recurAfterMinutes < 60 ? 'minutes' : 'hours',
-  )
-  const [steps, setSteps] = useState<Step[]>(initial?.steps ?? [])
-  const [priority, setPriority] = useState<Priority>(initial?.priority ?? 2)
-  const [urgency, setUrgency] = useState<Urgency>(initial?.urgency ?? 2)
-  const [estimatedMinutes, setEstimatedMinutes] = useState(initial?.estimatedMinutes ?? '')
-  const [notes, setNotes] = useState(initial?.notes ?? '')
-  const [categoryIds, setCategoryIds] = useState<string[]>(initial?.categoryIds ?? [])
+    initial?.kind === "cyclic" && initial.recurAfterMinutes < 60
+      ? "minutes"
+      : "hours",
+  );
+  const [steps, setSteps] = useState<Step[]>(initial?.steps ?? []);
+  const [priority, setPriority] = useState<Priority>(initial?.priority ?? 2);
+  const [urgency, setUrgency] = useState<Urgency>(initial?.urgency ?? 2);
+  const [estimatedMinutes, setEstimatedMinutes] = useState(
+    initial?.estimatedMinutes ?? "",
+  );
+  const [notes, setNotes] = useState(initial?.notes ?? "");
+  const [categoryIds, setCategoryIds] = useState<string[]>(
+    initial?.categoryIds ?? [],
+  );
+  const { settings } = useSettingsStore();
 
   function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
     const base = {
       title: title.trim(),
       steps,
       priority,
       urgency,
-      estimatedMinutes: estimatedMinutes !== '' ? Number(estimatedMinutes) : undefined,
+      estimatedMinutes:
+        estimatedMinutes !== "" ? Number(estimatedMinutes) : undefined,
       notes: notes.trim() || undefined,
       categoryIds,
-    }
+    };
     const draft: TaskDraft =
-      kind === 'once'
-        ? { ...base, kind: 'once', dueAt: dueDate ? new Date(`${dueDate}T${dueTime}`).toISOString() : undefined }
-        : { ...base, kind: 'cyclic', recurAfterMinutes: toRecurMinutes(recurAmount, recurUnit) }
-    onSubmit(draft)
+      kind === "once"
+        ? {
+            ...base,
+            kind: "once",
+            dueAt: dueDate
+              ? new Date(`${dueDate}T${dueTime}`).toISOString()
+              : undefined,
+          }
+        : {
+            ...base,
+            kind: "cyclic",
+            recurAfterMinutes: toRecurMinutes(recurAmount, recurUnit),
+          };
+    onSubmit(draft);
   }
 
   return (
@@ -85,13 +115,17 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
       <KindToggle value={kind} onChange={setKind} />
 
       <div className="space-y-1.5">
-        <span className="text-sm font-bold text-ink">Category <span className="font-normal text-ink/50">(optional)</span></span>
+        <span className="text-sm font-bold text-ink">
+          Category <span className="font-normal text-ink/50">(optional)</span>
+        </span>
         <CategoryPicker value={categoryIds} onChange={setCategoryIds} />
       </div>
 
-      {kind === 'once' ? (
+      {kind === "once" ? (
         <div className="space-y-1.5">
-          <span className={labelCls}>Due date <span className="font-normal text-ink/50">(optional)</span></span>
+          <span className={labelCls}>
+            Due date <span className="font-normal text-ink/50">(optional)</span>
+          </span>
           <div className="flex gap-2">
             <input
               id="due-date"
@@ -123,7 +157,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
               onChange={(e) => setRecurAmount(Number(e.target.value) || 1)}
               min={1}
               className={inputCls}
-            style={{ width: '5rem' }}
+              style={{ width: "5rem" }}
             />
             <select
               value={recurUnit}
@@ -140,30 +174,43 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
 
       <StepList steps={steps} onChange={setSteps} />
 
-      <PriorityUrgencyPicker
-        priority={priority}
-        urgency={urgency}
-        onChange={(p, u) => { setPriority(p); setUrgency(u) }}
-      />
+      {settings.matrixMenuEnabled && (
+        <PriorityUrgencyPicker
+          priority={priority}
+          urgency={urgency}
+          onChange={(p, u) => {
+            setPriority(p);
+            setUrgency(u);
+          }}
+        />
+      )}
 
       <div className="flex gap-4">
         <div className="space-y-1.5">
-          <label htmlFor="est-minutes" className={labelCls}>Est. minutes</label>
+          <label htmlFor="est-minutes" className={labelCls}>
+            Est. minutes
+          </label>
           <input
             id="est-minutes"
             type="number"
             value={estimatedMinutes}
-            onChange={(e) => setEstimatedMinutes(e.target.value === '' ? '' : Number(e.target.value))}
+            onChange={(e) =>
+              setEstimatedMinutes(
+                e.target.value === "" ? "" : Number(e.target.value),
+              )
+            }
             min={1}
             placeholder="—"
             className={inputCls}
-            style={{ width: '7rem' }}
+            style={{ width: "7rem" }}
           />
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="notes" className={labelCls}>Notes</label>
+        <label htmlFor="notes" className={labelCls}>
+          Notes <span className="font-normal text-ink/50">(optional)</span>
+        </label>
         <textarea
           id="notes"
           value={notes}
@@ -191,5 +238,5 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }

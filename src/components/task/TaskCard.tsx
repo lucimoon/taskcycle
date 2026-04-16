@@ -1,6 +1,7 @@
 import type { Task, Priority, Urgency } from "@/types/task";
 import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/category/CategoryBadge";
+import { useSettingsStore } from "../../store/settingsStore";
 
 const PRIORITY_CHIP: Record<Priority, string> = {
   1: "bg-coral text-white",
@@ -58,12 +59,15 @@ export function TaskCard({
 }: TaskCardProps) {
   const completedSteps = task.steps.filter((s) => s.completedAt).length;
   const isDone = Boolean(task.completedAt);
+  const { settings } = useSettingsStore();
   const isCyclicDone =
     task.kind === "cyclic" &&
     Boolean(task.lastCompletedAt) &&
     Boolean(task.nextDueAt);
   const { categories } = useCategoryStore();
-  const taskCategories = categories.filter((c) => task.categoryIds?.includes(c.id));
+  const taskCategories = categories.filter((c) =>
+    task.categoryIds?.includes(c.id),
+  );
 
   return (
     <div
@@ -126,17 +130,23 @@ export function TaskCard({
       </div>
 
       <div className="flex flex-wrap gap-1.5 text-xs">
-        {taskCategories.map((cat) => <CategoryBadge key={cat.id} category={cat} />)}
-        <span
-          className={`rounded-full px-3 py-0.5 font-semibold ${PRIORITY_CHIP[task.priority]}`}
-        >
-          {PRIORITY_LABEL[task.priority]}
-        </span>
-        <span
-          className={`rounded-full px-3 py-0.5 font-semibold ${URGENCY_CHIP[task.urgency]}`}
-        >
-          {URGENCY_LABEL[task.urgency]}
-        </span>
+        {taskCategories.map((cat) => (
+          <CategoryBadge key={cat.id} category={cat} />
+        ))}
+        {settings.matrixMenuEnabled && (
+          <>
+            <span
+              className={`rounded-full px-3 py-0.5 font-semibold ${PRIORITY_CHIP[task.priority]}`}
+            >
+              {PRIORITY_LABEL[task.priority]}
+            </span>
+            <span
+              className={`rounded-full px-3 py-0.5 font-semibold ${URGENCY_CHIP[task.urgency]}`}
+            >
+              {URGENCY_LABEL[task.urgency]}
+            </span>
+          </>
+        )}
         {task.estimatedMinutes && (
           <span className="rounded-full bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-0.5 font-semibold text-ink">
             ~{task.estimatedMinutes}m

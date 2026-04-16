@@ -1,41 +1,43 @@
-import { useState } from 'react'
-import type { Step } from '@/types/task'
-import { StepRow } from './StepRow'
+import { useState } from "react";
+import type { Step } from "@/types/task";
+import { StepRow } from "./StepRow";
 
 interface StepListProps {
-  steps: Step[]
-  onChange: (steps: Step[]) => void
+  steps: Step[];
+  onChange: (steps: Step[]) => void;
 }
 
 export function StepList({ steps, onChange }: StepListProps) {
-  const [lastAddedId, setLastAddedId] = useState<string | null>(null)
+  const [lastAddedId, setLastAddedId] = useState<string | null>(null);
 
   function addStep() {
-    const newStep: Step = { id: crypto.randomUUID(), label: '' }
-    onChange([...steps, newStep])
-    setLastAddedId(newStep.id)
+    const newStep: Step = { id: crypto.randomUUID(), label: "" };
+    onChange([...steps, newStep]);
+    setLastAddedId(newStep.id);
   }
 
   function updateStep(index: number, updated: Step) {
-    const next = [...steps]
-    next[index] = updated
-    onChange(next)
+    const next = [...steps];
+    next[index] = updated;
+    onChange(next);
   }
 
   function removeStep(index: number) {
-    onChange(steps.filter((_, i) => i !== index))
+    onChange(steps.filter((_, i) => i !== index));
   }
 
   function moveStep(from: number, to: number) {
-    const next = [...steps]
-    const [moved] = next.splice(from, 1)
-    next.splice(to, 0, moved)
-    onChange(next)
+    const next = [...steps];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    onChange(next);
   }
 
   return (
     <div className="space-y-2">
-      <span className="text-sm font-bold text-ink">Steps</span>
+      <span className="text-sm font-bold text-ink">
+        Steps <span className="font-normal text-ink/50">(optional)</span>
+      </span>
       <div className="space-y-2">
         {steps.map((step, i) => (
           <StepRow
@@ -59,5 +61,5 @@ export function StepList({ steps, onChange }: StepListProps) {
         + Add step
       </button>
     </div>
-  )
+  );
 }

@@ -9,7 +9,6 @@ function getNavLinks(settings: Settings) {
   const links = [
     { label: "Tasks", path: "/taskcycle", exact: true },
     { label: "Wheels", path: "/taskcycle/wheels", exact: false },
-    { label: "Matrix", path: "/taskcycle/matrix", exact: false },
   ];
 
   if (settings.analyticsMenuEnabled) {
@@ -18,6 +17,10 @@ function getNavLinks(settings: Settings) {
       path: "/taskcycle/analytics",
       exact: false,
     });
+  }
+
+  if (settings.matrixMenuEnabled) {
+    links.push({ label: "Matrix", path: "/taskcycle/matrix", exact: false });
   }
 
   if (settings.categoriesMenuEnabled) {
