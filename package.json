@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "deploy": "git subtree push --prefix dist origin gh-pages",
     "test": "vitest",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui"

@@ -42,12 +42,14 @@ export function TaskListView() {
 
   return (
     <div className="mesh-bg min-h-screen overflow-x-clip">
-
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
         <div className="flex flex-wrap gap-3">
           {categories.length > 0 && (
             <div className="flex items-center gap-2 flex-1 min-w-[140px]">
-              <label htmlFor="category-filter" className="text-xs font-semibold text-ink/50 shrink-0">
+              <label
+                htmlFor="category-filter"
+                className="text-xs font-semibold text-ink/50 shrink-0"
+              >
                 Category
               </label>
               <select
@@ -59,7 +61,9 @@ export function TaskListView() {
                 <option value="">All</option>
                 <option value="__none__">Uncategorized</option>
                 {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -72,7 +76,7 @@ export function TaskListView() {
         </div>
         <TaskList
           tasks={sorted}
-          onEdit={(id) => navigate(`/tasks/${id}/edit`)}
+          onEdit={(id) => navigate(`/taskcycle/tasks/${id}/edit`)}
           onDelete={handleDelete}
           onComplete={(id) => completeTask(id)}
           onUncomplete={(id) => uncompleteTask(id)}
