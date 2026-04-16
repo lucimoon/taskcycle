@@ -44,9 +44,9 @@ function makeTask(
 describe("getCategoryCompletionStats", () => {
   it("returns stats for each category with tasks", () => {
     const tasks = [
-      makeTask({ categoryId: "cat-1" }),
-      makeTask({ categoryId: "cat-1", completedAt: new Date().toISOString() }),
-      makeTask({ categoryId: "cat-2" }),
+      makeTask({ categoryIds: ["cat-1"] }),
+      makeTask({ categoryIds: ["cat-1"], completedAt: new Date().toISOString() }),
+      makeTask({ categoryIds: ["cat-2"] }),
     ];
     const stats = getCategoryCompletionStats(tasks, [cat1, cat2]);
     const work = stats.find((s) => s.category.id === "cat-1")!;
@@ -59,13 +59,10 @@ describe("getCategoryCompletionStats", () => {
     expect(health.completed).toBe(0);
   });
 
-  it("includes uncategorized bucket for tasks without categoryId", () => {
+  it("includes uncategorized bucket for tasks without categoryIds", () => {
     const tasks = [
-      makeTask({ categoryId: undefined }),
-      makeTask({
-        categoryId: undefined,
-        completedAt: new Date().toISOString(),
-      }),
+      makeTask({}),
+      makeTask({ completedAt: new Date().toISOString() }),
     ];
     const stats = getCategoryCompletionStats(tasks, []);
     expect(stats).toHaveLength(1);
@@ -76,7 +73,7 @@ describe("getCategoryCompletionStats", () => {
   });
 
   it("omits categories with no tasks", () => {
-    const tasks = [makeTask({ categoryId: "cat-1" })];
+    const tasks = [makeTask({ categoryIds: ["cat-1"] })];
     const stats = getCategoryCompletionStats(tasks, [cat1, cat2]);
     expect(stats.find((s) => s.category.id === "cat-2")).toBeUndefined();
   });
@@ -87,7 +84,7 @@ describe("getCategoryCompletionStats", () => {
   });
 
   it("completionRate is 0 for categories with no completed tasks", () => {
-    const tasks = [makeTask({ categoryId: "cat-1" })];
+    const tasks = [makeTask({ categoryIds: ["cat-1"] })];
     const stats = getCategoryCompletionStats(tasks, [cat1]);
     expect(stats[0].completionRate).toBe(0);
   });
@@ -103,7 +100,7 @@ describe("getCompletionsByPeriod — week", () => {
     const today = new Date();
     today.setHours(12, 0, 0, 0);
     const tasks = [
-      makeTask({ categoryId: "cat-1", completedAt: today.toISOString() }),
+      makeTask({ categoryIds: ["cat-1"], completedAt: today.toISOString() }),
     ];
     const stats = getCompletionsByPeriod(tasks, [cat1], "week");
     const lastBucket = stats[stats.length - 1];
@@ -130,7 +127,7 @@ describe("getCompletionsByPeriod — month", () => {
     const today = new Date();
     today.setHours(12, 0, 0, 0);
     const tasks = [
-      makeTask({ categoryId: "cat-1", completedAt: today.toISOString() }),
+      makeTask({ categoryIds: ["cat-1"], completedAt: today.toISOString() }),
     ];
     const stats = getCompletionsByPeriod(tasks, [cat1], "month");
     const lastBucket = stats[stats.length - 1];

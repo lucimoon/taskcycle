@@ -16,8 +16,13 @@ const onceTask: Task = {
 }
 
 describe('getDueTasks', () => {
-  it('excludes once tasks', () => {
-    expect(getDueTasks([onceTask])).toHaveLength(0)
+  it('includes incomplete once tasks', () => {
+    expect(getDueTasks([onceTask])).toEqual([onceTask])
+  })
+
+  it('excludes completed once tasks', () => {
+    const completed = { ...onceTask, completedAt: '2024-01-02T00:00:00Z' }
+    expect(getDueTasks([completed])).toHaveLength(0)
   })
 
   it('includes cyclic tasks with no nextDueAt (never completed)', () => {

@@ -136,8 +136,8 @@ export function ChoreWheel({ tasks, categoryColors, rotation, isSpinning, onSpin
             const start = i * sliceAngle
             const end = (i + 1) * sliceAngle
             const mid = (i + 0.5) * sliceAngle
-            const color = task.categoryId
-              ? (categoryColors[task.categoryId] ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length])
+            const color = task.categoryIds?.[0]
+              ? (categoryColors[task.categoryIds[0]] ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length])
               : DEFAULT_COLORS[i % DEFAULT_COLORS.length]
 
             const labelR = (R + INNER_R) / 2 + 4

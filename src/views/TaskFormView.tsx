@@ -1,32 +1,32 @@
-import { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useTaskStore } from '@/store/taskStore'
-import { TaskForm } from '@/components/task/TaskForm'
-import type { TaskDraft } from '@/types/task'
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useTaskStore } from "@/store/taskStore";
+import { TaskForm } from "@/components/task/TaskForm";
+import type { TaskDraft } from "@/types/task";
 
 export function TaskFormView() {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const { tasks, loadTasks, addTask, updateTask } = useTaskStore()
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { tasks, loadTasks, addTask, updateTask } = useTaskStore();
 
   useEffect(() => {
-    loadTasks()
-  }, [loadTasks])
+    loadTasks();
+  }, [loadTasks]);
 
-  const existing = id ? tasks.find((t) => t.id === id) : undefined
+  const existing = id ? tasks.find((t) => t.id === id) : undefined;
 
   async function handleSubmit(draft: TaskDraft) {
     if (id && existing) {
-      await updateTask(id, draft as Parameters<typeof updateTask>[1])
+      await updateTask(id, draft as Parameters<typeof updateTask>[1]);
     } else {
-      await addTask(draft)
+      await addTask(draft);
     }
-    navigate('/')
+    navigate("/taskcycle");
   }
 
   if (id && tasks.length > 0 && !existing) {
-    navigate('/')
-    return null
+    navigate("/taskcycle");
+    return null;
   }
 
   return (
@@ -36,10 +36,10 @@ export function TaskFormView() {
           <TaskForm
             initial={existing}
             onSubmit={handleSubmit}
-            onCancel={() => navigate('/')}
+            onCancel={() => navigate("/taskcycle")}
           />
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -90,8 +90,8 @@ export function WheelView() {
     setSpinState("idle");
   }
 
-  const selectedCategory = selectedTask?.categoryId
-    ? categories.find((c) => c.id === selectedTask.categoryId)
+  const selectedCategory = selectedTask?.categoryIds?.[0]
+    ? categories.find((c) => c.id === selectedTask.categoryIds![0])
     : undefined;
 
   const canSpin =
@@ -116,6 +116,7 @@ export function WheelView() {
             <p className="text-ink/50 text-sm">
               No tasks due right now in this wheel's categories.
             </p>
+            <p className="text-ink/50 text-sm">Add tasks to spin!</p>
           </div>
         ) : (
           <ChoreWheel

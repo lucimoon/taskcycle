@@ -30,8 +30,8 @@ export function TaskListView() {
     categoryFilter === null
       ? tasks
       : categoryFilter === "__none__"
-        ? tasks.filter((t) => !t.categoryId)
-        : tasks.filter((t) => t.categoryId === categoryFilter);
+        ? tasks.filter((t) => !t.categoryIds?.length)
+        : tasks.filter((t) => t.categoryIds?.includes(categoryFilter));
   const sorted = useSortedTasks(filteredTasks, sort);
 
   function handleDelete(id: string) {

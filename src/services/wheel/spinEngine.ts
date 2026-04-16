@@ -3,7 +3,7 @@ import type { Wheel } from '@/types/wheel'
 
 export function getEligibleTasks(wheel: Wheel, dueTasks: Task[]): Task[] {
   const inCategory = dueTasks.filter(
-    (t) => !wheel.categoryIds.length || wheel.categoryIds.includes(t.categoryId ?? ''),
+    (t) => !wheel.categoryIds.length || (t.categoryIds ?? []).some((id) => wheel.categoryIds.includes(id)),
   )
 
   if (wheel.mode === 'free') return inCategory

@@ -1,56 +1,98 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-bg:           #FFF8F5;
-  --color-surface:      rgba(255,255,255,0.65);
-  --color-glass:        rgba(255,255,255,0.45);
-  --color-coral:        #FF6B6B;
-  --color-amber:        #FF9F3C;
-  --color-sunny:        #FFD93D;
-  --color-mint:         #52C99B;
-  --color-lavender:     #9B8FFF;
-  --color-sky:          #74C0FC;
-  --color-ink:          #2D2D3A;
-  --color-ink-muted:    rgba(45,45,58,0.5);
+  --color-bg: #fff8f5;
+  --color-surface: rgba(255, 255, 255, 0.65);
+  --color-glass: rgba(255, 255, 255, 0.45);
+  --color-coral: #ff6b6b;
+  --color-amber: #ff9f3c;
+  --color-sunny: #ffd93d;
+  --color-mint: #52c99b;
+  --color-lavender: #9b8fff;
+  --color-sky: #74c0fc;
+  --color-ink: #2d2d3a;
+  --color-ink-muted: rgba(45, 45, 58, 0.5);
 
-  --font-display: 'Bricolage Grotesque', sans-serif;
-  --font-body:    'Plus Jakarta Sans', sans-serif;
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
 
-  --animate-slide-up:            slide-up             200ms ease-out;
-  --animate-pop-in:              pop-in               200ms cubic-bezier(0.34,1.56,0.64,1);
-  --animate-bounce-in:           bounce-in            350ms cubic-bezier(0.34,1.56,0.64,1) both;
-  --animate-step-pop:            step-pop             500ms ease-out;
-  --animate-notification-bounce: notification-bounce  400ms cubic-bezier(0.34,1.56,0.64,1);
+  --animate-slide-up: slide-up 200ms ease-out;
+  --animate-pop-in: pop-in 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-bounce-in: bounce-in 350ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-step-pop: step-pop 500ms ease-out;
+  --animate-notification-bounce: notification-bounce 400ms
+    cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes slide-up {
-  from { transform: translateY(100%); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes pop-in {
-  0%   { transform: scale(0.8) translateY(8px); opacity: 0; }
-  70%  { transform: scale(1.04) translateY(-2px); opacity: 1; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
+  0% {
+    transform: scale(0.8) translateY(8px);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.04) translateY(-2px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes bounce-in {
-  0%   { transform: scale(0.8) translateY(8px); opacity: 0; }
-  70%  { transform: scale(1.04) translateY(-2px); opacity: 1; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
+  0% {
+    transform: scale(0.8) translateY(8px);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.04) translateY(-2px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes step-pop {
-  0%   { transform: scale(1); }
-  30%  { transform: scale(1.12); background-color: var(--color-mint); }
-  100% { transform: scale(1); background-color: transparent; }
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.12);
+    background-color: var(--color-mint);
+  }
+  100% {
+    transform: scale(1);
+    background-color: transparent;
+  }
 }
 
 @keyframes notification-bounce {
-  0%   { transform: translateX(-50%) translateY(120%) scale(0.95); opacity: 0; }
-  60%  { transform: translateX(-50%) translateY(-6px) scale(1.01); opacity: 1; }
-  100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+  0% {
+    transform: translateX(-50%) translateY(120%) scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-50%) translateY(-6px) scale(1.01);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 @layer base {
@@ -59,41 +101,53 @@
     background-color: var(--color-bg);
     color: var(--color-ink);
   }
+
+  button {
+    cursor: pointer;
+  }
 }
 
 /* ── Dusk theme ─────────────────────────────────────────────────── */
 [data-theme="dusk"] {
-  --color-bg:        #16132A;
-  --color-ink:       #EDE9F8;
+  --color-bg: #16132a;
+  --color-ink: #ede9f8;
   --color-ink-muted: rgba(237, 233, 248, 0.5);
 }
 
 [data-theme="dusk"] .mesh-bg {
   background:
-    radial-gradient(at 15% 25%, #2E1B5C 0%, transparent 45%),
-    radial-gradient(at 85% 10%, #152A4A 0%, transparent 45%),
+    radial-gradient(at 15% 25%, #2e1b5c 0%, transparent 45%),
+    radial-gradient(at 85% 10%, #152a4a 0%, transparent 45%),
     radial-gradient(at 65% 85%, #231650 0%, transparent 50%),
-    radial-gradient(at 5%  80%, #143830 0%, transparent 45%),
-    #16132A;
+    radial-gradient(at 5% 80%, #143830 0%, transparent 45%), #16132a;
 }
 
 [data-theme="dusk"] .card-glass {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.10);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.3);
+}
+[data-theme="dusk"] .bg-mint\/20 {
+  background: initial;
 }
 
 /* Glass surfaces (headers, pill buttons) */
 [data-theme="dusk"] .bg-white\/60,
 [data-theme="dusk"] .bg-white\/50 {
-  background-color: rgba(255, 255, 255, 0.07) !important;
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dusk"] .bg-ink {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 [data-theme="dusk"] .bg-white\/40 {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 [data-theme="dusk"] .border-white\/80,
 [data-theme="dusk"] .border-white\/60 {
-  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 [data-theme="dusk"] .glass-input {
@@ -101,23 +155,27 @@
   border-color: rgba(255, 255, 255, 0.14);
   color: var(--color-ink);
 }
+
 [data-theme="dusk"] .glass-input:focus {
   border-color: rgba(255, 107, 107, 0.5);
 }
 [data-theme="dusk"] .glass-input option {
-  background: #1E1B35;
-  color: #EDE9F8;
+  background: #1e1b35;
+  color: #ede9f8;
+}
+
+[data-theme="dusk"] .text-ink\/60 {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 @layer components {
   /* Gradient mesh background */
   .mesh-bg {
     background:
-      radial-gradient(at 15% 25%, #FFB5A7 0%, transparent 45%),
-      radial-gradient(at 85% 10%, #C3F0FF 0%, transparent 45%),
-      radial-gradient(at 65% 85%, #D4BBFF 0%, transparent 50%),
-      radial-gradient(at 5%  80%, #FFF5AD 0%, transparent 45%),
-      #FFF8F5;
+      radial-gradient(at 15% 25%, #ffb5a7 0%, transparent 45%),
+      radial-gradient(at 85% 10%, #c3f0ff 0%, transparent 45%),
+      radial-gradient(at 65% 85%, #d4bbff 0%, transparent 50%),
+      radial-gradient(at 5% 80%, #fff5ad 0%, transparent 45%), #fff8f5;
   }
 
   /* Glass card */
@@ -126,15 +184,17 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.85);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.07),
+      0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
   /* Glass input */
   .glass-input {
-    background: rgba(255, 255, 255, 0.70);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.60);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 0.75rem;
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
@@ -142,7 +202,9 @@
     color: var(--color-ink);
     outline: none;
     width: 100%;
-    transition: box-shadow 120ms ease, border-color 120ms ease;
+    transition:
+      box-shadow 120ms ease,
+      border-color 120ms ease;
   }
   .glass-input:focus {
     box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.22);
@@ -154,7 +216,9 @@
 
   /* Spring button */
   .btn-action {
-    transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 120ms ease;
+    transition:
+      transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 120ms ease;
   }
   .btn-action:hover:not(:disabled) {
     transform: translateY(-2px) scale(1.02);

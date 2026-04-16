@@ -22,6 +22,12 @@ class TaskCycleDB extends Dexie {
     this.version(1).stores(SCHEMA.v1)
     this.version(2).stores(SCHEMA.v2)
     this.version(3).stores(SCHEMA.v3)
+    this.version(4).stores(SCHEMA.v4).upgrade((tx) =>
+      tx.table('tasks').toCollection().modify((task: any) => {
+        task.categoryIds = task.categoryId ? [task.categoryId] : []
+        delete task.categoryId
+      }),
+    )
   }
 }
 

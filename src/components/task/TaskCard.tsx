@@ -63,9 +63,7 @@ export function TaskCard({
     Boolean(task.lastCompletedAt) &&
     Boolean(task.nextDueAt);
   const { categories } = useCategoryStore();
-  const category = task.categoryId
-    ? categories.find((c) => c.id === task.categoryId)
-    : undefined;
+  const taskCategories = categories.filter((c) => task.categoryIds?.includes(c.id));
 
   return (
     <div
@@ -128,7 +126,7 @@ export function TaskCard({
       </div>
 
       <div className="flex flex-wrap gap-1.5 text-xs">
-        {category && <CategoryBadge category={category} />}
+        {taskCategories.map((cat) => <CategoryBadge key={cat.id} category={cat} />)}
         <span
           className={`rounded-full px-3 py-0.5 font-semibold ${PRIORITY_CHIP[task.priority]}`}
         >

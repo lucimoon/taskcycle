@@ -64,16 +64,22 @@ function AppShell() {
         <Routes>
           <Route path="/" element={<TaskListView />} />
           <Route path="/taskcycle" element={<TaskListView />} />
-          <Route path="/matrix" element={<MatrixView />} />
-          <Route path="/tasks/new" element={<TaskFormView />} />
-          <Route path="/tasks/:id/edit" element={<TaskFormView />} />
-          <Route path="/rewards" element={<RewardsView />} />
-          <Route path="/settings" element={<SettingsView />} />
-          <Route path="/categories" element={<CategoryManagementView />} />
-          <Route path="/analytics" element={<CategoryAnalyticsView />} />
-          <Route path="/wheels" element={<WheelListView />} />
-          <Route path="/wheels/new" element={<WheelSetupView />} />
-          <Route path="/wheels/:id" element={<WheelView />} />
+          <Route path="/taskcycle/matrix" element={<MatrixView />} />
+          <Route path="/taskcycle/tasks/new" element={<TaskFormView />} />
+          <Route path="/taskcycle/tasks/:id/edit" element={<TaskFormView />} />
+          <Route path="/taskcycle/rewards" element={<RewardsView />} />
+          <Route path="/taskcycle/settings" element={<SettingsView />} />
+          <Route
+            path="/taskcycle/categories"
+            element={<CategoryManagementView />}
+          />
+          <Route
+            path="/taskcycle/analytics"
+            element={<CategoryAnalyticsView />}
+          />
+          <Route path="/taskcycle/wheels" element={<WheelListView />} />
+          <Route path="/taskcycle/wheels/new" element={<WheelSetupView />} />
+          <Route path="/taskcycle/wheels/:id" element={<WheelView />} />
         </Routes>
       </Suspense>
       <RewardNotification />

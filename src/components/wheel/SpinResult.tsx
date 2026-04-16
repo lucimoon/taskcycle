@@ -35,7 +35,7 @@ export function SpinResult({ task, category, onComplete, onSkip }: Props) {
             <div className="shrink-0 text-4xl mt-1">🎯</div>
           </div>
 
-          {(task.categoryId || task.estimatedMinutes || task.notes) && (
+          {(task.categoryIds?.length || task.estimatedMinutes || task.notes) && (
             <div className="flex flex-wrap items-center gap-2">
               {category && <CategoryBadge category={category} />}
               {task.estimatedMinutes && (
