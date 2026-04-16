@@ -13,6 +13,8 @@ export async function getSettings(): Promise<Settings> {
       DEFAULT_SETTINGS.analyticsMenuEnabled) as boolean,
     rewardsMenuEnabled: (map.rewardsMenuEnabled ??
       DEFAULT_SETTINGS.rewardsMenuEnabled) as boolean,
+    matrixMenuEnabled: (map.matrixMenuEnabled ??
+      DEFAULT_SETTINGS.matrixMenuEnabled) as boolean,
     animationsEnabled: (map.animationsEnabled ??
       DEFAULT_SETTINGS.animationsEnabled) as boolean,
     notificationsEnabled: (map.notificationsEnabled ??
@@ -26,8 +28,12 @@ export async function getSettings(): Promise<Settings> {
 export async function saveSettings(s: Settings): Promise<void> {
   const entries: Array<{ key: string; value: unknown }> = [
     { key: "audioEnabled", value: s.audioEnabled },
+    { key: "categoriesMenuEnabled", value: s.categoriesMenuEnabled },
+    { key: "analyticsMenuEnabled", value: s.analyticsMenuEnabled },
+    { key: "rewardsMenuEnabled", value: s.rewardsMenuEnabled },
     { key: "animationsEnabled", value: s.animationsEnabled },
     { key: "notificationsEnabled", value: s.notificationsEnabled },
+    { key: "matrixMenuEnabled", value: s.matrixMenuEnabled },
     { key: "syncDirectoryHandle", value: s.syncDirectoryHandle },
   ];
   await db.settings.bulkPut(entries);
