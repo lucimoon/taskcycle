@@ -31,7 +31,7 @@ export function CategoryBarChart({ stats, categories }: CategoryBarChartProps) {
       <BarChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
         <XAxis dataKey="label" tick={{ fontSize: 11 }} />
         <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
-        <Tooltip />
+        <Tooltip wrapperStyle={{ zIndex: 50 }} />
         <Legend />
         {allBars.map((bar) => (
           <Bar

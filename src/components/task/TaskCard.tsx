@@ -65,7 +65,8 @@ export function TaskCard({
   const isCyclicDone =
     task.kind === "cyclic" &&
     Boolean(task.lastCompletedAt) &&
-    Boolean(task.nextDueAt);
+    Boolean(task.nextDueAt) &&
+    new Date(task.nextDueAt!) > new Date();
   const { categories } = useCategoryStore();
   const taskCategories = categories.filter((c) =>
     task.categoryIds?.includes(c.id),
@@ -99,6 +100,15 @@ export function TaskCard({
             </span>
           )}
           {isDone && task.kind === "once" && onUncomplete && (
+            <button
+              type="button"
+              onClick={onUncomplete}
+              className="text-xs text-ink/40 hover:text-ink underline transition-colors ml-1"
+            >
+              Undo
+            </button>
+          )}
+          {isCyclicDone && onUncomplete && (
             <button
               type="button"
               onClick={onUncomplete}
@@ -164,7 +174,7 @@ export function TaskCard({
             ~{task.estimatedMinutes}m
           </span>
         )}
-        {task.steps.length > 0 && (
+        {task.steps.length > 0 && !isCyclicDone && (
           <button
             type="button"
             onClick={onToggleExpand}
@@ -175,7 +185,7 @@ export function TaskCard({
             {completedSteps}/{task.steps.length} steps {expanded ? "▲" : "▼"}
           </button>
         )}
-        {task.steps.length === 0 && !isDone && onComplete && (
+        {task.steps.length === 0 && !isDone && !isCyclicDone && onComplete && (
           <button
             type="button"
             onClick={onComplete}

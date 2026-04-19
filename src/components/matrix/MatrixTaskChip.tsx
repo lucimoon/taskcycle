@@ -32,7 +32,7 @@ export function MatrixTaskChip({ task }: Props) {
         {task.title}
       </button>
       {task.estimatedMinutes != null && (
-        <span className="shrink-0 rounded-full bg-white/80 px-2 py-0.5 text-xs font-bold text-ink">
+        <span className="shrink-0 rounded-full bg-ink/30 px-2 py-0.5 text-xs font-bold text-white/90">
           {task.estimatedMinutes}m
         </span>
       )}

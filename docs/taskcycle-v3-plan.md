@@ -114,6 +114,12 @@ Add `@dnd-kit/core` and `@dnd-kit/sortable`.
 
 Dragging a chip from one quadrant and dropping it on another updates the task's priority/urgency and moves the chip to the correct quadrant immediately. Dropping back on the same quadrant is a no-op. The update persists across reload.
 
+### Polish (post-ship)
+
+- **Filter to incomplete tasks only** — Matrix shows only tasks that are not yet done (once tasks without `completedAt`; cyclic tasks not in their wait period). Completed tasks stay in the task list view.
+- **Time pill contrast** — Estimated-minutes pill should use a slightly darker background than the chip body with light/white text for legibility.
+- **Drag scroll prevention** — Dragging a chip near the edge of the grid was triggering horizontal/vertical page scroll. Fixed by disabling dnd-kit's built-in `autoScroll` on the `DndContext`.
+
 ---
 
 ## Milestone 3 — Analytics: Recurring Tasks
@@ -137,6 +143,13 @@ Dragging a chip from one quadrant and dropping it on another updates the task's 
 ### Done When
 
 Completing a recurring task multiple times shows multiple completions in the bar chart. The pie chart reflects recurring task contributions to category totals.
+
+### Polish (post-ship)
+
+- **Overdue recurring tasks show as active** — `isCyclicDone` is only true when `nextDueAt` is in the future. If the recurrence date has passed, the task reappears in the list as incomplete/actionable.
+- **Block re-completion of done cyclic tasks** — While `isCyclicDone`, hide the steps expand button and "Mark done" button so the task can't be completed a second time during the wait period.
+- **Undo for cyclic tasks** — Add an "Undo" button when `isCyclicDone` (same pattern as once-task undo) calling `uncompleteTask`.
+- **Bar chart tooltip z-index** — Recharts tooltip popup was rendering behind list elements; fixed via `wrapperStyle={{ zIndex: 50 }}` on `<Tooltip>`.
 
 ---
 

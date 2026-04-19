@@ -20,7 +20,7 @@ export function EisenhowerMatrix({ tasks }: Props) {
   )
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd} autoScroll={false}>
       <div className="relative sm:h-full">
         {/* Axis labels — desktop only */}
         <div aria-hidden="true" className="hidden sm:flex absolute -top-6 left-0 right-0 justify-center">
