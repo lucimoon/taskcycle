@@ -2,6 +2,7 @@ import type { Task, Priority, Urgency } from "@/types/task";
 import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/category/CategoryBadge";
 import { useSettingsStore } from "../../store/settingsStore";
+import { useFocusStore } from "@/store/focusStore";
 
 const PRIORITY_CHIP: Record<Priority, string> = {
   1: "bg-coral text-white",
@@ -60,6 +61,7 @@ export function TaskCard({
   const completedSteps = task.steps.filter((s) => s.completedAt).length;
   const isDone = Boolean(task.completedAt);
   const { settings } = useSettingsStore();
+  const { focusedTaskId, setFocus } = useFocusStore();
   const isCyclicDone =
     task.kind === "cyclic" &&
     Boolean(task.lastCompletedAt) &&
@@ -112,6 +114,16 @@ export function TaskCard({
           )}
         </div>
         <div className="flex gap-1 shrink-0">
+          {!isDone && !isCyclicDone && focusedTaskId !== task.id && (
+            <button
+              onClick={() => setFocus(task.id)}
+              aria-label="Focus on this task"
+              title="Focus"
+              className="rounded-full p-1.5 min-h-[44px] min-w-[44px] text-ink/40 hover:bg-sunny/20 hover:text-sunny transition-colors text-sm btn-action"
+            >
+              ⚡
+            </button>
+          )}
           <button
             onClick={() => onEdit(task.id)}
             aria-label="Edit task"

@@ -22,6 +22,7 @@ export async function getSettings(): Promise<Settings> {
     syncDirectoryHandle: map.syncDirectoryHandle as
       | FileSystemDirectoryHandle
       | undefined,
+    focusedTaskId: (map.focusedTaskId ?? null) as string | null,
   };
 }
 
@@ -35,6 +36,7 @@ export async function saveSettings(s: Settings): Promise<void> {
     { key: "notificationsEnabled", value: s.notificationsEnabled },
     { key: "matrixMenuEnabled", value: s.matrixMenuEnabled },
     { key: "syncDirectoryHandle", value: s.syncDirectoryHandle },
+    { key: "focusedTaskId", value: s.focusedTaskId ?? null },
   ];
   await db.settings.bulkPut(entries);
 }

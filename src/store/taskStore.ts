@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { Task, TaskDraft } from '@/types/task'
 import * as taskService from '@/services/db/taskService'
 import { useRewardStore } from '@/store/rewardStore'
+import { useSettingsStore } from '@/store/settingsStore'
 import { triggerTaskComplete, triggerStepComplete } from '@/services/audio/engagementService'
 import { syncIfConfigured } from '@/services/sync/fileSyncService'
 
@@ -41,6 +42,11 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
   removeTask: async (id) => {
     await taskService.deleteTask(id)
+    // Clear focus if the deleted task was focused
+    const { settings, updateSettings } = useSettingsStore.getState()
+    if (settings.focusedTaskId === id) {
+      await updateSettings({ focusedTaskId: null })
+    }
     const tasks = await taskService.listTasks()
     set({ tasks })
     syncIfConfigured()
@@ -48,6 +54,11 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
   completeTask: async (id) => {
     await taskService.completeTask(id)
+    // Clear focus if the completed task was focused
+    const { settings, updateSettings } = useSettingsStore.getState()
+    if (settings.focusedTaskId === id) {
+      await updateSettings({ focusedTaskId: null })
+    }
     const tasks = await taskService.listTasks()
     set({ tasks })
     await useRewardStore.getState().checkRewards(id)
