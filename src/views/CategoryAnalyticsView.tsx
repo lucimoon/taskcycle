@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTaskStore } from "@/store/taskStore";
 import { useCategoryStore } from "@/store/categoryStore";
+import { listAllInstances } from "@/services/db/instanceService";
+import type { TaskInstance } from "@/types/instance";
 import {
   getCategoryCompletionStats,
   getCompletionsByPeriod,
@@ -18,14 +20,16 @@ export function CategoryAnalyticsView() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState<ChartType>("distribution");
   const [period, setPeriod] = useState<Period>("week");
+  const [instances, setInstances] = useState<TaskInstance[]>([]);
 
   useEffect(() => {
     loadTasks();
     loadCategories();
+    listAllInstances().then(setInstances);
   }, [loadTasks, loadCategories]);
 
-  const stats = getCategoryCompletionStats(tasks, categories);
-  const periodStats = getCompletionsByPeriod(tasks, categories, period);
+  const stats = getCategoryCompletionStats(tasks, categories, instances);
+  const periodStats = getCompletionsByPeriod(tasks, categories, period, instances);
 
   return (
     <div className="mesh-bg min-h-screen">

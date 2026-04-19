@@ -24,4 +24,12 @@ export const SCHEMA = {
     categories: '&id, name',
     wheels: '&id, status, createdAt',
   },
+  v5: {
+    tasks: '&id, kind, priority, urgency, nextDueAt, dueAt, completedAt, createdAt, *categoryIds',
+    rewards: '&id',
+    settings: '&key',
+    categories: '&id, name',
+    wheels: '&id, status, createdAt',
+    instances: '&id, taskId, completedAt',
+  },
 }
