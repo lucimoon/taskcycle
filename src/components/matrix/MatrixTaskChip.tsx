@@ -1,32 +1,41 @@
-import { useDraggable } from '@dnd-kit/core'
-import { CSS } from '@dnd-kit/utilities'
-import { useNavigate } from 'react-router-dom'
-import type { Task } from '@/types/task'
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+import { useNavigate } from "react-router-dom";
+import type { Task } from "@/types/task";
 
 interface Props {
-  task: Task
+  task: Task;
 }
 
 export function MatrixTaskChip({ task }: Props) {
-  const navigate = useNavigate()
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: task.id })
+  const navigate = useNavigate();
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: task.id,
+    });
 
-  const style = transform ? { transform: CSS.Translate.toString(transform) } : undefined
+  const style = transform
+    ? { transform: CSS.Translate.toString(transform) }
+    : undefined;
 
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={[
-        'flex items-center gap-1.5 rounded-xl bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-1.5 text-sm font-medium w-full',
-        isDragging ? 'opacity-50 shadow-lg cursor-grabbing z-50' : 'cursor-grab',
-      ].join(' ')}
+        "flex items-center gap-1.5 rounded-xl bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-1.5 text-sm font-medium w-full",
+        isDragging
+          ? "opacity-50 shadow-lg cursor-grabbing z-50"
+          : "cursor-grab",
+      ].join(" ")}
       {...listeners}
       {...attributes}
     >
       <button
         type="button"
-        onClick={() => !isDragging && navigate(`/taskcycle/tasks/${task.id}/edit`)}
+        onClick={() =>
+          !isDragging && navigate(`/taskcycle/tasks/${task.id}/edit`)
+        }
         className="truncate flex-1 text-ink text-left transition-all hover:-translate-y-0.5 btn-action"
       >
         {task.title}
@@ -37,5 +46,5 @@ export function MatrixTaskChip({ task }: Props) {
         </span>
       )}
     </div>
-  )
+  );
 }
