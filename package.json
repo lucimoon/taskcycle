@@ -1,6 +1,6 @@
 {
   "name": "taskcycle",
-  "version": "1.0.0",
+  "version": "3.0.1",
   "private": true,
   "type": "module",
   "description": "An app for keeping track and completing one-off and cyclic tasks",
