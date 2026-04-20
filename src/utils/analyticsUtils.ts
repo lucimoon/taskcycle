@@ -1,6 +1,5 @@
 import type { Task } from "@/types/task";
 import type { Category } from "@/types/category";
-import type { TaskInstance } from "@/types/instance";
 
 export interface CategoryStat {
   category: Category;
@@ -24,7 +23,6 @@ const UNCATEGORIZED: Category = {
 export function getCategoryCompletionStats(
   tasks: Task[],
   categories: Category[],
-  instances: TaskInstance[] = [],
 ): CategoryStat[] {
   const all = [...categories, UNCATEGORIZED];
   return all
@@ -34,12 +32,11 @@ export function getCategoryCompletionStats(
           ? tasks.filter((t) => !t.categoryIds?.length)
           : tasks.filter((t) => t.categoryIds?.includes(cat.id));
       const total = bucket.length;
-      const onceDone = bucket.filter((t) => t.completedAt).length;
-      const instanceDone =
-        cat.id === "__none__"
-          ? instances.filter((inst) => !inst.categoryIds.length).length
-          : instances.filter((inst) => inst.categoryIds.includes(cat.id)).length;
-      const completed = onceDone + instanceDone;
+      const onceDone = bucket.filter((t) => t.kind === "once" && t.completedAt).length;
+      const cyclicDone = bucket
+        .filter((t) => t.kind === "cyclic")
+        .reduce((sum, t) => sum + (t.completionDates?.length ?? 0), 0);
+      const completed = onceDone + cyclicDone;
       return {
         category: cat,
         total,
@@ -54,9 +51,9 @@ export function getCompletionsByPeriod(
   tasks: Task[],
   categories: Category[],
   period: "week" | "month",
-  instances: TaskInstance[] = [],
 ): PeriodStat[] {
-  const completedTasks = tasks.filter((t) => t.completedAt);
+  const onceTasks = tasks.filter((t) => t.kind === "once" && t.completedAt);
+  const cyclicTasks = tasks.filter((t) => t.kind === "cyclic");
   const now = new Date();
   const allCategoryIds = [...categories.map((c) => c.id), "__none__"];
 
@@ -65,28 +62,31 @@ export function getCompletionsByPeriod(
     end: Date,
     completions: Record<string, number>,
   ) {
-    for (const t of completedTasks) {
+    // Once task completions
+    for (const t of onceTasks) {
       const completedAt = new Date(t.completedAt!);
       if (completedAt >= start && completedAt < end) {
-        const keys = t.categoryIds?.length ? t.categoryIds : ['__none__']
+        const keys = t.categoryIds?.length ? t.categoryIds : ["__none__"];
         for (const key of keys) {
-          completions[key] = (completions[key] ?? 0) + 1
+          completions[key] = (completions[key] ?? 0) + 1;
         }
       }
     }
-    for (const inst of instances) {
-      const completedAt = new Date(inst.completedAt)
-      if (completedAt >= start && completedAt < end) {
-        const keys = inst.categoryIds.length ? inst.categoryIds : ['__none__']
-        for (const key of keys) {
-          completions[key] = (completions[key] ?? 0) + 1
+    // Cyclic task completions — each entry in completionDates is one event
+    for (const t of cyclicTasks) {
+      for (const dateStr of t.completionDates ?? []) {
+        const completedAt = new Date(dateStr);
+        if (completedAt >= start && completedAt < end) {
+          const keys = t.categoryIds?.length ? t.categoryIds : ["__none__"];
+          for (const key of keys) {
+            completions[key] = (completions[key] ?? 0) + 1;
+          }
         }
       }
     }
   }
 
   if (period === "week") {
-    // Last 7 calendar days, one bucket per day
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(now);
       d.setDate(d.getDate() - (6 - i));
@@ -118,11 +118,9 @@ export function getCompletionsByPeriod(
     bucketStart.setDate(bucketStart.getDate() - end);
     bucketStart.setHours(0, 0, 0, 0);
     const bucketEnd = new Date(now);
-    bucketEnd.setDate(bucketEnd.getDate() - start);
-    bucketEnd.setHours(23, 59, 59, 999);
-    // Adjust bucketEnd to be exclusive (add 1ms)
-    bucketEnd.setMilliseconds(999)
-    return { bucketStart, bucketEnd: new Date(bucketEnd.getTime() + 1) };
+    bucketEnd.setDate(bucketEnd.getDate() - start + 1);
+    bucketEnd.setHours(0, 0, 0, 0);
+    return { bucketStart, bucketEnd };
   });
 
   return buckets.map(({ bucketStart, bucketEnd }) => {

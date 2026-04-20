@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTaskStore } from "@/store/taskStore";
 import { useCategoryStore } from "@/store/categoryStore";
-import { listAllInstances } from "@/services/db/instanceService";
-import type { TaskInstance } from "@/types/instance";
 import {
   getCategoryCompletionStats,
   getCompletionsByPeriod,
@@ -20,16 +18,14 @@ export function CategoryAnalyticsView() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState<ChartType>("distribution");
   const [period, setPeriod] = useState<Period>("week");
-  const [instances, setInstances] = useState<TaskInstance[]>([]);
 
   useEffect(() => {
     loadTasks();
     loadCategories();
-    listAllInstances().then(setInstances);
   }, [loadTasks, loadCategories]);
 
-  const stats = getCategoryCompletionStats(tasks, categories, instances);
-  const periodStats = getCompletionsByPeriod(tasks, categories, period, instances);
+  const stats = getCategoryCompletionStats(tasks, categories);
+  const periodStats = getCompletionsByPeriod(tasks, categories, period);
 
   return (
     <div className="mesh-bg min-h-screen">
@@ -96,7 +92,7 @@ export function CategoryAnalyticsView() {
               )}
             </div>
 
-            <div className="card-glass rounded-2xl p-4 min-h-48">
+            <div className="card-glass rounded-2xl p-4 min-h-48 relative z-50">
               {chartType === "distribution" ? (
                 <CategoryPieChart stats={stats} />
               ) : (

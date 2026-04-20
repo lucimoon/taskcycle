@@ -1,6 +1,5 @@
 import type { Task, TaskDraft } from '@/types/task'
 import { db } from './db'
-import { addInstance } from './instanceService'
 
 export async function listTasks(): Promise<Task[]> {
   return db.tasks.toArray()
@@ -43,19 +42,14 @@ export async function completeTask(id: string): Promise<Task> {
 
   const nextDueAt = new Date(Date.now() + task.recurAfterMinutes * 60_000).toISOString()
   const resetSteps = task.steps.map((s) => ({ ...s, completedAt: undefined }))
-
-  await addInstance({
-    id: crypto.randomUUID(),
-    taskId: id,
-    categoryIds: task.categoryIds ?? [],
-    completedAt: now,
-  })
+  const completionDates = [...(task.completionDates ?? []), now]
 
   return updateTask(id, {
     lastCompletedAt: now,
     nextDueAt,
     completedAt: undefined,
     steps: resetSteps,
+    completionDates,
   })
 }
 
@@ -67,5 +61,14 @@ export async function uncompleteTask(id: string): Promise<Task> {
     return updateTask(id, { completedAt: undefined })
   }
 
-  return updateTask(id, { lastCompletedAt: undefined, nextDueAt: undefined })
+  const completionDates = (task.completionDates ?? []).slice(0, -1)
+  const prevDate = completionDates[completionDates.length - 1]
+  const nextDueAt = prevDate
+    ? new Date(new Date(prevDate).getTime() + task.recurAfterMinutes * 60_000).toISOString()
+    : undefined
+  return updateTask(id, {
+    completionDates,
+    lastCompletedAt: prevDate,
+    nextDueAt,
+  })
 }
