@@ -7,6 +7,7 @@ export interface Settings {
   categoriesMenuEnabled: boolean;
   notificationsEnabled: boolean;
   syncDirectoryHandle?: FileSystemDirectoryHandle;
+  focusedTaskId?: string | null;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -17,4 +18,5 @@ export const DEFAULT_SETTINGS: Settings = {
   rewardsMenuEnabled: false,
   categoriesMenuEnabled: false,
   matrixMenuEnabled: false,
+  focusedTaskId: null,
 };

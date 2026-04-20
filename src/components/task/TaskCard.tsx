@@ -2,6 +2,7 @@ import type { Task, Priority, Urgency } from "@/types/task";
 import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/category/CategoryBadge";
 import { useSettingsStore } from "../../store/settingsStore";
+import { useFocusStore } from "@/store/focusStore";
 
 const PRIORITY_CHIP: Record<Priority, string> = {
   1: "bg-coral text-white",
@@ -60,10 +61,12 @@ export function TaskCard({
   const completedSteps = task.steps.filter((s) => s.completedAt).length;
   const isDone = Boolean(task.completedAt);
   const { settings } = useSettingsStore();
+  const { focusedTaskId, setFocus } = useFocusStore();
   const isCyclicDone =
     task.kind === "cyclic" &&
     Boolean(task.lastCompletedAt) &&
-    Boolean(task.nextDueAt);
+    Boolean(task.nextDueAt) &&
+    new Date(task.nextDueAt!) > new Date();
   const { categories } = useCategoryStore();
   const taskCategories = categories.filter((c) =>
     task.categoryIds?.includes(c.id),
@@ -105,6 +108,15 @@ export function TaskCard({
               Undo
             </button>
           )}
+          {isCyclicDone && onUncomplete && (
+            <button
+              type="button"
+              onClick={onUncomplete}
+              className="text-xs text-ink/40 hover:text-ink underline transition-colors ml-1"
+            >
+              Undo
+            </button>
+          )}
           {isCyclicDone && task.nextDueAt && (
             <span className="rounded-full bg-mint/40 text-ink px-3 py-0.5 text-xs font-semibold">
               ✓ Done — recurs {formatDate(task.nextDueAt)}
@@ -112,6 +124,16 @@ export function TaskCard({
           )}
         </div>
         <div className="flex gap-1 shrink-0">
+          {!isDone && !isCyclicDone && focusedTaskId !== task.id && (
+            <button
+              onClick={() => setFocus(task.id)}
+              aria-label="Focus on this task"
+              title="Focus"
+              className="rounded-full p-1.5 min-h-[44px] min-w-[44px] text-ink/40 hover:bg-sunny/20 hover:text-sunny transition-colors text-sm btn-action"
+            >
+              ⚡
+            </button>
+          )}
           <button
             onClick={() => onEdit(task.id)}
             aria-label="Edit task"
@@ -152,7 +174,7 @@ export function TaskCard({
             ~{task.estimatedMinutes}m
           </span>
         )}
-        {task.steps.length > 0 && (
+        {task.steps.length > 0 && !isCyclicDone && (
           <button
             type="button"
             onClick={onToggleExpand}
@@ -163,7 +185,7 @@ export function TaskCard({
             {completedSteps}/{task.steps.length} steps {expanded ? "▲" : "▼"}
           </button>
         )}
-        {task.steps.length === 0 && !isDone && onComplete && (
+        {task.steps.length === 0 && !isDone && !isCyclicDone && onComplete && (
           <button
             type="button"
             onClick={onComplete}

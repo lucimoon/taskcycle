@@ -62,3 +62,12 @@ export function getQuadrant(priority: Priority, urgency: Urgency): QuadrantKey {
   if (!important && urgent) return 'delegate'
   return 'eliminate'
 }
+
+export function quadrantToPriorityUrgency(quadrant: QuadrantKey): { priority: Priority; urgency: Urgency } {
+  switch (quadrant) {
+    case 'do-first': return { priority: 1, urgency: 1 }
+    case 'schedule': return { priority: 1, urgency: 3 }
+    case 'delegate': return { priority: 3, urgency: 1 }
+    case 'eliminate': return { priority: 3, urgency: 3 }
+  }
+}

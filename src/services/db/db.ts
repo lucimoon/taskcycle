@@ -28,6 +28,8 @@ class TaskCycleDB extends Dexie {
         delete task.categoryId
       }),
     )
+    this.version(5).stores(SCHEMA.v5)
+    this.version(6).stores(SCHEMA.v6)
   }
 }
 

@@ -134,3 +134,66 @@ describe("getCompletionsByPeriod — month", () => {
     expect(lastBucket.completions["cat-1"]).toBe(1);
   });
 });
+
+describe("getCategoryCompletionStats — cyclic tasks (M3)", () => {
+  it("counts each completionDates entry as a separate completion", () => {
+    const now = new Date().toISOString();
+    const tasks = [
+      makeTask({
+        kind: "cyclic",
+        categoryIds: ["cat-1"],
+        completionDates: [now, now, now],
+      }),
+    ];
+    const stats = getCategoryCompletionStats(tasks, [cat1]);
+    const work = stats.find((s) => s.category.id === "cat-1")!;
+    expect(work.completed).toBe(3);
+  });
+
+  it("counts zero when completionDates is empty", () => {
+    const tasks = [makeTask({ kind: "cyclic", categoryIds: ["cat-1"], completionDates: [] })];
+    const stats = getCategoryCompletionStats(tasks, [cat1]);
+    const work = stats.find((s) => s.category.id === "cat-1")!;
+    expect(work.completed).toBe(0);
+  });
+
+  it("counts zero when completionDates is absent", () => {
+    const tasks = [makeTask({ kind: "cyclic", categoryIds: ["cat-1"] })];
+    const stats = getCategoryCompletionStats(tasks, [cat1]);
+    const work = stats.find((s) => s.category.id === "cat-1")!;
+    expect(work.completed).toBe(0);
+  });
+});
+
+describe("getCompletionsByPeriod — cyclic completionDates (M3)", () => {
+  it("buckets cyclic completionDates entries by date", () => {
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+    const tasks = [
+      makeTask({
+        kind: "cyclic",
+        categoryIds: ["cat-1"],
+        completionDates: [today.toISOString(), today.toISOString()],
+      }),
+    ];
+    const stats = getCompletionsByPeriod(tasks, [cat1], "week");
+    const lastBucket = stats[stats.length - 1];
+    expect(lastBucket.completions["cat-1"]).toBe(2);
+  });
+
+  it("does not double-count once task completedAt and cyclic completionDates", () => {
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+    const tasks = [
+      makeTask({ categoryIds: ["cat-1"], completedAt: today.toISOString() }),
+      makeTask({
+        kind: "cyclic",
+        categoryIds: ["cat-1"],
+        completionDates: [today.toISOString()],
+      }),
+    ];
+    const stats = getCompletionsByPeriod(tasks, [cat1], "week");
+    const lastBucket = stats[stats.length - 1];
+    expect(lastBucket.completions["cat-1"]).toBe(2);
+  });
+});

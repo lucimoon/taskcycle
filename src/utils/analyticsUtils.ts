@@ -32,7 +32,11 @@ export function getCategoryCompletionStats(
           ? tasks.filter((t) => !t.categoryIds?.length)
           : tasks.filter((t) => t.categoryIds?.includes(cat.id));
       const total = bucket.length;
-      const completed = bucket.filter((t) => t.completedAt).length;
+      const onceDone = bucket.filter((t) => t.kind === "once" && t.completedAt).length;
+      const cyclicDone = bucket
+        .filter((t) => t.kind === "cyclic")
+        .reduce((sum, t) => sum + (t.completionDates?.length ?? 0), 0);
+      const completed = onceDone + cyclicDone;
       return {
         category: cat,
         total,
@@ -40,7 +44,7 @@ export function getCategoryCompletionStats(
         completionRate: total > 0 ? completed / total : 0,
       };
     })
-    .filter((s) => s.total > 0);
+    .filter((s) => s.total > 0 || s.completed > 0);
 }
 
 export function getCompletionsByPeriod(
@@ -48,12 +52,41 @@ export function getCompletionsByPeriod(
   categories: Category[],
   period: "week" | "month",
 ): PeriodStat[] {
-  const completed = tasks.filter((t) => t.completedAt);
+  const onceTasks = tasks.filter((t) => t.kind === "once" && t.completedAt);
+  const cyclicTasks = tasks.filter((t) => t.kind === "cyclic");
   const now = new Date();
   const allCategoryIds = [...categories.map((c) => c.id), "__none__"];
 
+  function countInBucket(
+    start: Date,
+    end: Date,
+    completions: Record<string, number>,
+  ) {
+    // Once task completions
+    for (const t of onceTasks) {
+      const completedAt = new Date(t.completedAt!);
+      if (completedAt >= start && completedAt < end) {
+        const keys = t.categoryIds?.length ? t.categoryIds : ["__none__"];
+        for (const key of keys) {
+          completions[key] = (completions[key] ?? 0) + 1;
+        }
+      }
+    }
+    // Cyclic task completions — each entry in completionDates is one event
+    for (const t of cyclicTasks) {
+      for (const dateStr of t.completionDates ?? []) {
+        const completedAt = new Date(dateStr);
+        if (completedAt >= start && completedAt < end) {
+          const keys = t.categoryIds?.length ? t.categoryIds : ["__none__"];
+          for (const key of keys) {
+            completions[key] = (completions[key] ?? 0) + 1;
+          }
+        }
+      }
+    }
+  }
+
   if (period === "week") {
-    // Last 7 calendar days, one bucket per day
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(now);
       d.setDate(d.getDate() - (6 - i));
@@ -69,32 +102,24 @@ export function getCompletionsByPeriod(
       for (const id of allCategoryIds) {
         completions[id] = 0;
       }
-      for (const t of completed) {
-        const completedAt = new Date(t.completedAt!);
-        if (completedAt >= d && completedAt < next) {
-          const keys = t.categoryIds?.length ? t.categoryIds : ['__none__']
-          for (const key of keys) {
-            completions[key] = (completions[key] ?? 0) + 1
-          }
-        }
-      }
+      countInBucket(d, next, completions);
       return { label, completions };
     });
   }
 
   // Month: last 30 days in ~weekly buckets (4 buckets of 7–8 days)
   const buckets = [
-    { label: "", start: 22, end: 30 },
-    { label: "", start: 15, end: 22 },
-    { label: "", start: 8, end: 15 },
-    { label: "", start: 0, end: 8 },
+    { start: 22, end: 30 },
+    { start: 15, end: 22 },
+    { start: 8, end: 15 },
+    { start: 0, end: 8 },
   ].map(({ start, end }) => {
     const bucketStart = new Date(now);
     bucketStart.setDate(bucketStart.getDate() - end);
     bucketStart.setHours(0, 0, 0, 0);
     const bucketEnd = new Date(now);
-    bucketEnd.setDate(bucketEnd.getDate() - start);
-    bucketEnd.setHours(23, 59, 59, 999);
+    bucketEnd.setDate(bucketEnd.getDate() - start + 1);
+    bucketEnd.setHours(0, 0, 0, 0);
     return { bucketStart, bucketEnd };
   });
 
@@ -107,16 +132,7 @@ export function getCompletionsByPeriod(
     for (const id of allCategoryIds) {
       completions[id] = 0;
     }
-    for (const task of completed) {
-      const completedAt = new Date(task.completedAt!);
-      if (completedAt >= bucketStart && completedAt <= bucketEnd) {
-        const keys = task.categoryIds?.length ? task.categoryIds : ['__none__']
-        for (const key of keys) {
-          completions[key] = (completions[key] ?? 0) + 1
-        }
-      }
-    }
-
+    countInBucket(bucketStart, bucketEnd, completions);
     return { label, completions };
   });
 }

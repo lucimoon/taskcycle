@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTaskStore } from "@/store/taskStore";
 import { useCategoryStore } from "@/store/categoryStore";
+import { useFocusStore } from "@/store/focusStore";
 import { useSortedTasks, type SortKey } from "@/hooks/useSortedTasks";
 import { SortControls } from "@/components/task/SortControls";
 import { TaskList } from "@/components/task/TaskList";
+import { FocusCard } from "@/components/task/FocusCard";
 
 export function TaskListView() {
   const {
@@ -17,6 +19,7 @@ export function TaskListView() {
     uncompleteStep,
   } = useTaskStore();
   const { categories, loadCategories } = useCategoryStore();
+  const { focusedTaskId } = useFocusStore();
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortKey>("priority");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -26,12 +29,15 @@ export function TaskListView() {
     loadCategories();
   }, [loadTasks, loadCategories]);
 
+  const focusedTask = focusedTaskId ? tasks.find((t) => t.id === focusedTaskId) ?? null : null;
+  const unfocusedTasks = focusedTaskId ? tasks.filter((t) => t.id !== focusedTaskId) : tasks;
+
   const filteredTasks =
     categoryFilter === null
-      ? tasks
+      ? unfocusedTasks
       : categoryFilter === "__none__"
-        ? tasks.filter((t) => !t.categoryIds?.length)
-        : tasks.filter((t) => t.categoryIds?.includes(categoryFilter));
+        ? unfocusedTasks.filter((t) => !t.categoryIds?.length)
+        : unfocusedTasks.filter((t) => t.categoryIds?.includes(categoryFilter));
   const sorted = useSortedTasks(filteredTasks, sort);
 
   function handleDelete(id: string) {
@@ -43,6 +49,7 @@ export function TaskListView() {
   return (
     <div className="mesh-bg min-h-screen overflow-x-clip">
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+        {focusedTask && <FocusCard task={focusedTask} />}
         <div className="flex flex-wrap gap-3">
           {categories.length > 0 && (
             <div className="flex items-center gap-2 flex-1 min-w-[140px]">

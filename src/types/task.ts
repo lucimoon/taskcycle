@@ -32,6 +32,7 @@ export interface CyclicTask extends BaseTask {
   recurAfterMinutes: number
   lastCompletedAt?: string
   nextDueAt?: string
+  completionDates?: string[]
 }
 
 export type Task = OnceTask | CyclicTask

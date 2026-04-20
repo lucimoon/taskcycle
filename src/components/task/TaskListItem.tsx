@@ -3,6 +3,15 @@ import type { Task } from '@/types/task'
 import { TaskCard } from './TaskCard'
 import { StepChecklist } from './StepChecklist'
 
+function isCyclicDoneNow(task: Task): boolean {
+  return (
+    task.kind === 'cyclic' &&
+    Boolean(task.lastCompletedAt) &&
+    Boolean(task.nextDueAt) &&
+    new Date(task.nextDueAt!) > new Date()
+  )
+}
+
 interface TaskListItemProps {
   task: Task
   onEdit: (id: string) => void
@@ -27,7 +36,7 @@ export function TaskListItem({ task, onEdit, onDelete, onComplete, onUncomplete,
         onComplete={onComplete}
         onUncomplete={onUncomplete}
       />
-      {expanded && task.steps.length > 0 && (
+      {expanded && task.steps.length > 0 && !isCyclicDoneNow(task) && (
         <div className="card-glass rounded-b-2xl -mt-2 px-4 pb-4 pt-5 border-t-0">
           <StepChecklist task={task} onCompleteStep={onCompleteStep} onUncompleteStep={onUncompleteStep} />
         </div>
