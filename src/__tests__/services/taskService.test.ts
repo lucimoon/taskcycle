@@ -6,6 +6,7 @@ import {
   listTasks,
   updateTask,
   completeTask,
+  uncompleteTask,
 } from '@/services/db/taskService'
 import type { TaskDraft } from '@/types/task'
 
@@ -114,5 +115,49 @@ describe('completeTask — cyclic', () => {
     completed.steps.forEach((s) => {
       expect(s.completedAt).toBeUndefined()
     })
+  })
+
+  it('appends a timestamp to completionDates on each completion (M3)', async () => {
+    const task = await createTask(cyclicDraft)
+    const first = await completeTask(task.id)
+    expect(first.kind).toBe('cyclic')
+    if (first.kind !== 'cyclic') return
+    expect(first.completionDates).toHaveLength(1)
+
+    const second = await completeTask(task.id)
+    if (second.kind !== 'cyclic') return
+    expect(second.completionDates).toHaveLength(2)
+  })
+})
+
+describe('uncompleteTask — cyclic (M3)', () => {
+  it('pops the last completionDate and clears nextDueAt when no prior completions remain', async () => {
+    const task = await createTask(cyclicDraft)
+    await completeTask(task.id)
+    const restored = await uncompleteTask(task.id)
+    expect(restored.kind).toBe('cyclic')
+    if (restored.kind !== 'cyclic') return
+    expect(restored.completionDates).toHaveLength(0)
+    expect(restored.nextDueAt).toBeUndefined()
+    expect(restored.lastCompletedAt).toBeUndefined()
+  })
+
+  it('restores nextDueAt from the previous completion when history remains', async () => {
+    const task = await createTask(cyclicDraft)
+    const first = await completeTask(task.id)
+    if (first.kind !== 'cyclic') return
+    const firstCompletedAt = first.lastCompletedAt!
+
+    await completeTask(task.id) // second completion
+    const restored = await uncompleteTask(task.id)
+    if (restored.kind !== 'cyclic') return
+
+    expect(restored.completionDates).toHaveLength(1)
+    expect(restored.lastCompletedAt).toBe(firstCompletedAt)
+
+    const expectedNextDue = new Date(
+      new Date(firstCompletedAt).getTime() + cyclicDraft.recurAfterMinutes * 60_000,
+    ).toISOString()
+    expect(restored.nextDueAt).toBe(expectedNextDue)
   })
 })

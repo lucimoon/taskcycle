@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getQuadrant } from '@/utils/matrixUtils'
+import { getQuadrant, quadrantToPriorityUrgency, QUADRANTS } from '@/utils/matrixUtils'
 
 describe('getQuadrant', () => {
   it('maps high priority + high urgency to do-first', () => {
@@ -28,5 +28,30 @@ describe('getQuadrant', () => {
     expect(getQuadrant(3, 4)).toBe('eliminate')
     expect(getQuadrant(4, 3)).toBe('eliminate')
     expect(getQuadrant(4, 4)).toBe('eliminate')
+  })
+})
+
+describe('quadrantToPriorityUrgency', () => {
+  it('maps do-first to priority 1, urgency 1', () => {
+    expect(quadrantToPriorityUrgency('do-first')).toEqual({ priority: 1, urgency: 1 })
+  })
+
+  it('maps schedule to priority 1, urgency 3', () => {
+    expect(quadrantToPriorityUrgency('schedule')).toEqual({ priority: 1, urgency: 3 })
+  })
+
+  it('maps delegate to priority 3, urgency 1', () => {
+    expect(quadrantToPriorityUrgency('delegate')).toEqual({ priority: 3, urgency: 1 })
+  })
+
+  it('maps eliminate to priority 3, urgency 3', () => {
+    expect(quadrantToPriorityUrgency('eliminate')).toEqual({ priority: 3, urgency: 3 })
+  })
+
+  it('is the inverse of getQuadrant for all quadrants', () => {
+    for (const q of QUADRANTS) {
+      const { priority, urgency } = quadrantToPriorityUrgency(q.key)
+      expect(getQuadrant(priority, urgency)).toBe(q.key)
+    }
   })
 })
