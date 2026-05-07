@@ -33,11 +33,11 @@ describe('TaskForm', () => {
     const user = userEvent.setup()
     render(<TaskForm onSubmit={noop} onCancel={noop} />)
     await user.click(screen.getByRole('button', { name: /recurring/i }))
-    expect(screen.getByText(/repeat every/i)).toBeInTheDocument()
+    expect(screen.getByText(/repeats/i)).toBeInTheDocument()
     expect(screen.queryByLabelText(/due date/i)).not.toBeInTheDocument()
   })
 
-  it('submits a cyclic task with correct recurAfterMinutes (2 hours → 120)', async () => {
+  it('submits a cyclic task with correct recurAfterMinutes (2 days → 2880)', async () => {
     const user = userEvent.setup()
     const onSubmit = vi.fn()
     render(<TaskForm onSubmit={onSubmit} onCancel={noop} />)
@@ -45,12 +45,11 @@ describe('TaskForm', () => {
     await user.click(screen.getByRole('button', { name: /recurring/i }))
     const amountInput = screen.getByRole('spinbutton', { name: /repeat amount/i })
     fireEvent.change(amountInput, { target: { value: '2' } })
-    // unit is hours by default
     await user.click(screen.getByRole('button', { name: /save task/i }))
     const draft: TaskDraft = onSubmit.mock.calls[0][0]
     expect(draft.kind).toBe('cyclic')
     if (draft.kind !== 'cyclic') return
-    expect(draft.recurAfterMinutes).toBe(120)
+    expect(draft.recurAfterMinutes).toBe(2880)
   })
 
   it('adds a step that appears in the form', async () => {
