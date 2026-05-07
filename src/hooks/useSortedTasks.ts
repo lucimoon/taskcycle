@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { Task } from "@/types/task";
+import type { Task, Priority } from "@/types/task";
 import { isComplete } from "../utils/taskUtils";
 
 export type SortKey =
@@ -114,25 +114,39 @@ function dueDateSort(a: Task, b: Task, ...callbacks: CallbackSortFn[]): number {
   return comparison;
 }
 
-export function useSortedTasks(tasks: Task[], sort: SortKey): Task[] {
+export function useSortedTasks(
+  tasks: Task[],
+  sort: SortKey,
+  getEffectivePriority?: (task: Task) => Priority,
+): Task[] {
   return useMemo(() => {
     const sorted = [...tasks];
+    const pSort: CallbackSortFn = getEffectivePriority
+      ? (a, b, ...cbs) => {
+          const [cb, ...rest] = cbs;
+          const pa = getEffectivePriority(a);
+          const pb = getEffectivePriority(b);
+          if (pa === pb) return (cb && cb(a, b, ...rest)) || 0;
+          return pa - pb;
+        }
+      : prioritySort;
+
     switch (sort) {
       case "priority":
         return sorted.sort((a, b) =>
-          completionSort(a, b, prioritySort, dueDateSort, urgencySort),
+          completionSort(a, b, pSort, dueDateSort, urgencySort),
         );
       case "urgency":
         return sorted.sort((a, b) =>
-          completionSort(a, b, urgencySort, prioritySort, dueDateSort),
+          completionSort(a, b, urgencySort, pSort, dueDateSort),
         );
       case "time":
         return sorted.sort((a, b) =>
-          completionSort(a, b, timeSort, prioritySort, urgencySort),
+          completionSort(a, b, timeSort, pSort, urgencySort),
         );
       case "due":
         return sorted.sort((a, b) =>
-          completionSort(a, b, dueDateSort, prioritySort, urgencySort),
+          completionSort(a, b, dueDateSort, pSort, urgencySort),
         );
       case "completion":
         return sorted.sort(completionSort);
@@ -141,5 +155,5 @@ export function useSortedTasks(tasks: Task[], sort: SortKey): Task[] {
       default:
         return sorted.sort();
     }
-  }, [tasks, sort]);
+  }, [tasks, sort, getEffectivePriority]);
 }

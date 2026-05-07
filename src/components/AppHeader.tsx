@@ -34,6 +34,10 @@ function getNavLinks(settings: Settings) {
     links.push({ label: "Rewards", path: "/taskcycle/rewards", exact: false });
   }
 
+  if (settings.goalsEnabled) {
+    links.push({ label: "Goals", path: "/taskcycle/goals", exact: false });
+  }
+
   links.push({ label: "Settings", path: "/taskcycle/settings", exact: false });
   return links;
 }

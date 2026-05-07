@@ -3,6 +3,7 @@ import type { Task } from '@/types/task'
 import type { Reward } from '@/types/reward'
 import type { Category } from '@/types/category'
 import type { Wheel } from '@/types/wheel'
+import type { Goal } from '@/types/goal'
 import { SCHEMA } from './schema'
 
 interface SettingsRow {
@@ -16,6 +17,7 @@ class TaskCycleDB extends Dexie {
   settings!: EntityTable<SettingsRow, 'key'>
   categories!: EntityTable<Category, 'id'>
   wheels!: EntityTable<Wheel, 'id'>
+  goals!: EntityTable<Goal, 'id'>
 
   constructor() {
     super('taskcycle')
@@ -30,6 +32,7 @@ class TaskCycleDB extends Dexie {
     )
     this.version(5).stores(SCHEMA.v5)
     this.version(6).stores(SCHEMA.v6)
+    this.version(7).stores(SCHEMA.v7)
   }
 }
 

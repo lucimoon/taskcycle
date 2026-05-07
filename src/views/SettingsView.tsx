@@ -119,6 +119,13 @@ export function SettingsView() {
             checked={settings.rewardsMenuEnabled}
             onChange={(v) => updateSettings({ rewardsMenuEnabled: v })}
           />
+          <div className="border-t border-ink/10" />
+          <ToggleRow
+            label="Goals enabled"
+            description="Assign goals to tasks; tasks sort by their goal's priority."
+            checked={settings.goalsEnabled}
+            onChange={(v) => updateSettings({ goalsEnabled: v })}
+          />
         </SectionCard>
         {/* Engagement */}
         <SectionCard>

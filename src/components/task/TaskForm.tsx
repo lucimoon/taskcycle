@@ -12,6 +12,7 @@ import { KindToggle } from "./KindToggle";
 import { StepList } from "./StepList";
 import { PriorityUrgencyPicker } from "./PriorityUrgencyPicker";
 import { CategoryPicker } from "@/components/category/CategoryPicker";
+import { GoalPicker } from "@/components/goal/GoalPicker";
 import { useSettingsStore } from "../../store/settingsStore";
 
 const RANGE_TO_URGENCY: Record<CompletionRange, Urgency> = {
@@ -80,6 +81,9 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
   const [categoryIds, setCategoryIds] = useState<string[]>(
     initial?.categoryIds ?? [],
   );
+  const [goalIds, setGoalIds] = useState<string[]>(
+    initial?.goalIds ?? [],
+  );
   const { settings } = useSettingsStore();
 
   function handleSubmit(e: React.FormEvent) {
@@ -95,6 +99,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
         estimatedMinutes !== "" ? Number(estimatedMinutes) : undefined,
       notes: notes.trim() || undefined,
       categoryIds,
+      goalIds: goalIds.length ? goalIds : undefined,
     };
     const draft: TaskDraft =
       kind === "once"
@@ -142,6 +147,15 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
         </span>
         <CategoryPicker value={categoryIds} onChange={setCategoryIds} />
       </div>
+
+      {settings.goalsEnabled && (
+        <div className="space-y-1.5">
+          <span className="text-sm font-bold text-ink">
+            Goals <span className="font-normal text-ink/50">(optional)</span>
+          </span>
+          <GoalPicker value={goalIds} onChange={setGoalIds} />
+        </div>
+      )}
 
       {kind === "once" ? (
         <div className="space-y-1.5">
@@ -303,7 +317,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
         </div>
       </div>
 
-      {settings.matrixMenuEnabled && (
+      {settings.matrixMenuEnabled && !settings.goalsEnabled && (
         <PriorityUrgencyPicker
           priority={priority}
           onChange={setPriority}
