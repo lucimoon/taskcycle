@@ -23,6 +23,7 @@ export async function getSettings(): Promise<Settings> {
       | FileSystemDirectoryHandle
       | undefined,
     focusedTaskId: (map.focusedTaskId ?? null) as string | null,
+    goalsEnabled: (map.goalsEnabled ?? DEFAULT_SETTINGS.goalsEnabled) as boolean,
   };
 }
 
@@ -37,6 +38,7 @@ export async function saveSettings(s: Settings): Promise<void> {
     { key: "matrixMenuEnabled", value: s.matrixMenuEnabled },
     { key: "syncDirectoryHandle", value: s.syncDirectoryHandle },
     { key: "focusedTaskId", value: s.focusedTaskId ?? null },
+    { key: "goalsEnabled", value: s.goalsEnabled },
   ];
   await db.settings.bulkPut(entries);
 }

@@ -20,6 +20,7 @@ interface BaseTask {
   estimatedMinutes?: number
   notes?: string
   categoryIds?: string[]
+  goalIds?: string[]
   createdAt: string
   completedAt?: string
 }

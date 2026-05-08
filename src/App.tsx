@@ -33,6 +33,11 @@ const WheelSetupView = lazy(() =>
 const WheelView = lazy(() =>
   import("@/views/WheelView").then((m) => ({ default: m.WheelView })),
 );
+const GoalManagementView = lazy(() =>
+  import("@/views/GoalManagementView").then((m) => ({
+    default: m.GoalManagementView,
+  })),
+);
 import { RewardNotification } from "@/components/rewards/RewardNotification";
 import { AppHeader } from "@/components/AppHeader";
 import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
@@ -77,6 +82,7 @@ function AppShell() {
             path="/taskcycle/analytics"
             element={<CategoryAnalyticsView />}
           />
+          <Route path="/taskcycle/goals" element={<GoalManagementView />} />
           <Route path="/taskcycle/wheels" element={<WheelListView />} />
           <Route path="/taskcycle/wheels/new" element={<WheelSetupView />} />
           <Route path="/taskcycle/wheels/:id" element={<WheelView />} />

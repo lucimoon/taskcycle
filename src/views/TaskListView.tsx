@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useTaskStore } from "@/store/taskStore";
 import { useCategoryStore } from "@/store/categoryStore";
 import { useFocusStore } from "@/store/focusStore";
+import { useGoals } from "@/hooks/useGoals";
+import { useSettingsStore } from "@/store/settingsStore";
 import { useSortedTasks, type SortKey } from "@/hooks/useSortedTasks";
 import { SortControls } from "@/components/task/SortControls";
 import { TaskList } from "@/components/task/TaskList";
@@ -20,6 +22,8 @@ export function TaskListView() {
   } = useTaskStore();
   const { categories, loadCategories } = useCategoryStore();
   const { focusedTaskId } = useFocusStore();
+  const { settings } = useSettingsStore();
+  const { getEffectivePriority } = useGoals();
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortKey>("priority");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -38,7 +42,11 @@ export function TaskListView() {
       : categoryFilter === "__none__"
         ? unfocusedTasks.filter((t) => !t.categoryIds?.length)
         : unfocusedTasks.filter((t) => t.categoryIds?.includes(categoryFilter));
-  const sorted = useSortedTasks(filteredTasks, sort);
+  const sorted = useSortedTasks(
+    filteredTasks,
+    sort,
+    settings.goalsEnabled ? getEffectivePriority : undefined,
+  );
 
   function handleDelete(id: string) {
     if (window.confirm("Delete this task?")) {
