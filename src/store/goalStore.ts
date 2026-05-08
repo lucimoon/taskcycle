@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import type { Goal, GoalDraft } from '@/types/goal'
 import * as goalService from '@/services/db/goalService'
+import { useTaskStore } from '@/store/taskStore'
+import { syncIfConfigured } from '@/services/sync/fileSyncService'
 
 interface GoalStore {
   goals: Goal[]
@@ -8,6 +10,7 @@ interface GoalStore {
   addGoal: (draft: GoalDraft) => Promise<Goal>
   updateGoal: (id: string, changes: Partial<GoalDraft>) => Promise<void>
   deleteGoal: (id: string) => Promise<void>
+  assignTasks: (goalId: string, taskIds: string[]) => Promise<void>
 }
 
 export const useGoalStore = create<GoalStore>((set, get) => ({
@@ -32,5 +35,11 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
   deleteGoal: async (id) => {
     await goalService.deleteGoal(id)
     set({ goals: get().goals.filter((g) => g.id !== id) })
+  },
+
+  assignTasks: async (goalId, taskIds) => {
+    await goalService.assignTasksToGoal(goalId, taskIds)
+    await useTaskStore.getState().loadTasks()
+    syncIfConfigured()
   },
 }))

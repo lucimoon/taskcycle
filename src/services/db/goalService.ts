@@ -34,3 +34,17 @@ export async function deleteGoal(id: string): Promise<void> {
     }
   })
 }
+
+export async function assignTasksToGoal(goalId: string, taskIds: string[]): Promise<void> {
+  const taskIdSet = new Set(taskIds)
+  await db.tasks.toCollection().modify((task: any) => {
+    const has = task.goalIds?.includes(goalId) ?? false
+    const want = taskIdSet.has(task.id)
+    if (has === want) return
+    if (want) {
+      task.goalIds = [...(task.goalIds ?? []), goalId]
+    } else {
+      task.goalIds = (task.goalIds ?? []).filter((id: string) => id !== goalId)
+    }
+  })
+}
