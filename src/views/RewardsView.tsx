@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useConfirm } from '@/context/ConfirmContext'
 import { useRewardStore } from '@/store/rewardStore'
 import { useTaskStore } from '@/store/taskStore'
 import { RewardList } from '@/components/rewards/RewardList'
@@ -11,6 +12,7 @@ export function RewardsView() {
   const { rewards, loadRewards, addReward, updateReward, removeReward } = useRewardStore()
   const { tasks, loadTasks } = useTaskStore()
   const [mode, setMode] = useState<Mode>('list')
+  const { confirm } = useConfirm()
 
   useEffect(() => {
     loadRewards()
@@ -27,9 +29,7 @@ export function RewardsView() {
   }
 
   function handleDelete(id: string) {
-    if (window.confirm('Delete this reward?')) {
-      removeReward(id)
-    }
+    confirm('Delete this reward?', () => removeReward(id), { confirmLabel: 'Delete' })
   }
 
   const editingReward =

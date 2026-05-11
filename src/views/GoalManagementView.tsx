@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useConfirm } from '@/context/ConfirmContext'
 import { useGoals } from '@/hooks/useGoals'
 import { useTaskStore } from '@/store/taskStore'
 import { TaskAssignPanel } from '@/components/goal/TaskAssignPanel'
@@ -121,6 +122,7 @@ type Mode = 'list' | 'create' | { edit: string } | { assign: string }
 export function GoalManagementView() {
   const { goals, addGoal, updateGoal, deleteGoal } = useGoals()
   const { tasks, loadTasks } = useTaskStore()
+  const { confirm } = useConfirm()
   const [mode, setMode] = useState<Mode>('list')
 
   useEffect(() => {
@@ -137,9 +139,7 @@ export function GoalManagementView() {
   }
 
   function handleDelete(id: string) {
-    if (window.confirm('Delete this goal? Tasks assigned to it will lose this goal.')) {
-      deleteGoal(id)
-    }
+    confirm('Delete this goal? Tasks assigned to it will lose this goal.', () => deleteGoal(id), { confirmLabel: 'Delete' })
   }
 
   const editingGoal =

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useConfirm } from '@/context/ConfirmContext'
 import { useCategoryStore } from '@/store/categoryStore'
 import { CategoryBadge } from '@/components/category/CategoryBadge'
 import type { CategoryDraft } from '@/types/category'
@@ -97,6 +98,7 @@ type Mode = 'list' | 'create' | { edit: string }
 export function CategoryManagementView() {
   const { categories, loadCategories, addCategory, updateCategory, removeCategory } = useCategoryStore()
   const [mode, setMode] = useState<Mode>('list')
+  const { confirm } = useConfirm()
 
   useEffect(() => {
     loadCategories()
@@ -112,9 +114,7 @@ export function CategoryManagementView() {
   }
 
   function handleDelete(id: string) {
-    if (window.confirm('Delete this category? Tasks in this category will become uncategorized.')) {
-      removeCategory(id)
-    }
+    confirm('Delete this category? Tasks in this category will become uncategorized.', () => removeCategory(id), { confirmLabel: 'Delete' })
   }
 
   const editingCategory =

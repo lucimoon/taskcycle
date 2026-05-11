@@ -40,6 +40,7 @@ const GoalManagementView = lazy(() =>
 );
 import { RewardNotification } from "@/components/rewards/RewardNotification";
 import { AppHeader } from "@/components/AppHeader";
+import { ConfirmProvider } from "@/context/ConfirmContext";
 import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
 import { useTheme } from "@/hooks/useTheme";
 import { useSettingsStore } from "@/store/settingsStore";
@@ -94,5 +95,9 @@ function AppShell() {
 }
 
 export function App() {
-  return <AppShell />;
+  return (
+    <ConfirmProvider>
+      <AppShell />
+    </ConfirmProvider>
+  );
 }
