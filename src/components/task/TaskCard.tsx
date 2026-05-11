@@ -3,6 +3,8 @@ import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/category/CategoryBadge";
 import { useSettingsStore } from "../../store/settingsStore";
 import { useFocusStore } from "@/store/focusStore";
+import { Popover } from "@/components/ui/Popover";
+import { buildGoogleCalendarUrl, downloadIcs } from "@/utils/calendarUtils";
 
 const PRIORITY_CHIP: Record<Priority, string> = {
   1: "bg-coral text-white",
@@ -134,6 +136,36 @@ export function TaskCard({
               ⚡
             </button>
           )}
+          <Popover
+            align="right"
+            trigger={
+              <button
+                aria-label="Add to calendar"
+                title="Add to calendar"
+                className="rounded-full p-1.5 min-h-[44px] min-w-[44px] text-ink/40 hover:bg-sky/20 hover:text-sky transition-colors text-sm btn-action"
+              >
+                📅
+              </button>
+            }
+          >
+            <div className="flex flex-col py-1">
+              <a
+                href={buildGoogleCalendarUrl(task)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 text-sm text-ink hover:bg-ink/5 rounded-lg transition-colors whitespace-nowrap"
+              >
+                Open in Google Calendar
+              </a>
+              <button
+                type="button"
+                onClick={() => downloadIcs(task)}
+                className="px-4 py-2 text-sm text-ink hover:bg-ink/5 rounded-lg text-left transition-colors whitespace-nowrap"
+              >
+                Download .ics
+              </button>
+            </div>
+          </Popover>
           <button
             onClick={() => onEdit(task.id)}
             aria-label="Edit task"
