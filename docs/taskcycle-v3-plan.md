@@ -6,23 +6,30 @@ Builds on v2 (6 of 11 milestones shipped). Carries the 5 incomplete v2 milestone
 
 ## Milestones
 
-1. [Milestone 1 — Task Focus Mode](#milestone-1--task-focus-mode) *(from v2 M3)*
-2. [Milestone 2 — Matrix Drag-to-Reprioritise](#milestone-2--matrix-drag-to-reprioritise) *(from v2 M6)*
-3. [Milestone 3 — Analytics: Recurring Tasks](#milestone-3--analytics-recurring-tasks) *(from v2 M8)*
-4. [Milestone 4 — Calendar Integration](#milestone-4--calendar-integration) *(from v2 M11)*
-5. [Milestone 5 — Alerts](#milestone-5--alerts)
-6. [Milestone 6 — Themes](#milestone-6--themes)
-7. [Milestone 7 — Scheduling Enhancements](#milestone-7--scheduling-enhancements)
-8. [Milestone 8 — Goals](#milestone-8--goals)
-9. [Milestone 9 — Settings UI](#milestone-9--settings-ui)
-10. [Milestone 10 — UX Polish](#milestone-10--ux-polish)
-11. [Milestone 11 — Task Wheel Clarity](#milestone-11--task-wheel-clarity)
-12. [Milestone 12 — Onboarding](#milestone-12--onboarding)
-13. [Milestone 13 — Tip Jar](#milestone-13--tip-jar)
+### To Do
+
+1. [Milestone 5 — Alerts](#milestone-5--alerts)
+2. [Milestone 6 — Themes](#milestone-6--themes)
+3. [Milestone 7 — Scheduling Enhancements](#milestone-7--scheduling-enhancements)
+4. [Milestone 8 — Goals](#milestone-8--goals)
+5. [Milestone 9 — Settings UI](#milestone-9--settings-ui)
+6. [Milestone 10 — UX Polish](#milestone-10--ux-polish)
+7. [Milestone 11 — Task Wheel Clarity](#milestone-11--task-wheel-clarity)
+8. [Milestone 12 — Onboarding](#milestone-12--onboarding)
+9. [Milestone 13 — Tip Jar](#milestone-13--tip-jar)
+
+### Completed
+
+- ✅ [Milestone 1 — Task Focus Mode](#milestone-1--task-focus-mode) — 2026-05-11
+- ✅ [Milestone 2 — Matrix Drag-to-Reprioritise](#milestone-2--matrix-drag-to-reprioritise) — 2026-05-11
+- ✅ [Milestone 3 — Analytics: Recurring Tasks](#milestone-3--analytics-recurring-tasks) — 2026-05-11
+- ✅ [Milestone 4 — Calendar Integration](#milestone-4--calendar-integration) — 2026-05-11
 
 ---
 
 ## Milestone 1 — Task Focus Mode
+
+✅ Completed 2026-05-11
 
 *(Carried from v2 M3)*
 
@@ -67,6 +74,8 @@ Clicking "Focus" on a task pins it as a `FocusCard` at the top. Steps advance au
 ---
 
 ## Milestone 2 — Matrix Drag-to-Reprioritise
+
+✅ Completed 2026-05-11
 
 *(Carried from v2 M6)*
 
@@ -124,6 +133,8 @@ Dragging a chip from one quadrant and dropping it on another updates the task's 
 
 ## Milestone 3 — Analytics: Recurring Tasks
 
+✅ Completed 2026-05-11
+
 *(Carried from v2 M8 — depends on v2 M7 ✅)*
 
 **Goal:** The analytics view includes recurring task completions (drawn from `TaskInstance` records) alongside once-task completions.
@@ -154,6 +165,8 @@ Completing a recurring task multiple times shows multiple completions in the bar
 ---
 
 ## Milestone 4 — Calendar Integration
+
+✅ Completed 2026-05-11
 
 *(Carried from v2 M11)*
 
