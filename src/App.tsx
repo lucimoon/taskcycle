@@ -61,11 +61,9 @@ function AppShell() {
     useCategoryStore.getState().loadCategories();
   }, []);
 
-  const toggleTheme = () => setTheme(theme === "classic" ? "dusk" : "classic");
-
   return (
     <>
-      <AppHeader theme={theme} onThemeToggle={toggleTheme} />
+      <AppHeader theme={theme} onThemeChange={setTheme} />
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<TaskListView />} />
