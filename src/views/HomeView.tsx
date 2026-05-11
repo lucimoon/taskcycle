@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useConfirm } from "@/context/ConfirmContext";
 import { useTaskStore } from "@/store/taskStore";
 import { TaskCard } from "@/components/task/TaskCard";
 
 export function HomeView() {
   const { tasks, loadTasks, removeTask } = useTaskStore();
   const navigate = useNavigate();
+  const { confirm } = useConfirm();
 
   useEffect(() => {
     loadTasks();
   }, [loadTasks]);
 
   function handleDelete(id: string) {
-    if (window.confirm("Delete this task?")) {
-      removeTask(id);
-    }
+    confirm("Delete this task?", () => removeTask(id), { confirmLabel: "Delete" });
   }
 
   return (

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useConfirm } from "@/context/ConfirmContext";
 import { useTaskStore } from "@/store/taskStore";
 import { useCategoryStore } from "@/store/categoryStore";
 import { useFocusStore } from "@/store/focusStore";
@@ -25,6 +26,7 @@ export function TaskListView() {
   const { settings } = useSettingsStore();
   const { getEffectivePriority } = useGoals();
   const navigate = useNavigate();
+  const { confirm } = useConfirm();
   const [sort, setSort] = useState<SortKey>("priority");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
 
@@ -49,9 +51,7 @@ export function TaskListView() {
   );
 
   function handleDelete(id: string) {
-    if (window.confirm("Delete this task?")) {
-      removeTask(id);
-    }
+    confirm("Delete this task?", () => removeTask(id), { confirmLabel: "Delete" });
   }
 
   return (

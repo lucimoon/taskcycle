@@ -8,15 +8,14 @@ Builds on v2 (6 of 11 milestones shipped). Carries the 5 incomplete v2 milestone
 
 ### To Do
 
-1. [Milestone 5 — Alerts](#milestone-5--alerts)
-2. [Milestone 6 — Themes](#milestone-6--themes)
-3. [Milestone 7 — Scheduling Enhancements](#milestone-7--scheduling-enhancements)
-4. [Milestone 8 — Goals](#milestone-8--goals)
-5. [Milestone 9 — Settings UI](#milestone-9--settings-ui)
-6. [Milestone 10 — UX Polish](#milestone-10--ux-polish)
-7. [Milestone 11 — Task Wheel Clarity](#milestone-11--task-wheel-clarity)
-8. [Milestone 12 — Onboarding](#milestone-12--onboarding)
-9. [Milestone 13 — Tip Jar](#milestone-13--tip-jar)
+1. [Milestone 6 — Themes](#milestone-6--themes)
+2. [Milestone 7 — Scheduling Enhancements](#milestone-7--scheduling-enhancements)
+3. [Milestone 8 — Goals](#milestone-8--goals)
+4. [Milestone 9 — Settings UI](#milestone-9--settings-ui)
+5. [Milestone 10 — UX Polish](#milestone-10--ux-polish)
+6. [Milestone 11 — Task Wheel Clarity](#milestone-11--task-wheel-clarity)
+7. [Milestone 12 — Onboarding](#milestone-12--onboarding)
+8. [Milestone 13 — Tip Jar](#milestone-13--tip-jar)
 
 ### Completed
 
@@ -24,6 +23,7 @@ Builds on v2 (6 of 11 milestones shipped). Carries the 5 incomplete v2 milestone
 - ✅ [Milestone 2 — Matrix Drag-to-Reprioritise](#milestone-2--matrix-drag-to-reprioritise) — 2026-05-11
 - ✅ [Milestone 3 — Analytics: Recurring Tasks](#milestone-3--analytics-recurring-tasks) — 2026-05-11
 - ✅ [Milestone 4 — Calendar Integration](#milestone-4--calendar-integration) — 2026-05-11
+- ✅ [Milestone 5 — Alerts](#milestone-5--alerts) — 2026-05-11
 
 ---
 
@@ -196,6 +196,8 @@ Clicking the calendar button on a task with `estimatedMinutes` set shows two opt
 ---
 
 ## Milestone 5 — Alerts
+
+✅ Completed 2026-05-11
 
 **Goal:** Replace all `window.alert()` / `window.confirm()` calls with a simple in-app modal component.
 

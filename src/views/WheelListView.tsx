@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useConfirm } from "@/context/ConfirmContext";
 import { useWheelStore } from "@/store/wheelStore";
 import { useCategoryStore } from "@/store/categoryStore";
 import type { Wheel } from "@/types/wheel";
@@ -106,6 +107,7 @@ function WheelCard({
 
 export function WheelListView() {
   const navigate = useNavigate();
+  const { confirm } = useConfirm();
   const { wheels, loadWheels, deleteWheel, restartWheel } = useWheelStore();
   const { categories, loadCategories } = useCategoryStore();
 
@@ -119,7 +121,7 @@ export function WheelListView() {
   );
 
   function handleDelete(id: string) {
-    if (window.confirm("Delete this wheel?")) deleteWheel(id);
+    confirm("Delete this wheel?", () => deleteWheel(id), { confirmLabel: "Delete" });
   }
 
   return (
