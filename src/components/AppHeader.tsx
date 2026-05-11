@@ -44,10 +44,10 @@ function getNavLinks(settings: Settings) {
 
 interface Props {
   theme: Theme;
-  onThemeToggle: () => void;
+  onThemeChange: (theme: Theme) => void;
 }
 
-export function AppHeader({ theme, onThemeToggle }: Props) {
+export function AppHeader({ theme, onThemeChange }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const [navOpen, setNavOpen] = useState(false);
@@ -91,7 +91,7 @@ export function AppHeader({ theme, onThemeToggle }: Props) {
         </nav>
 
         <div className="hidden lg:flex items-center gap-2 shrink-0">
-          <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+          <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
           <button
             onClick={() => navigate("/taskcycle/tasks/new")}
             className="rounded-full bg-coral text-white px-5 py-2 text-sm font-semibold btn-action shadow-md"
@@ -134,7 +134,7 @@ export function AppHeader({ theme, onThemeToggle }: Props) {
             </button>
           ))}
           <div className="flex justify-center pt-1">
-            <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+            <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
           </div>
         </div>
       )}

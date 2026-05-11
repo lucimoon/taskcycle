@@ -107,14 +107,14 @@
   }
 }
 
-/* ── Dusk theme ─────────────────────────────────────────────────── */
-[data-theme="dusk"] {
+/* ── Dark theme ─────────────────────────────────────────────────── */
+[data-theme="dark"] {
   --color-bg: #16132a;
   --color-ink: #ede9f8;
   --color-ink-muted: rgba(237, 233, 248, 0.5);
 }
 
-[data-theme="dusk"] .mesh-bg {
+[data-theme="dark"] .mesh-bg {
   background:
     radial-gradient(at 15% 25%, #2e1b5c 0%, transparent 45%),
     radial-gradient(at 85% 10%, #152a4a 0%, transparent 45%),
@@ -122,49 +122,49 @@
     radial-gradient(at 5% 80%, #143830 0%, transparent 45%), #16132a;
 }
 
-[data-theme="dusk"] .card-glass {
+[data-theme="dark"] .card-glass {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.4),
     0 1px 3px rgba(0, 0, 0, 0.3);
 }
-[data-theme="dusk"] .bg-mint\/20 {
+[data-theme="dark"] .bg-mint\/20 {
   background: initial;
 }
 
 /* Glass surfaces (headers, pill buttons) */
-[data-theme="dusk"] .bg-white\/60,
-[data-theme="dusk"] .bg-white\/50 {
+[data-theme="dark"] .bg-white\/60,
+[data-theme="dark"] .bg-white\/50 {
   background-color: rgba(255, 255, 255, 0.07);
 }
 
-[data-theme="dusk"] .bg-ink {
+[data-theme="dark"] .bg-ink {
   background-color: rgba(255, 255, 255, 0.2);
 }
-[data-theme="dusk"] .bg-white\/40 {
+[data-theme="dark"] .bg-white\/40 {
   background-color: rgba(255, 255, 255, 0.05);
 }
-[data-theme="dusk"] .border-white\/80,
-[data-theme="dusk"] .border-white\/60 {
+[data-theme="dark"] .border-white\/80,
+[data-theme="dark"] .border-white\/60 {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-[data-theme="dusk"] .glass-input {
+[data-theme="dark"] .glass-input {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.14);
   color: var(--color-ink);
 }
 
-[data-theme="dusk"] .glass-input:focus {
+[data-theme="dark"] .glass-input:focus {
   border-color: rgba(255, 107, 107, 0.5);
 }
-[data-theme="dusk"] .glass-input option {
+[data-theme="dark"] .glass-input option {
   background: #1e1b35;
   color: #ede9f8;
 }
 
-[data-theme="dusk"] .text-ink\/60 {
+[data-theme="dark"] .text-ink\/60 {
   color: rgba(255, 255, 255, 0.8);
 }
 
