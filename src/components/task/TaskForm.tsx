@@ -16,21 +16,27 @@ import { GoalPicker } from "@/components/goal/GoalPicker";
 import { useSettingsStore } from "../../store/settingsStore";
 
 const RANGE_TO_URGENCY: Record<CompletionRange, Urgency> = {
-  day: 1, week: 2, month: 3, whenever: 4,
+  day: 1,
+  week: 2,
+  month: 3,
+  whenever: 4,
 };
 
 const URGENCY_TO_RANGE: Record<Urgency, CompletionRange> = {
-  1: 'day', 2: 'week', 3: 'month', 4: 'whenever',
+  1: "day",
+  2: "week",
+  3: "month",
+  4: "whenever",
 };
 
 const COMPLETION_RANGE_LABELS: Record<CompletionRange, string> = {
-  day: 'Today',
-  week: 'This week',
-  month: 'This month',
-  whenever: 'Whenever',
+  day: "Day",
+  week: "Week",
+  month: "Month",
+  whenever: "Whenever",
 };
 
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const inputCls = "glass-input";
 const labelCls = "text-sm font-bold text-ink";
@@ -56,23 +62,27 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
 
   // Daily interval: always in whole days
   const [recurDays, setRecurDays] = useState(
-    initial?.kind === "cyclic" && !initial.recurrenceType || initial?.kind === "cyclic" && initial.recurrenceType === 'daily'
-      ? Math.round((initial as { recurAfterMinutes: number }).recurAfterMinutes / 1440) || 1
+    (initial?.kind === "cyclic" && !initial.recurrenceType) ||
+      (initial?.kind === "cyclic" && initial.recurrenceType === "daily")
+      ? Math.round(
+          (initial as { recurAfterMinutes: number }).recurAfterMinutes / 1440,
+        ) || 1
       : 1,
   );
 
-  const [recurrenceType, setRecurrenceType] = useState<'daily' | 'weekly' | 'monthly'>(
-    initial?.kind === 'cyclic' ? (initial.recurrenceType ?? 'daily') : 'daily',
-  );
+  const [recurrenceType, setRecurrenceType] = useState<
+    "daily" | "weekly" | "monthly"
+  >(initial?.kind === "cyclic" ? (initial.recurrenceType ?? "daily") : "daily");
   // 0 = last day of month, 1–31 = specific day; weekly uses 0–6 (Sun–Sat)
   const [recurrenceDay, setRecurrenceDay] = useState<number>(
-    initial?.kind === 'cyclic' ? (initial.recurrenceDay ?? 1) : 1,
+    initial?.kind === "cyclic" ? (initial.recurrenceDay ?? 1) : 1,
   );
 
   const [steps, setSteps] = useState<Step[]>(initial?.steps ?? []);
   const [priority, setPriority] = useState<Priority>(initial?.priority ?? 2);
   const [completionRange, setCompletionRange] = useState<CompletionRange>(
-    initial?.completionRange ?? (initial ? URGENCY_TO_RANGE[initial.urgency] : 'whenever'),
+    initial?.completionRange ??
+      (initial ? URGENCY_TO_RANGE[initial.urgency] : "whenever"),
   );
   const [estimatedMinutes, setEstimatedMinutes] = useState(
     initial?.estimatedMinutes ?? "",
@@ -81,9 +91,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
   const [categoryIds, setCategoryIds] = useState<string[]>(
     initial?.categoryIds ?? [],
   );
-  const [goalIds, setGoalIds] = useState<string[]>(
-    initial?.goalIds ?? [],
-  );
+  const [goalIds, setGoalIds] = useState<string[]>(initial?.goalIds ?? []);
   const { settings } = useSettingsStore();
 
   function handleSubmit(e: React.FormEvent) {
@@ -114,11 +122,14 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
             ...base,
             kind: "cyclic",
             recurAfterMinutes:
-              recurrenceType === 'daily' ? recurDays * 1440
-              : recurrenceType === 'weekly' ? 7 * 1440
-              : 30 * 1440,
+              recurrenceType === "daily"
+                ? recurDays * 1440
+                : recurrenceType === "weekly"
+                  ? 7 * 1440
+                  : 30 * 1440,
             recurrenceType,
-            recurrenceDay: recurrenceType !== 'daily' ? recurrenceDay : undefined,
+            recurrenceDay:
+              recurrenceType !== "daily" ? recurrenceDay : undefined,
           };
     onSubmit(draft);
   }
@@ -187,18 +198,18 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
           <div className="space-y-1.5">
             <span className={labelCls}>Repeats</span>
             <div className="flex gap-2">
-              {(['daily', 'weekly', 'monthly'] as const).map((type) => (
+              {(["daily", "weekly", "monthly"] as const).map((type) => (
                 <button
                   key={type}
                   type="button"
                   onClick={() => setRecurrenceType(type)}
                   aria-pressed={recurrenceType === type}
                   className={[
-                    'rounded-full px-4 py-1.5 text-sm font-semibold transition-all btn-action',
+                    "rounded-full px-4 py-1.5 text-sm font-semibold transition-all btn-action",
                     recurrenceType === type
-                      ? 'bg-coral text-white shadow-md'
-                      : 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-coral/10',
-                  ].join(' ')}
+                      ? "bg-coral text-white shadow-md"
+                      : "bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-coral/10",
+                  ].join(" ")}
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
                 </button>
@@ -207,7 +218,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
           </div>
 
           {/* Daily: whole-day interval only */}
-          {recurrenceType === 'daily' && (
+          {recurrenceType === "daily" && (
             <div className="space-y-1.5">
               <span className={labelCls}>Every</span>
               <div className="flex items-center gap-2">
@@ -216,20 +227,22 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
                   type="number"
                   aria-label="Repeat amount"
                   value={recurDays}
-                  onChange={(e) => setRecurDays(Math.max(1, Number(e.target.value) || 1))}
+                  onChange={(e) =>
+                    setRecurDays(Math.max(1, Number(e.target.value) || 1))
+                  }
                   min={1}
                   className={inputCls}
                   style={{ width: "5rem" }}
                 />
                 <span className="text-sm font-medium text-ink/70">
-                  {recurDays === 1 ? 'day' : 'days'}
+                  {recurDays === 1 ? "day" : "days"}
                 </span>
               </div>
             </div>
           )}
 
           {/* Weekly: day-of-week picker */}
-          {recurrenceType === 'weekly' && (
+          {recurrenceType === "weekly" && (
             <div className="space-y-1.5">
               <span className={labelCls}>On</span>
               <div className="flex gap-1.5">
@@ -240,11 +253,11 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
                     onClick={() => setRecurrenceDay(i)}
                     aria-pressed={recurrenceDay === i}
                     className={[
-                      'rounded-full w-10 h-10 text-xs font-semibold transition-all btn-action',
+                      "rounded-full w-10 h-10 text-xs font-semibold transition-all btn-action",
                       recurrenceDay === i
-                        ? 'bg-coral text-white shadow-md'
-                        : 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-coral/10',
-                    ].join(' ')}
+                        ? "bg-coral text-white shadow-md"
+                        : "bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-coral/10",
+                    ].join(" ")}
                   >
                     {day}
                   </button>
@@ -254,7 +267,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
           )}
 
           {/* Monthly: specific day (1–31) or last day of month */}
-          {recurrenceType === 'monthly' && (
+          {recurrenceType === "monthly" && (
             <div className="space-y-1.5">
               <span className={labelCls}>On day</span>
               <div className="flex items-center gap-2">
@@ -262,15 +275,20 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
                   id="recurrence-day"
                   type="number"
                   aria-label="Day of month"
-                  value={recurrenceDay === 0 ? '' : recurrenceDay}
+                  value={recurrenceDay === 0 ? "" : recurrenceDay}
                   onChange={(e) =>
-                    setRecurrenceDay(Math.min(31, Math.max(1, Number(e.target.value) || 1)))
+                    setRecurrenceDay(
+                      Math.min(31, Math.max(1, Number(e.target.value) || 1)),
+                    )
                   }
                   disabled={recurrenceDay === 0}
                   min={1}
                   max={31}
                   placeholder="1"
-                  className={[inputCls, recurrenceDay === 0 ? 'opacity-40' : ''].join(' ')}
+                  className={[
+                    inputCls,
+                    recurrenceDay === 0 ? "opacity-40" : "",
+                  ].join(" ")}
                   style={{ width: "5rem" }}
                 />
                 <button
@@ -278,11 +296,11 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
                   onClick={() => setRecurrenceDay(recurrenceDay === 0 ? 1 : 0)}
                   aria-pressed={recurrenceDay === 0}
                   className={[
-                    'rounded-full px-4 py-1.5 text-sm font-semibold transition-all btn-action',
+                    "rounded-full px-4 py-1.5 text-sm font-semibold transition-all btn-action",
                     recurrenceDay === 0
-                      ? 'bg-coral text-white shadow-md'
-                      : 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-coral/10',
-                  ].join(' ')}
+                      ? "bg-coral text-white shadow-md"
+                      : "bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-coral/10",
+                  ].join(" ")}
                 >
                   Last day
                 </button>
@@ -296,20 +314,20 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
 
       {/* Completion range */}
       <div className="space-y-2">
-        <span className={labelCls}>Complete by</span>
+        <span className={labelCls}>Complete within</span>
         <div className="flex gap-2 flex-wrap">
-          {(['day', 'week', 'month', 'whenever'] as const).map((range) => (
+          {(["day", "week", "month", "whenever"] as const).map((range) => (
             <button
               key={range}
               type="button"
               onClick={() => setCompletionRange(range)}
               aria-pressed={completionRange === range}
               className={[
-                'rounded-full px-4 py-1.5 text-sm font-semibold transition-all btn-action',
+                "rounded-full px-4 py-1.5 text-sm font-semibold transition-all btn-action",
                 completionRange === range
-                  ? 'bg-amber text-white shadow-md'
-                  : 'bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-amber/10',
-              ].join(' ')}
+                  ? "bg-amber text-white shadow-md"
+                  : "bg-white/60 backdrop-blur-sm border border-white/80 text-ink hover:bg-amber/10",
+              ].join(" ")}
             >
               {COMPLETION_RANGE_LABELS[range]}
             </button>
@@ -318,10 +336,7 @@ export function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
       </div>
 
       {settings.matrixMenuEnabled && !settings.goalsEnabled && (
-        <PriorityUrgencyPicker
-          priority={priority}
-          onChange={setPriority}
-        />
+        <PriorityUrgencyPicker priority={priority} onChange={setPriority} />
       )}
 
       <div className="flex gap-4">
