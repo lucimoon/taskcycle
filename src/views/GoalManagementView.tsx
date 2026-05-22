@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useConfirm } from '@/context/ConfirmContext'
 import { useGoals } from '@/hooks/useGoals'
 import { useTaskStore } from '@/store/taskStore'
 import { TaskAssignPanel } from '@/components/goal/TaskAssignPanel'
+import { useTaskListFilterStore } from '@/store/taskListFilterStore'
 import type { GoalDraft } from '@/types/goal'
 import type { Priority } from '@/types/task'
 
@@ -123,6 +125,8 @@ export function GoalManagementView() {
   const { goals, addGoal, updateGoal, deleteGoal } = useGoals()
   const { tasks, loadTasks } = useTaskStore()
   const { confirm } = useConfirm()
+  const navigate = useNavigate()
+  const { setGoalFilter } = useTaskListFilterStore()
   const [mode, setMode] = useState<Mode>('list')
 
   useEffect(() => {
@@ -205,9 +209,13 @@ export function GoalManagementView() {
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-bold text-ink">{goal.name}</p>
                     {taskCount > 0 && (
-                      <span className="rounded-full px-2 py-0.5 text-xs font-semibold bg-lavender/20 text-lavender">
+                      <button
+                        onClick={() => { setGoalFilter(goal.id); navigate('/taskcycle') }}
+                        aria-label={`View ${taskCount} tasks for ${goal.name}`}
+                        className="rounded-full px-2 py-0.5 text-xs font-semibold bg-lavender/20 text-lavender hover:bg-lavender/40 transition-colors btn-action"
+                      >
                         {taskCount}
-                      </span>
+                      </button>
                     )}
                   </div>
                   <p className="text-xs text-ink/50">{PRIORITY_LABELS[goal.priority]} priority</p>
